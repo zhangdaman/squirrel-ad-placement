@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>投放复盘 · Agent 归因 · 松鼠投放</title>
+<style>
+/* === design-system.css (inlined) === */
+/* ============================================================
+ * 松鼠投放 · AI 广告投放助手 · 统一设计系统
+ * Design System v1.0
+ * ============================================================ */
+
+:root {
+  /* 主色 - 品牌蓝 */
+  --brand-50: #EEF4FF;
+  --brand-100: #DCE7FE;
+  --brand-200: #BACFFD;
+  --brand-300: #8EAEFB;
+  --brand-400: #5E89F6;
+  --brand-500: #3B6AEE;
+  --brand-600: #2554DC;
+  --brand-700: #1E44BC;
+  --brand-800: #1B3A95;
+  --brand-900: #1A3477;
+
+  /* 辅助色 */
+  --accent-orange: #FF7A2F;
+  --accent-orange-bg: #FFF1E8;
+  --accent-amber: #F5A524;
+  --accent-amber-bg: #FFF8E1;
+
+  /* 语义色 */
+  --success: #16A34A;
+  --success-bg: #ECFDF5;
+  --warning: #F59E0B;
+  --warning-bg: #FFFBEB;
+  --danger: #DC2626;
+  --danger-bg: #FEF2F2;
+  --info: #2563EB;
+  --info-bg: #EFF6FF;
+
+  /* 中性色 */
+  --gray-50: #F8FAFC;
+  --gray-100: #F1F5F9;
+  --gray-200: #E2E8F0;
+  --gray-300: #CBD5E1;
+  --gray-400: #94A3B8;
+  --gray-500: #64748B;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1E293B;
+  --gray-900: #0F172A;
+
+  /* 背景层 */
+  --bg-page: #F5F7FB;
+  --bg-card: #FFFFFF;
+  --bg-sidebar: #FFFFFF;
+  --bg-subtle: #F8FAFC;
+
+  /* 描边 */
+  --border-base: #E5E9F2;
+  --border-light: #F0F2F8;
+  --border-strong: #CBD5E1;
+
+  /* 阴影 */
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 8px -2px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 12px 24px -6px rgba(15, 23, 42, 0.10), 0 4px 8px -4px rgba(15, 23, 42, 0.06);
+
+  /* 圆角 */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* 字号 */
+  --font-xs: 12px;
+  --font-sm: 13px;
+  --font-base: 14px;
+  --font-md: 15px;
+  --font-lg: 16px;
+  --font-xl: 18px;
+  --font-2xl: 20px;
+  --font-3xl: 24px;
+  --font-4xl: 30px;
+
+  /* 间距 */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* 布局 */
+  --sidebar-w: 220px;
+  --sidebar-w-collapsed: 64px;
+  --topbar-h: 56px;
+  --subnav-w: 240px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: -apple-system, "PingFang SC", "HarmonyOS Sans", "SF Pro SC",
+    "Helvetica Neue", "Microsoft YaHei", "Source Han Sans CN", sans-serif;
+  font-size: var(--font-base);
+  color: var(--gray-800);
+  background: var(--bg-page);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input, textarea {
+  font-family: inherit;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ========== 应用主布局 ========== */
+.app {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg-page);
+}
+
+/* ----------- 主导航 ----------- */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-base);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 18px;
+  height: var(--topbar-h);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.brand-logo {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  font-size: 18px;
+}
+
+.brand-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--gray-900);
+  letter-spacing: 0.5px;
+}
+
+.tenant-switcher {
+  margin: 12px 14px 8px;
+  padding: 8px 10px;
+  background: var(--gray-50);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.tenant-switcher:hover { background: var(--brand-50); border-color: var(--brand-200); }
+.tenant-avatar {
+  width: 24px; height: 24px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #FF7A2F, #FFB259);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  display:flex; align-items:center; justify-content:center;
+}
+.tenant-meta { flex: 1; min-width: 0; }
+.tenant-name { font-size: 13px; font-weight: 600; color: var(--gray-800); line-height: 1.3; }
+.tenant-role { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+.tenant-arrow { color: var(--gray-400); font-size: 12px; }
+
+.nav-section {
+  padding: 8px 10px;
+}
+.nav-section + .nav-section { border-top: 1px solid var(--border-light); padding-top: 12px; margin-top: 4px; }
+.nav-title {
+  padding: 8px 10px 6px;
+  font-size: 11px;
+  color: var(--gray-400);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  color: var(--gray-600);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+  margin-bottom: 2px;
+}
+
+.nav-item:hover { background: var(--gray-50); color: var(--gray-900); }
+.nav-item.active {
+  background: var(--brand-50);
+  color: var(--brand-700);
+  font-weight: 600;
+}
+.nav-item.active::before {
+  content: "";
+  position: absolute;
+  left: -10px; top: 8px; bottom: 8px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--brand-600);
+}
+.nav-item .icon { width: 16px; height: 16px; opacity: 0.85; }
+.nav-item .badge {
+  margin-left: auto;
+  background: var(--danger);
+  color: #fff;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.nav-footer { margin-top: auto; padding: 12px 14px; border-top: 1px solid var(--border-light); }
+.usage-box {
+  background: linear-gradient(135deg, var(--brand-50), #fff);
+  border: 1px solid var(--brand-100);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+}
+.usage-label { font-size: 11px; color: var(--gray-500); }
+.usage-value { font-size: 13px; color: var(--brand-700); font-weight: 600; margin-top: 2px; }
+.usage-bar { height: 4px; border-radius: 2px; background: var(--brand-100); margin-top: 6px; overflow: hidden; }
+.usage-bar-inner { height: 100%; background: linear-gradient(90deg, var(--brand-500), var(--brand-700)); border-radius: 2px; }
+
+/* ----------- 主区域 ----------- */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.topbar {
+  height: var(--topbar-h);
+  background: #fff;
+  border-bottom: 1px solid var(--border-base);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 16px;
+  position: sticky; top: 0; z-index: 50;
+}
+
+.crumb { display: flex; align-items: center; gap: 6px; color: var(--gray-500); font-size: 13px; }
+.crumb .sep { color: var(--gray-300); }
+.crumb .current { color: var(--gray-900); font-weight: 600; }
+
+.topbar-spacer { flex: 1; }
+
+.topbar-search {
+  width: 320px;
+  height: 32px;
+  background: var(--gray-50);
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-md);
+  padding: 0 12px;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px;
+  color: var(--gray-500);
+}
+.topbar-search input { flex: 1; background: transparent; border: none; outline: none; font-size: 13px; color: var(--gray-700); }
+.kbd { padding: 1px 6px; background: #fff; border: 1px solid var(--border-base); border-radius: 4px; font-size: 11px; color: var(--gray-500); }
+
+.topbar-icon {
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gray-600);
+  cursor: pointer;
+  position: relative;
+}
+.topbar-icon:hover { background: var(--gray-50); color: var(--gray-900); }
+.topbar-icon .dot {
+  position: absolute; top: 6px; right: 6px;
+  width: 7px; height: 7px; border-radius: 999px; background: var(--danger);
+  border: 2px solid #fff;
+}
+
+.topbar-user {
+  display: flex; align-items: center; gap: 8px;
+  padding: 4px 10px 4px 4px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.topbar-user:hover { background: var(--gray-50); }
+.user-avatar {
+  width: 28px; height: 28px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #3B6AEE, #8EAEFB);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  display:flex; align-items:center; justify-content:center;
+}
+.user-name { font-size: 13px; color: var(--gray-800); }
+
+/* 顶部场景切换 tab */
+.scene-tabs {
+  display: flex;
+  background: var(--gray-100);
+  border-radius: 12px;
+  padding: 3px;
+  gap: 2px;
+}
+.scene-tab {
+  padding: 5px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--gray-600);
+  cursor: pointer;
+  font-weight: 500;
+  display: flex; align-items:center; gap: 6px;
+}
+.scene-tab.active { background: #fff; color: var(--brand-700); box-shadow: var(--shadow-sm); font-weight: 600; }
+
+/* ----------- 内容容器 ----------- */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+}
+
+/* ========== 通用元素 ========== */
+.page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.page-title { font-size: 20px; font-weight: 600; color: var(--gray-900); display: flex; align-items: center; gap: 8px; }
+.page-subtitle { font-size: 13px; color: var(--gray-500); margin-top: 4px; }
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-xs);
+}
+.card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.card-title { font-size: 15px; font-weight: 600; color: var(--gray-900); display: flex; align-items: center; gap: 8px; }
+.card-action { font-size: 13px; color: var(--brand-600); cursor: pointer; }
+
+/* 按钮 */
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: var(--radius-md); font-size: 13px; font-weight: 500; transition: all 0.15s; }
+.btn-primary { background: var(--brand-600); color: #fff; }
+.btn-primary:hover { background: var(--brand-700); }
+.btn-secondary { background: var(--gray-100); color: var(--gray-700); }
+.btn-secondary:hover { background: var(--gray-200); }
+.btn-ghost { color: var(--gray-700); }
+.btn-ghost:hover { background: var(--gray-100); }
+.btn-outline { border: 1px solid var(--border-base); background: #fff; color: var(--gray-700); }
+.btn-outline:hover { border-color: var(--brand-400); color: var(--brand-600); }
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+.btn-lg { padding: 9px 18px; font-size: 14px; }
+
+/* Tag / 标签 */
+.tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.tag-brand { background: var(--brand-50); color: var(--brand-700); }
+.tag-success { background: var(--success-bg); color: var(--success); }
+.tag-warn { background: var(--warning-bg); color: var(--warning); }
+.tag-danger { background: var(--danger-bg); color: var(--danger); }
+.tag-info { background: var(--info-bg); color: var(--info); }
+.tag-gray { background: var(--gray-100); color: var(--gray-600); }
+.tag-orange { background: var(--accent-orange-bg); color: var(--accent-orange); }
+
+/* 平台徽标 */
+.platform { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 500; }
+.platform-juliang { background: #FFEDE3; color: #E25822; }
+.platform-tencent { background: #E3F1FF; color: #1376E5; }
+.platform-kuaishou { background: #FFE8EE; color: #E83A60; }
+
+/* 指标 KPI */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.kpi {
+  background: #fff;
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-lg);
+  padding: 18px 18px 16px;
+}
+.kpi-label { font-size: 13px; color: var(--gray-500); display: flex; align-items:center; gap:4px; }
+.kpi-value { font-size: 26px; font-weight: 700; color: var(--gray-900); margin-top: 6px; letter-spacing: -0.5px; }
+.kpi-trend { display:inline-flex; align-items:center; gap: 4px; font-size: 12px; margin-top: 6px; }
+.trend-up { color: var(--success); }
+.trend-down { color: var(--danger); }
+.kpi-spark { height: 28px; margin-top: 8px; }
+
+/* 表格 */
+.table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.table thead th { background: var(--gray-50); text-align: left; padding: 10px 14px; font-weight: 600; color: var(--gray-600); border-bottom: 1px solid var(--border-base); }
+.table tbody td { padding: 14px; border-bottom: 1px solid var(--border-light); }
+.table tbody tr:hover { background: var(--gray-50); }
+.table tbody tr:last-child td { border-bottom: none; }
+
+/* 列表项 */
+.list-item {
+  display: flex; gap: 12px; padding: 12px 14px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.list-item:hover { background: var(--gray-50); }
+.list-item.active { background: var(--brand-50); }
+
+/* 输入框 */
+.input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  color: var(--gray-800);
+  background: #fff;
+  outline: none;
+  transition: border 0.15s, box-shadow 0.15s;
+}
+.input:focus { border-color: var(--brand-400); box-shadow: 0 0 0 3px var(--brand-50); }
+.input-lg { padding: 11px 14px; font-size: 14px; }
+
+/* 通用 utility */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.gap-1 { gap: 4px; } .gap-2 { gap: 8px; } .gap-3 { gap: 12px; } .gap-4 { gap: 16px; } .gap-6 { gap: 24px; }
+.flex-1 { flex: 1; }
+.text-xs { font-size: 12px; } .text-sm { font-size: 13px; } .text-base { font-size: 14px; } .text-lg { font-size: 16px; } .text-xl { font-size: 18px; } .text-2xl { font-size: 20px; }
+.font-bold { font-weight: 700; } .font-semibold { font-weight: 600; } .font-medium { font-weight: 500; }
+.text-muted { color: var(--gray-500); }
+.text-subtle { color: var(--gray-400); }
+.text-primary { color: var(--brand-700); }
+.text-success { color: var(--success); }
+.text-danger { color: var(--danger); }
+.text-warning { color: var(--warning); }
+.text-gray-700 { color: var(--gray-700); }
+.text-gray-900 { color: var(--gray-900); }
+.mb-1 { margin-bottom: 4px; } .mb-2 { margin-bottom: 8px; } .mb-3 { margin-bottom: 12px; } .mb-4 { margin-bottom: 16px; } .mb-6 { margin-bottom: 24px; }
+.mt-1 { margin-top: 4px; } .mt-2 { margin-top: 8px; } .mt-3 { margin-top: 12px; } .mt-4 { margin-top: 16px; } .mt-6 { margin-top: 24px; }
+.w-full { width: 100%; }
+.rounded-md { border-radius: var(--radius-md); }
+.rounded-lg { border-radius: var(--radius-lg); }
+.divider { height: 1px; background: var(--border-light); margin: 12px 0; }
+.dot-divider { color: var(--gray-300); margin: 0 6px; }
+
+/* 滚动条 */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: var(--gray-300); background-clip: padding-box; border: 2px solid transparent; }
+
+</style>
+<style>
+.review-grid { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
+
+.agent-banner {
+  background: linear-gradient(135deg, #1B3A95 0%, #2554DC 50%, #3B6AEE 100%);
+  border-radius: 16px;
+  padding: 22px 26px;
+  color: #fff;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.agent-banner::after {
+  content: "";
+  position: absolute; right: -60px; top: -60px;
+  width: 240px; height: 240px;
+  background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 65%);
+}
+.banner-row { display: flex; align-items: center; gap: 14px; position: relative; z-index: 2; }
+.banner-icon { width: 48px; height: 48px; border-radius: 12px; background: rgba(255,255,255,0.18); display:flex; align-items:center; justify-content:center; }
+.banner-title { font-size: 18px; font-weight: 700; }
+.banner-sub { font-size: 13px; opacity: 0.9; margin-top: 2px; }
+
+.banner-stats { display: flex; gap: 24px; margin-top: 16px; position: relative; z-index: 2; }
+.b-stat .label { font-size: 11px; opacity: 0.8; }
+.b-stat .val { font-size: 16px; font-weight: 700; margin-top: 2px; }
+.bs-tip { position: relative; cursor: help; opacity: 0.75; margin-left: 1px; }
+.bs-tip-pop { position: absolute; top: calc(100% + 8px); left: 0; width: 234px; background: #fff; color: var(--gray-700); font-size: 11px; line-height: 1.6; font-weight: 400; padding: 9px 11px; border-radius: 8px; box-shadow: 0 8px 24px rgba(15,23,42,.18); opacity: 0; visibility: hidden; transition: opacity 0.15s, visibility 0.15s; z-index: 30; text-align: left; }
+.bs-tip:hover .bs-tip-pop { opacity: 1; visibility: visible; }
+.bs-tip-pop b { color: var(--gray-900); }
+
+/* Agent 步骤面板 */
+.agent-flow {
+  background: #fff;
+  border: 1px solid var(--border-base);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.flow-title { font-size: 15px; font-weight: 600; color: var(--gray-900); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.flow-rounds { display: flex; flex-direction: column; gap: 12px; }
+.round {
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.round-head {
+  padding: 12px 14px;
+  background: var(--gray-50);
+  display: flex; align-items: center; gap: 12px;
+  cursor: pointer;
+}
+.round-num {
+  width: 26px; height: 26px;
+  border-radius: 999px;
+  background: var(--brand-600); color: #fff;
+  font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.round-title { font-size: 13px; font-weight: 600; color: var(--gray-900); }
+.round-time { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+.round-status { margin-left: auto; }
+.round-body { padding: 14px 14px 14px 50px; background: #fff; font-size: 13px; color: var(--gray-700); line-height: 1.65; }
+
+.r-block { margin-bottom: 10px; }
+.r-block .r-label { font-weight: 600; color: var(--gray-900); display: inline-flex; align-items: center; gap: 4px; }
+.r-block.thought .r-label { color: var(--brand-700); }
+.r-block.action .r-label { color: var(--brand-700); }
+.r-block.observation .r-label { color: var(--accent-orange); }
+.r-block.reflection .r-label { color: var(--success); }
+.r-block .r-content { margin-top: 4px; }
+
+.code-snippet {
+  background: var(--gray-900); color: #94A3B8;
+  font-family: 'SF Mono', Menlo, Consolas, monospace;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  margin-top: 6px;
+  display: inline-block;
+}
+
+/* 归因结论卡 */
+.conclusion-card {
+  background: linear-gradient(135deg, #ECFDF5, #fff);
+  border: 1px solid #BBE5C8;
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+}
+.cause-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.cause-card {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 12px;
+}
+.cause-card .level { font-size: 11px; padding: 2px 8px; border-radius: 999px; font-weight: 600; display: inline-block; }
+.cause-card .level-main { background: var(--danger-bg); color: var(--danger); }
+.cause-card .level-sub { background: var(--warning-bg); color: var(--warning); }
+.cause-card .level-excluded { background: var(--success-bg); color: var(--success); }
+.cause-card .name { font-size: 13px; font-weight: 600; color: var(--gray-900); margin-top: 6px; }
+.cause-card .impact { font-size: 12px; color: var(--gray-500); margin-top: 4px; }
+
+/* 修改建议 */
+.action-list { background: #fff; border: 1px solid var(--border-base); border-radius: 12px; padding: 18px; margin-bottom: 16px; }
+.action-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px dashed var(--border-light); }
+.action-item:last-child { border-bottom: none; }
+.action-num {
+  width: 26px; height: 26px;
+  border-radius: 8px;
+  background: var(--brand-50); color: var(--brand-700);
+  font-size: 13px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.action-title { font-size: 14px; font-weight: 600; color: var(--gray-900); }
+.action-desc { font-size: 12px; color: var(--gray-600); margin-top: 4px; line-height: 1.5; }
+.action-item.executed { background: var(--success-bg); border-radius: 8px; padding: 12px; border-bottom-color: transparent; }
+.exec-done { font-size: 13px; font-weight: 600; color: var(--success); padding: 7px 13px; background: #fff; border: 1px solid #BBE5C8; border-radius: 7px; white-space: nowrap; align-self: flex-start; }
+.exec-status { font-size: 12px; color: var(--brand-700); background: var(--brand-50); border: 1px solid var(--brand-100); border-radius: 8px; padding: 8px 11px; margin-top: 8px; line-height: 1.6; }
+.exec-link { color: var(--brand-700); font-weight: 600; cursor: pointer; text-decoration: underline; }
+.exec-link:hover { color: var(--brand-800); }
+.priority-tag { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 10px; font-weight: 600; margin-left: 6px; }
+.priority-p0 { background: var(--danger); color: #fff; }
+.priority-p1 { background: var(--warning); color: #fff; }
+.priority-p2 { background: var(--gray-200); color: var(--gray-700); }
+
+/* 右栏：归因摘要 */
+.attr-summary {
+  background: #fff;
+  border: 1px solid var(--border-base);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.metric-row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin: 12px 0;
+}
+.metric-mini {
+  padding: 10px;
+  background: var(--gray-50);
+  border-radius: 8px;
+}
+.metric-mini .ml { font-size: 11px; color: var(--gray-500); }
+.metric-mini .mv { font-size: 16px; font-weight: 700; color: var(--gray-900); margin-top: 2px; }
+.metric-mini .mt { font-size: 11px; margin-top: 2px; }
+
+.donut-wrap { display: flex; justify-content: center; padding: 12px 0; }
+
+.cause-bars { display: flex; flex-direction: column; gap: 8px; }
+.cause-bar-row { font-size: 12px; }
+.cause-bar-row .br-head { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.cause-bar-row .br-bar { height: 6px; background: var(--gray-100); border-radius: 999px; overflow: hidden; }
+.cause-bar-row .br-bar > div { height: 100%; border-radius: 999px; }
+
+/* 关键节点时间轴 */
+.timeline2 { position: relative; padding-left: 18px; }
+.timeline2::before { content:""; position: absolute; left: 4px; top: 4px; bottom: 4px; width: 2px; background: var(--border-light); }
+.tl-item { position: relative; padding: 6px 0 14px; }
+.tl-item::before {
+  content: ""; position: absolute; left: -18px; top: 8px;
+  width: 10px; height: 10px; border-radius: 999px;
+  background: var(--brand-500); border: 2px solid #fff; box-shadow: 0 0 0 1px var(--brand-200);
+}
+.tl-item.danger::before { background: var(--danger); box-shadow: 0 0 0 1px #FECACA; }
+.tl-item .tl-time { font-size: 11px; color: var(--gray-400); }
+.tl-item .tl-text { font-size: 12px; color: var(--gray-700); margin-top: 2px; }
+.tl-item .tl-meta { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+
+/* ===== 复盘收件箱（系统自动复盘为主）===== */
+.rv-overview {
+  display: flex; gap: 28px; background: #fff; border: 1px solid var(--border-base);
+  border-radius: 12px; padding: 16px 22px; margin-bottom: 16px;
+}
+.rv-ov-item { display: flex; flex-direction: column; }
+.rv-ov-label { font-size: 12px; color: var(--gray-500); }
+.rv-ov-val { font-size: 22px; font-weight: 700; color: var(--gray-900); margin-top: 2px; }
+.rv-ov-val.danger { color: var(--danger); }
+.rv-ov-val.success { color: var(--success); }
+.rv-ov-divider { width: 1px; background: var(--border-light); }
+
+.rv-filter-bar { display: flex; gap: 8px; margin-bottom: 18px; }
+.rv-chip {
+  padding: 6px 14px; border: 1px solid var(--border-base); border-radius: 999px;
+  font-size: 13px; color: var(--gray-700); background: #fff; cursor: pointer; transition: all 0.15s;
+}
+.rv-chip:hover { border-color: var(--brand-300); }
+.rv-chip.active { background: var(--brand-50); border-color: var(--brand-400); color: var(--brand-700); font-weight: 600; }
+
+.rv-group { margin-bottom: 22px; }
+.rv-group-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.rv-group-title { font-size: 14px; font-weight: 600; color: var(--gray-900); display: flex; align-items: center; gap: 6px; }
+.rv-group-count { font-size: 12px; color: var(--gray-400); }
+.rv-group-cron { margin-left: auto; font-size: 12px; color: var(--gray-400); }
+
+.rv-card {
+  background: #fff; border: 1px solid var(--border-base); border-left: 3px solid var(--gray-300);
+  border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 14px;
+  margin-bottom: 8px; cursor: pointer; transition: all 0.15s;
+}
+.rv-card:hover { box-shadow: var(--shadow-md); border-color: var(--brand-200); }
+.rv-card.high { border-left-color: var(--danger); }
+.rv-card.mid { border-left-color: var(--warning); }
+.rv-card.info { border-left-color: var(--info); }
+.rv-card.cron { border-left-color: var(--brand-400); }
+.rv-card.mine { border-left-color: var(--brand-600); }
+
+.rv-card-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.rv-i-high { background: var(--danger-bg); color: var(--danger); }
+.rv-i-mid { background: var(--warning-bg); color: var(--warning); }
+.rv-i-info { background: var(--info-bg); color: var(--info); }
+.rv-i-cron { background: var(--brand-50); color: var(--brand-600); }
+.rv-i-mine { background: var(--brand-50); color: var(--brand-600); }
+
+.rv-card-main { flex: 1; min-width: 0; }
+.rv-card-title-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.rv-card-title { font-size: 14px; font-weight: 600; color: var(--gray-900); }
+.rv-new-dot { width: 7px; height: 7px; border-radius: 999px; background: var(--danger); flex-shrink: 0; }
+.rv-card-desc { font-size: 13px; color: var(--gray-600); margin-top: 4px; line-height: 1.5; }
+.rv-card-meta { display: flex; gap: 10px; font-size: 11.5px; color: var(--gray-500); margin-top: 6px; align-items: center; flex-wrap: wrap; }
+.rv-card-meta .dot { color: var(--gray-300); }
+.rv-source-tag { font-size: 10.5px; padding: 1px 7px; border-radius: 4px; font-weight: 600; }
+.rv-src-auto { background: var(--danger-bg); color: var(--danger); }
+.rv-src-cron { background: var(--brand-50); color: var(--brand-700); }
+.rv-src-mine { background: var(--brand-50); color: var(--brand-600); }
+
+.rv-card-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.rv-sev { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 999px; }
+.rv-sev.high { background: var(--danger); color: #fff; }
+.rv-sev.mid { background: var(--warning); color: #fff; }
+.rv-sev.info { background: var(--gray-200); color: var(--gray-700); }
+
+/* 报告态：返回条 */
+.rv-back {
+  display: inline-flex; align-items: center; gap: 6px; color: var(--brand-700);
+  cursor: pointer; font-size: 13px; font-weight: 500; margin-bottom: 14px;
+}
+.rv-back:hover { color: var(--brand-800); }
+
+/* Toast */
+.rv-toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: var(--gray-900); color: #fff; padding: 10px 18px; border-radius: 999px; font-size: 13px; z-index: 1000; box-shadow: var(--shadow-lg); }
+.rv-toast.hidden { display: none; }
+
+/* round 折叠交互 */
+.round-head { cursor: pointer; }
+.round-head::after { content: "▾"; color: var(--gray-400); margin-left: 10px; font-size: 10px; transition: transform 0.2s; flex-shrink: 0; }
+.round.collapsed .round-head::after { transform: rotate(-90deg); }
+.round.collapsed .round-body { display: none; }
+
+/* ===== 发起复盘弹窗 ===== */
+.rv-dlg-mask { position: fixed; inset: 0; background: rgba(15,23,42,0.45); z-index: 700; display: flex; align-items: center; justify-content: center; animation: rvdlg 0.18s ease; }
+.rv-dlg-mask.hidden { display: none; }
+@keyframes rvdlg { from{opacity:0;} to{opacity:1;} }
+.rv-dlg { width: 520px; max-width: 92vw; background: #fff; border-radius: 14px; box-shadow: var(--shadow-lg); overflow: hidden; animation: rvpop 0.22s ease; }
+@keyframes rvpop { from{opacity:0;transform:scale(.96);} to{opacity:1;transform:scale(1);} }
+.rv-dlg-head { padding: 16px 20px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; }
+.rv-dlg-title { font-size: 16px; font-weight: 700; color: var(--gray-900); }
+.rv-dlg-close { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--gray-500); cursor: pointer; }
+.rv-dlg-close:hover { background: var(--gray-100); }
+.rv-dlg-body { padding: 20px; }
+.rv-dlg-foot { padding: 14px 20px; border-top: 1px solid var(--border-light); display: flex; gap: 8px; justify-content: flex-end; }
+.rv-dlg-field { margin-bottom: 16px; }
+.rv-dlg-field:last-child { margin-bottom: 0; }
+.rv-dlg-label { font-size: 12px; font-weight: 600; color: var(--gray-700); margin-bottom: 7px; }
+.rv-dlg-select { width: 100%; height: 36px; border: 1px solid var(--border-base); border-radius: 8px; padding: 0 12px; font-size: 13px; background: #fff; color: var(--gray-800); }
+.rv-seg { display: flex; gap: 6px; flex-wrap: wrap; }
+.rv-seg-item { padding: 7px 14px; border: 1px solid var(--border-base); border-radius: 8px; font-size: 13px; color: var(--gray-700); background: #fff; cursor: pointer; transition: all .15s; }
+.rv-seg-item:hover { border-color: var(--brand-300); }
+.rv-seg-item.active { background: var(--brand-50); border-color: var(--brand-400); color: var(--brand-700); font-weight: 600; }
+
+/* loading overlay */
+.rv-launching { position: fixed; inset: 0; background: rgba(245,247,251,0.92); z-index: 720; display: flex; align-items: center; justify-content: center; }
+.rv-launching.hidden { display: none; }
+.rv-launch-box { text-align: center; }
+.rv-launch-ring { width: 50px; height: 50px; border-radius: 50%; border: 4px solid var(--brand-100); border-top-color: var(--brand-600); margin: 0 auto 18px; animation: rvspin .8s linear infinite; }
+@keyframes rvspin { to { transform: rotate(360deg); } }
+.rv-launch-title { font-size: 16px; font-weight: 600; color: var(--gray-900); margin-bottom: 16px; }
+.rv-launch-steps { display: inline-flex; flex-direction: column; gap: 8px; text-align: left; background: #fff; border: 1px solid var(--border-light); border-radius: 12px; padding: 14px 18px; font-size: 13px; }
+.rv-launch-steps .done { color: var(--success); }
+.rv-launch-steps .run { color: var(--brand-700); font-weight: 600; }
+
+/* 历史复盘·日期分组 */
+.rv-date-label { font-size: 12px; font-weight: 600; color: var(--gray-400); margin: 16px 0 8px; padding-left: 2px; letter-spacing: 0.3px; }
+.rv-date-label:first-of-type { margin-top: 8px; }
+.rv-card.done { border-left-color: var(--gray-300); }
+.rv-card.done .rv-card-icon { background: var(--gray-100); color: var(--gray-500); }
+.rv-src-done { background: var(--gray-100); color: var(--gray-600); }
+.rv-done-flag { color: var(--success); font-weight: 600; }
+.rv-more-history { text-align: center; padding: 12px; color: var(--brand-700); font-size: 13px; cursor: pointer; }
+.rv-more-history:hover { color: var(--brand-800); }
+</style>
+</head>
+<body>
+<div class="app">
+  <div id="__sidebar"></div>
+
+  <div class="main">
+    <div id="__topbar"></div>
+
+    <div class="content">
+      <!-- ========== 态①：复盘收件箱（默认） ========== -->
+      <div class="rv-state" data-state="inbox">
+        <div class="page-header">
+          <div>
+            <div class="page-title">投放复盘</div>
+            <div class="page-subtitle">预警触发的归因报告 + 你主动发起的复盘 · 由 Agent 多步调研驱动</div>
+          </div>
+          <div class="flex gap-2">
+            <button class="btn btn-primary" data-action="new-review">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>
+              发起复盘
+            </button>
+          </div>
+        </div>
+
+        <!-- 概览 -->
+        <div class="rv-overview">
+          <div class="rv-ov-item"><span class="rv-ov-label">本月复盘报告</span><span class="rv-ov-val">42</span></div>
+          <div class="rv-ov-divider"></div>
+          <div class="rv-ov-item"><span class="rv-ov-label">待查看</span><span class="rv-ov-val danger">3</span></div>
+          <div class="rv-ov-divider"></div>
+          <div class="rv-ov-item"><span class="rv-ov-label">本周经复盘止损</span><span class="rv-ov-val success">¥38.6万</span></div>
+          <div class="rv-ov-divider"></div>
+          <div class="rv-ov-item"><span class="rv-ov-label">建议采纳率</span><span class="rv-ov-val">82%</span></div>
+        </div>
+
+        <!-- 筛选 -->
+        <div class="rv-filter-bar">
+          <div class="rv-chip active">全部</div>
+          <div class="rv-chip">🔔 预警触发</div>
+          <div class="rv-chip">👤 我发起的</div>
+        </div>
+
+        <!-- 分组①：需立即关注（异常自动触发） -->
+        <div class="rv-group">
+          <div class="rv-group-head">
+            <div class="rv-group-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>
+              待看的复盘报告
+            </div>
+            <span class="rv-group-count">· 3 份 · 由预警触发归因</span>
+          </div>
+
+          <div class="rv-card high" data-action="open-report">
+            <div class="rv-card-icon rv-i-high">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 18l-9.5-9.5-5 5L1 6"/><path d="M17 18h6v-6"/></svg>
+            </div>
+            <div class="rv-card-main">
+              <div class="rv-card-title-row">
+                <span class="rv-new-dot"></span>
+                <span class="rv-card-title">A001 现言旗舰户 · ROI 异常归因报告</span>
+                <span class="rv-source-tag rv-src-auto">🔔 预警触发</span>
+              </div>
+              <div class="rv-card-desc">今日 ROI 较昨日下跌 30%，已自动归因：主因为晚间高价时段消耗下降 + 3 条爆款计划被暂停</div>
+              <div class="rv-card-meta"><span>巨量引擎</span><span class="dot">·</span><span>投手 钱晓彤</span><span class="dot">·</span><span>2 小时前生成</span><span class="dot">·</span><span>预计周止损 ¥12 万</span></div>
+            </div>
+            <div class="rv-card-right"><span class="rv-sev high">高</span><button class="btn btn-primary btn-sm">查看报告</button></div>
+          </div>
+
+          <div class="rv-card high" data-action="open-report">
+            <div class="rv-card-icon rv-i-high">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-3 8-10V5l-8-3-8 3v7c0 7 8 10 8 10z"/><path d="M15 9l-6 6M9 9l6 6"/></svg>
+            </div>
+            <div class="rv-card-main">
+              <div class="rv-card-title-row">
+                <span class="rv-new-dot"></span>
+                <span class="rv-card-title">A005 古言扩量户 · 拒审归因报告</span>
+                <span class="rv-source-tag rv-src-auto">🔔 预警触发</span>
+              </div>
+              <div class="rv-card-desc">1 小时内 8 条素材连续被拒，拒审率从 5% 升至 48%，已归因：集中触发「烟酒元素」与「诱导点击」两类规则</div>
+              <div class="rv-card-meta"><span>巨量引擎</span><span class="dot">·</span><span>投手 李婉</span><span class="dot">·</span><span>3 小时前生成</span></div>
+            </div>
+            <div class="rv-card-right"><span class="rv-sev high">高</span><button class="btn btn-primary btn-sm">查看报告</button></div>
+          </div>
+
+          <div class="rv-card mid" data-action="open-report">
+            <div class="rv-card-icon rv-i-mid">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>
+            </div>
+            <div class="rv-card-main">
+              <div class="rv-card-title-row">
+                <span class="rv-card-title">K007 快手主推户 · 预算消耗归因报告</span>
+                <span class="rv-source-tag rv-src-auto">🔔 预警触发</span>
+              </div>
+              <div class="rv-card-desc">日预算消耗速度较均值快 2.3 倍，14:00 前已耗尽全天预算，建议复核出价与人群设置</div>
+              <div class="rv-card-meta"><span>磁力金牛</span><span class="dot">·</span><span>投手 王宇</span><span class="dot">·</span><span>5 小时前生成</span></div>
+            </div>
+            <div class="rv-card-right"><span class="rv-sev mid">中</span><button class="btn btn-outline btn-sm">查看报告</button></div>
+          </div>
+        </div>
+
+
+        <!-- 分组③：我发起的复盘 -->
+        <div class="rv-group">
+          <div class="rv-group-head">
+            <div class="rv-group-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2554DC" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              我发起的复盘
+            </div>
+            <span class="rv-group-count">· 1 条</span>
+          </div>
+
+          <div class="rv-card mine" data-action="open-report">
+            <div class="rv-card-icon rv-i-mine">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3zM7 17V9m5 8V5m5 12v-6"/></svg>
+            </div>
+            <div class="rv-card-main">
+              <div class="rv-card-title-row"><span class="rv-card-title">男频爽文题材 · 近 30 天复盘</span><span class="rv-source-tag rv-src-mine">我发起</span></div>
+              <div class="rv-card-desc">对比 5 个男频账户 30 天表现，定位高 ROI 计划的共性投放结构</div>
+              <div class="rv-card-meta"><span>跨账户</span><span class="dot">·</span><span>昨天 16:20 发起</span><span class="dot">·</span><span>耗时 1 分 12 秒</span></div>
+            </div>
+            <div class="rv-card-right"><button class="btn btn-outline btn-sm">查看报告</button></div>
+          </div>
+        </div>
+
+        <!-- 分组④：历史复盘（按日期归档）-->
+        <div class="rv-group">
+          <div class="rv-group-head">
+            <div class="rv-group-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-500)" stroke-width="2"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 106 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>
+              历史复盘
+            </div>
+            <span class="rv-group-count">· 共 286 次</span>
+            <span class="rv-group-cron">按日期归档</span>
+          </div>
+
+          <div class="rv-date-label">昨天 · 5 月 29 日</div>
+          <div class="rv-card done" data-action="open-report">
+            <div class="rv-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></div>
+            <div class="rv-card-main">
+              <div class="rv-card-title-row"><span class="rv-card-title">A001 现言旗舰户 · ROI 异常复盘</span><span class="rv-source-tag rv-src-done">异常归因</span></div>
+              <div class="rv-card-desc">归因：晚间高价时段消耗下降 + 3 条爆款计划被暂停 · 已重启计划，ROI 恢复至 1.2</div>
+              <div class="rv-card-meta"><span>巨量引擎</span><span class="dot">·</span><span>昨天 14:30</span><span class="dot">·</span><span class="rv-done-flag">✓ 已处理</span></div>
+            </div>
+            <div class="rv-card-right"><button class="btn btn-outline btn-sm">查看报告</button></div>
+          </div>
+          <div class="rv-card done" data-action="open-report">
+            <div class="rv-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></div>
+            <div class="rv-card-main">
+              <div class="rv-card-title-row"><span class="rv-card-title">B003 都市悬疑 · 拒审激增复盘</span><span class="rv-source-tag rv-src-done">异常归因</span></div>
+              <div class="rv-card-desc">归因：集中触发烟草元素与诱导点击 · 已替换镜头 + 改文案，8 条素材重新过审</div>
+              <div class="rv-card-meta"><span>巨量引擎</span><span class="dot">·</span><span>昨天 10:15</span><span class="dot">·</span><span class="rv-done-flag">✓ 已处理</span></div>
+            </div>
+            <div class="rv-card-right"><button class="btn btn-outline btn-sm">查看报告</button></div>
+          </div>
+
+          <div class="rv-date-label">本周 · 5 月 26-28 日</div>
+          <div class="rv-card done" data-action="open-report">
+            <div class="rv-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></div>
+            <div class="rv-card-main">
+              <div class="rv-card-title-row"><span class="rv-card-title">A005 古言虐恋 · 消耗异常复盘</span><span class="rv-source-tag rv-src-done">异常归因</span></div>
+              <div class="rv-card-desc">归因：人群包过窄导致竞争加剧 CPM 上涨 · 已拓宽定向，消耗速度回归正常</div>
+              <div class="rv-card-meta"><span>磁力金牛</span><span class="dot">·</span><span>周一 16:40</span><span class="dot">·</span><span class="rv-done-flag">✓ 已处理</span></div>
+            </div>
+            <div class="rv-card-right"><button class="btn btn-outline btn-sm">查看报告</button></div>
+          </div>
+
+          <div class="rv-date-label">上周 · 5 月 19-25 日</div>
+          <div class="rv-card done" data-action="open-report">
+            <div class="rv-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></div>
+            <div class="rv-card-main">
+              <div class="rv-card-title-row"><span class="rv-card-title">女频虐恋题材 · 30 天复盘</span><span class="rv-source-tag rv-src-done">我发起</span></div>
+              <div class="rv-card-desc">对比 4 个女频账户表现，定位甜宠 vs 虐恋的最优出价区间与素材结构</div>
+              <div class="rv-card-meta"><span>跨账户</span><span class="dot">·</span><span>上周三 11:20</span><span class="dot">·</span><span class="rv-done-flag">✓ 已处理</span></div>
+            </div>
+            <div class="rv-card-right"><button class="btn btn-outline btn-sm">查看报告</button></div>
+          </div>
+
+          <div class="rv-more-history" data-action="more-history">加载更早的复盘 ↓</div>
+        </div>
+      </div>
+
+      <!-- ========== 态②：Agent 归因报告 ========== -->
+      <div class="rv-state" data-state="report" style="display:none;">
+        <div class="rv-back" data-action="back-inbox">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          返回复盘列表
+        </div>
+
+      <!-- Agent 标题 banner -->
+      <div class="agent-banner">
+        <div class="banner-row">
+          <div class="banner-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/></svg>
+          </div>
+          <div style="flex: 1;">
+            <div class="banner-title">A001 · 现言主投计划 · ROI 异常归因报告</div>
+            <div class="banner-sub">由 AI 自主执行 5 步调研 · 综合实时数据 + 历史案例 + 行业大盘生成</div>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-outline" style="background: rgba(255,255,255,0.15); color:#fff; border-color: rgba(255,255,255,0.3);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+              导出 PDF
+            </button>
+          </div>
+        </div>
+        <div class="banner-stats">
+          <div class="b-stat">
+            <div class="label">分析耗时</div>
+            <div class="val">42 秒</div>
+          </div>
+          <div class="b-stat">
+            <div class="label">执行任务</div>
+            <div class="val">5 个</div>
+          </div>
+          <div class="b-stat">
+            <div class="label">综合置信度</div>
+            <div class="val">88%</div>
+          </div>
+          <div class="b-stat">
+            <div class="label">数据来源</div>
+            <div class="val">12 个</div>
+          </div>
+          <div class="b-stat">
+            <div class="label">预计可止损 <span class="bs-tip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="vertical-align:-1px;"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span class="bs-tip-pop">按主因 <b>M789 素材衰退</b>测算：该素材周消耗约 ¥30 万 × CTR 衰退造成的 ROI 缺口 → 替换后每周可止损 <b>¥12-18 万</b>。综合置信度 88%，与下方建议 ① 一致。</span></span></div>
+            <div class="val">¥12-18 万 / 周</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-grid">
+        <!-- 左：报告主体 -->
+        <div>
+          <!-- 核心结论 -->
+          <div class="conclusion-card">
+            <div style="display:flex; align-items: center; gap: 10px;">
+              <div style="width: 36px; height: 36px; border-radius: 12px; background: var(--success); color: #fff; display:flex; align-items:center; justify-content:center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+              </div>
+              <div>
+                <div style="font-size: 12px; color: var(--gray-500);">归因结论</div>
+                <div style="font-size: 17px; font-weight: 700; color: var(--gray-900); margin-top: 2px;">
+                  ROI 下降的主因是 <span style="color: var(--danger);">M789 素材衰退</span>，次因为 <span style="color: var(--warning);">A001 自身定向收窄</span>
+                </div>
+              </div>
+            </div>
+            <div class="cause-list">
+              <div class="cause-card">
+                <span class="level level-main">主因 · 影响 70%</span>
+                <div class="name">M789 素材衰退</div>
+                <div class="impact">CTR 从 4.5% 跌至 1.8% · 时间点与 ROI 下降完全吻合</div>
+              </div>
+              <div class="cause-card">
+                <span class="level level-sub">次因 · 影响 20%</span>
+                <div class="name">A001 自身定向收窄</div>
+                <div class="impact">6 天前定向人群从 1.2 亿收窄至 6,400 万</div>
+              </div>
+              <div class="cause-card">
+                <span class="level level-excluded">排除 · 行业大盘</span>
+                <div class="name">短剧大盘 ROI 稳定</div>
+                <div class="impact">行业均值无明显变化 → 排除外部影响</div>
+              </div>
+              <div class="cause-card">
+                <span class="level level-excluded">排除 · 人为修改</span>
+                <div class="name">账户设置无变更</div>
+                <div class="impact">近 7 天日志：无出价/预算/创意调整</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 修改建议 -->
+          <div class="action-list">
+            <div class="card-header" style="margin-bottom: 4px;">
+              <div class="card-title">💡 修改建议</div>
+              <span class="text-sm text-muted">按优先级排序 · 建议小流量灰度验证</span>
+            </div>
+            <div class="action-item">
+              <div class="action-num">1</div>
+              <div style="flex: 1;">
+                <div class="action-title">
+                  立即停用 M789 素材，启用储备素材组 R-08
+                  <span class="priority-tag priority-p0">P0 · 立即</span>
+                </div>
+                <div class="action-desc">M789 已进入素材衰退中后期，CTR 跌幅 60% 不可逆。预计替换后 ROI 可回升至 1.3+，预计止损 ¥12-18 万/周。</div>
+              </div>
+              <button class="btn btn-primary btn-sm">一键执行 →</button>
+            </div>
+            <div class="action-item">
+              <div class="action-num">2</div>
+              <div style="flex: 1;">
+                <div class="action-title">
+                  放宽 A001 核心人群定向至 1.0 亿+
+                  <span class="priority-tag priority-p1">P1 · 24h 内</span>
+                </div>
+                <div class="action-desc">建议添加"现言短剧老粉""都市轻悬疑感兴趣人群"两个种子包扩容。</div>
+              </div>
+              <button class="btn btn-outline btn-sm">详细配置</button>
+            </div>
+            <div class="action-item">
+              <div class="action-num">3</div>
+              <div style="flex: 1;">
+                <div class="action-title">
+                  上线 5 条新素材进入冷启动队列
+                  <span class="priority-tag priority-p1">P1 · 24h 内</span>
+                </div>
+                <div class="action-desc">参考贵司 12 月成功素材模板，AI 已生成 5 条素材初稿，建议素材团队确认后排期。</div>
+              </div>
+              <button class="btn btn-outline btn-sm">查看素材</button>
+            </div>
+            <div class="action-item">
+              <div class="action-num">4</div>
+              <div style="flex: 1;">
+                <div class="action-title">
+                  调整素材轮换机制，避免后续衰退
+                  <span class="priority-tag priority-p2">P2 · 本周</span>
+                </div>
+                <div class="action-desc">建议设置素材生命周期监控规则：单素材连续 3 天 CTR 跌幅 ≥ 30% 自动预警。</div>
+              </div>
+              <button class="btn btn-outline btn-sm">配置规则</button>
+            </div>
+          </div>
+
+          <!-- Agent 执行过程 -->
+          <div class="agent-flow">
+            <div class="flow-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              AI 归因过程 · 5 步推导
+              <span class="tag tag-brand" style="margin-left: auto; cursor: pointer;" data-action="toggle-rounds">展开 5 步推导</span>
+            </div>
+
+            <div class="flow-rounds">
+              <div class="round collapsed">
+                <div class="round-head">
+                  <span class="round-num">1</span>
+                  <div>
+                    <div class="round-title">拉取实时投放数据</div>
+                    <div class="round-time">数据源：实时投放数据 · 1.2 秒</div>
+                  </div>
+                  <span class="round-status tag tag-success">✓ 已完成</span>
+                </div>
+                <div class="round-body">
+                  <div class="r-block thought">
+                    <span class="r-label">🧠 判断</span>
+                    <div class="r-content">先确认 ROI 数据是否真的下跌，以及下跌的时间点和幅度。</div>
+                  </div>
+                  <div class="r-block action">
+                    <span class="r-label">🔍 查证</span>
+                    <div class="r-content">调取该计划近 14 天的实时表现数据</div>
+                  </div>
+                  <div class="r-block observation">
+                    <span class="r-label">📊 发现</span>
+                    <div class="r-content">ROI 从 5 天前 1.5 阶梯式下跌至当前 0.83，下跌拐点出现在 5 天前 14:00</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="round collapsed">
+                <div class="round-head">
+                  <span class="round-num">2</span>
+                  <div>
+                    <div class="round-title">分析素材表现 Top 10</div>
+                    <div class="round-time">数据源：素材衰退分析 · 2.4 秒</div>
+                  </div>
+                  <span class="round-status tag tag-success">✓ 已完成</span>
+                </div>
+                <div class="round-body">
+                  <div class="r-block thought">
+                    <span class="r-label">🧠 判断</span>
+                    <div class="r-content">ROI = 转化金额 / 消耗，下跌往往源于素材表现衰退。查看主消耗素材的 CTR 与转化率变化。</div>
+                  </div>
+                  <div class="r-block action">
+                    <span class="r-label">🔍 查证</span>
+                    <div class="r-content">分析该计划消耗 Top 10 素材的 CTR 与转化衰退</div>
+                  </div>
+                  <div class="r-block observation">
+                    <span class="r-label">📊 发现</span>
+                    <div class="r-content">⚠️ M789 素材占消耗 78%，CTR 从 4.5% 跌至 1.8%（-60%），衰退时间点与 ROI 拐点完全吻合</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="round collapsed">
+                <div class="round-head">
+                  <span class="round-num">3</span>
+                  <div>
+                    <div class="round-title">对比账户设置变更</div>
+                    <div class="round-time">数据源：账户变更日志 · 0.9 秒</div>
+                  </div>
+                  <span class="round-status tag tag-success">✓ 已完成</span>
+                </div>
+                <div class="round-body">
+                  <div class="r-block thought">
+                    <span class="r-label">🧠 判断</span>
+                    <div class="r-content">还需要确认是否有人为调整定向或出价导致 ROI 下降。</div>
+                  </div>
+                  <div class="r-block action">
+                    <span class="r-label">🔍 查证</span>
+                    <div class="r-content">查询近 7 天账户的定向、出价、预算变更记录</div>
+                  </div>
+                  <div class="r-block observation">
+                    <span class="r-label">📊 发现</span>
+                    <div class="r-content">5 天前账户设置无人为修改，但 6 天前 A001 核心人群定向从 1.2 亿收窄至 6,400 万（系统建议优化）</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="round collapsed">
+                <div class="round-head">
+                  <span class="round-num">4</span>
+                  <div>
+                    <div class="round-title">检索历史相似案例</div>
+                    <div class="round-time">数据源：历史案例库 · 1.5 秒</div>
+                  </div>
+                  <span class="round-status tag tag-success">✓ 已完成</span>
+                </div>
+                <div class="round-body">
+                  <div class="r-block thought">
+                    <span class="r-label">🧠 判断</span>
+                    <div class="r-content">查贵司历史是否处理过类似的素材衰退归因，参考已被验证的解决方案。</div>
+                  </div>
+                  <div class="r-block action">
+                    <span class="r-label">🔍 查证</span>
+                    <div class="r-content">检索贵司历史相似案例（素材衰退 → ROI 下降）</div>
+                  </div>
+                  <div class="r-block observation">
+                    <span class="r-label">📊 发现</span>
+                    <div class="r-content">命中 3 条相似案例，平均处置周期 3-5 天恢复至 ROI 1.3+，主要方法均为替换主素材</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="round collapsed">
+                <div class="round-head">
+                  <span class="round-num">5</span>
+                  <div>
+                    <div class="round-title">对照行业大盘</div>
+                    <div class="round-time">数据源：行业大盘 · 1.1 秒</div>
+                  </div>
+                  <span class="round-status tag tag-success">✓ 已完成</span>
+                </div>
+                <div class="round-body">
+                  <div class="r-block thought">
+                    <span class="r-label">🧠 判断</span>
+                    <div class="r-content">排除行业大盘波动的可能。</div>
+                  </div>
+                  <div class="r-block action">
+                    <span class="r-label">🔍 查证</span>
+                    <div class="r-content">调取近 14 天短剧行业大盘 ROI 走势做对照</div>
+                  </div>
+                  <div class="r-block observation">
+                    <span class="r-label">📊 发现</span>
+                    <div class="r-content">行业大盘 ROI 稳定在 1.32 ± 0.05，无显著波动 → 排除外部因素</div>
+                  </div>
+                  <div class="r-block reflection">
+                    <span class="r-label">✅ 结论</span>
+                    <div class="r-content">证据链已完整：主因 M789 素材衰退（强相关 + 时间点吻合），次因定向收窄。二次校验置信度 88%，达标，输出最终报告。</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 风险提示 -->
+          <div class="ans-card warn" style="background: #FEF7E8; border: 1px solid #FBE4A0; border-radius: 12px; padding: 16px;">
+            <div style="display: flex; gap: 12px;">
+              <div style="width: 28px; height: 28px; border-radius: 8px; background: var(--warning); color: #fff; display:flex; align-items:center; justify-content:center; flex-shrink: 0;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+              </div>
+              <div>
+                <div style="font-size: 13px; font-weight: 600; color: var(--gray-900);">⚠️ 风险提示</div>
+                <div style="font-size: 12px; color: var(--gray-700); margin-top: 4px; line-height: 1.6;">
+                  以上分析基于贵司投放数据 + 该计划实际表现，结论参考当前数据中现阶段表现现状。如执行修改建议时账户出现新的异常波动，建议立即暂停并人工复核。Agent 不替代专业投手判断，仅作为辅助决策依据。
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右栏 -->
+        <div>
+          <!-- 关键指标对比 -->
+          <div class="attr-summary">
+            <div class="card-title" style="font-size: 14px;">关键指标对比</div>
+            <div class="metric-row">
+              <div class="metric-mini">
+                <div class="ml">基线 ROI</div>
+                <div class="mv">1.50</div>
+                <div class="mt text-muted">5 天前</div>
+              </div>
+              <div class="metric-mini">
+                <div class="ml">当前 ROI</div>
+                <div class="mv text-danger">0.83</div>
+                <div class="mt text-danger">▼ 44.7%</div>
+              </div>
+              <div class="metric-mini">
+                <div class="ml">基线 CTR</div>
+                <div class="mv">4.5%</div>
+                <div class="mt text-muted">5 天前</div>
+              </div>
+              <div class="metric-mini">
+                <div class="ml">当前 CTR</div>
+                <div class="mv text-danger">1.8%</div>
+                <div class="mt text-danger">▼ 60%</div>
+              </div>
+            </div>
+            <div style="font-size: 11px; color: var(--gray-500); padding-top: 10px; border-top: 1px solid var(--border-light);">
+              数据时间窗口：2024-12-10 ~ 2024-12-15
+            </div>
+          </div>
+
+          <!-- 归因因子拆分 -->
+          <div class="attr-summary" style="margin-top: 16px;">
+            <div class="card-title" style="font-size: 14px;">归因因子拆分</div>
+            <div class="donut-wrap">
+              <svg width="160" height="160" viewBox="0 0 160 160">
+                <!-- 70% red -->
+                <circle cx="80" cy="80" r="60" fill="none" stroke="#F1F5F9" stroke-width="20"/>
+                <circle cx="80" cy="80" r="60" fill="none" stroke="#DC2626" stroke-width="20" stroke-dasharray="263 376" stroke-dashoffset="0" transform="rotate(-90 80 80)"/>
+                <circle cx="80" cy="80" r="60" fill="none" stroke="#F59E0B" stroke-width="20" stroke-dasharray="75 376" stroke-dashoffset="-263" transform="rotate(-90 80 80)"/>
+                <circle cx="80" cy="80" r="60" fill="none" stroke="#94A3B8" stroke-width="20" stroke-dasharray="38 376" stroke-dashoffset="-338" transform="rotate(-90 80 80)"/>
+                <text x="80" y="80" text-anchor="middle" font-size="12" fill="#64748B">主因</text>
+                <text x="80" y="98" text-anchor="middle" font-size="20" font-weight="700" fill="#0F172A">70%</text>
+              </svg>
+            </div>
+            <div class="cause-bars">
+              <div class="cause-bar-row">
+                <div class="br-head"><span>素材衰退 M789</span><span class="font-semibold text-danger">70%</span></div>
+                <div class="br-bar"><div style="width:70%; background: var(--danger);"></div></div>
+              </div>
+              <div class="cause-bar-row">
+                <div class="br-head"><span>A001 定向收窄</span><span class="font-semibold text-warning">20%</span></div>
+                <div class="br-bar"><div style="width:20%; background: var(--warning);"></div></div>
+              </div>
+              <div class="cause-bar-row">
+                <div class="br-head"><span>其他细微因素</span><span class="font-semibold text-muted">10%</span></div>
+                <div class="br-bar"><div style="width:10%; background: var(--gray-400);"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 关键节点时间轴 -->
+          <div class="attr-summary" style="margin-top: 16px;">
+            <div class="card-title" style="font-size: 14px;">关键节点时间轴</div>
+            <div class="timeline2" style="margin-top: 12px;">
+              <div class="tl-item">
+                <div class="tl-time">12-10 09:00</div>
+                <div class="tl-text">基线状态稳定：ROI 1.5, CTR 4.5%</div>
+              </div>
+              <div class="tl-item danger">
+                <div class="tl-time">12-10 14:00 · 拐点</div>
+                <div class="tl-text">CTR 开始下行 (4.5% → 3.2%)</div>
+                <div class="tl-meta">同时间点 M789 素材首次出现疲态</div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-time">12-11 全天</div>
+                <div class="tl-text">A001 系统建议定向收窄</div>
+                <div class="tl-meta">人群从 1.2 亿 → 6,400 万</div>
+              </div>
+              <div class="tl-item danger">
+                <div class="tl-time">12-13 18:00</div>
+                <div class="tl-text">ROI 跌破 1.0 警戒线</div>
+              </div>
+              <div class="tl-item danger">
+                <div class="tl-time">今日 10:23</div>
+                <div class="tl-text">触发预警 + 启动 Agent 归因</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 相似案例 -->
+          <div class="attr-summary" style="margin-top: 16px;">
+            <div class="card-title" style="font-size: 14px;">私域参考案例</div>
+            <div style="font-size: 12px; color: var(--gray-500); margin: 8px 0 12px;">3 条相似归因案例 · 平均恢复 3-5 天</div>
+            <div style="display:flex; flex-direction:column; gap: 8px;">
+              <div class="list-item" style="padding: 10px; background: var(--gray-50);">
+                <div style="flex:1;">
+                  <div style="font-size: 13px; color: var(--gray-800);">2024-10 · 古言短剧素材衰退</div>
+                  <div style="font-size: 11px; color: var(--gray-500); margin-top: 4px;">替换素材 + 调整定向 · 4 天恢复</div>
+                </div>
+              </div>
+              <div class="list-item" style="padding: 10px; background: var(--gray-50);">
+                <div style="flex:1;">
+                  <div style="font-size: 13px; color: var(--gray-800);">2024-09 · 现言短剧 CTR 跌</div>
+                  <div style="font-size: 11px; color: var(--gray-500); margin-top: 4px;">新素材矩阵 · 5 天恢复</div>
+                </div>
+              </div>
+              <div class="list-item" style="padding: 10px; background: var(--gray-50);">
+                <div style="flex:1;">
+                  <div style="font-size: 13px; color: var(--gray-800);">2024-07 · 都市悬疑大盘下行</div>
+                  <div style="font-size: 11px; color: var(--gray-500); margin-top: 4px;">扩量 + 主素材切换 · 3 天恢复</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div><!-- /态②报告 -->
+    </div>
+  </div>
+</div>
+
+<div id="rv-launch" class="rv-dlg-mask hidden">
+  <div class="rv-dlg">
+    <div class="rv-dlg-head">
+      <div class="rv-dlg-title">发起复盘</div>
+      <div class="rv-dlg-close" data-action="launch-close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+    </div>
+    <div class="rv-dlg-body">
+      <div class="rv-dlg-field">
+        <div class="rv-dlg-label">复盘对象</div>
+        <div class="rv-seg" data-group="obj"><div class="rv-seg-item active">按账户</div><div class="rv-seg-item">按计划</div><div class="rv-seg-item">按题材</div></div>
+      </div>
+      <div class="rv-dlg-field">
+        <div class="rv-dlg-label">选择账户</div>
+        <select class="rv-dlg-select"><option>A001 · 现言短剧旗舰户</option><option>A002 · 都市悬疑测试户</option><option>A005 · 古言虐恋主投户</option><option>全部 8 个账户</option></select>
+      </div>
+      <div class="rv-dlg-field">
+        <div class="rv-dlg-label">时间范围</div>
+        <div class="rv-seg" data-group="time"><div class="rv-seg-item">今日</div><div class="rv-seg-item active">昨日</div><div class="rv-seg-item">近 7 日</div><div class="rv-seg-item">近 30 日</div></div>
+      </div>
+      <div class="rv-dlg-field">
+        <div class="rv-dlg-label">复盘重点（可选）</div>
+        <div class="rv-seg" data-group="focus"><div class="rv-seg-item active">全面复盘</div><div class="rv-seg-item">ROI 异常</div><div class="rv-seg-item">消耗异常</div><div class="rv-seg-item">拒审问题</div></div>
+      </div>
+    </div>
+    <div class="rv-dlg-foot">
+      <button class="btn btn-outline btn-sm" data-action="launch-close">取消</button>
+      <button class="btn btn-primary btn-sm" data-action="launch-start">开始复盘</button>
+    </div>
+  </div>
+</div>
+
+<div id="rv-launching" class="rv-launching hidden">
+  <div class="rv-launch-box">
+    <div class="rv-launch-ring"></div>
+    <div class="rv-launch-title">复盘 Agent 正在调研…</div>
+    <div class="rv-launch-steps">
+      <div class="done">✓ 拉取实时投放数据</div>
+      <div class="done">✓ 对比历史基线</div>
+      <div class="run">⏳ 检索归因线索 + 生成报告…</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* 松鼠投放 · 共享导航 / 顶栏 / 高亮逻辑 */
+
+function renderShell({ active, title, crumb }) {
+  const navItems = [
+    { group: '智能助手', items: [
+      { key: 'qa',        label: '智能问答', href: 'qa.html',         icon: 'chat' },
+      { key: 'diagnose',  label: '素材诊断', href: 'diagnose.html',   icon: 'shield' },
+      { key: 'review',    label: '投放复盘', href: 'review.html',     icon: 'report' },
+    ]},
+    { group: '工作', items: [
+      { key: 'monitor',   label: '数据监控', href: 'monitor.html',  icon: 'pulse' },
+    ]},
+    { group: '资源管理', items: [
+      { key: 'knowledge', label: '知识库管理', href: 'knowledge.html', icon: 'book' },
+      { key: 'accounts',  label: '账户中心',   href: 'accounts.html',  icon: 'wallet' },
+    ]},
+    { group: '系统', items: [
+      { key: 'team',      label: '团队管理', href: 'team.html',     icon: 'users' },
+      { key: 'settings',  label: '系统设置', href: 'settings.html', icon: 'cog' },
+    ]},
+  ];
+
+  const ICONS = {
+    home:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-8 9 8M5 10v10h14V10"/></svg>',
+    pulse: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>',
+    bell:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9M10 21a2 2 0 004 0"/></svg>',
+    chat:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 01-12 7l-5 2 2-5A8 8 0 1121 12z"/></svg>',
+    shield:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-3 8-10V5l-8-3-8 3v7c0 7 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>',
+    report:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3zM7 17V9m5 8V5m5 12v-6"/></svg>',
+    book:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 012-2h13v18H6a2 2 0 01-2-2zM4 19a2 2 0 012-2h13"/></svg>',
+    image: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>',
+    wallet:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20M16 15h2"/></svg>',
+    users: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>',
+    cog:   '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.6 15a1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09A1.65 1.65 0 0015 4.6a1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>',
+  };
+
+  var __role = (typeof localStorage !== 'undefined' && localStorage.getItem('squirrel_role')) || 'admin';
+  var __roleNav = { admin:['qa','diagnose','review','monitor','knowledge','accounts','team','settings'], toushou:['qa','diagnose','review','monitor','knowledge','settings'], audit:['qa','diagnose','knowledge','settings'], ops:['qa','review','monitor','knowledge','settings'] };
+  var __allowed = __roleNav[__role] || __roleNav.admin;
+  const navHtml = navItems.map(sec => {
+    var __it = sec.items.filter(function(it){ return __allowed.indexOf(it.key) >= 0; });
+    if (!__it.length) return '';
+    return `
+    <div class="nav-section">
+      <div class="nav-title">${sec.group}</div>
+      ${__it.map(it => `
+        <a class="nav-item ${it.key === active ? 'active' : ''}" href="${it.href}">
+          <span class="icon">${ICONS[it.icon] || ''}</span>
+          <span>${it.label}</span>
+          ${it.badge ? `<span class="badge">${it.badge}</span>` : ''}
+        </a>
+      `).join('')}
+    </div>
+  `; }).join('');
+
+  const sidebar = `
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-logo">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/>
+          </svg>
+        </div>
+        <div class="brand-name">松鼠投放</div>
+      </div>
+      <div class="tenant-switcher">
+        <div class="tenant-avatar">悦</div>
+        <div class="tenant-meta">
+          <div class="tenant-name">悦动短剧科技</div>
+          <div class="tenant-role">投放主管 · 32人团队</div>
+        </div>
+        <span class="tenant-arrow">▾</span>
+      </div>
+      <div style="flex:1; overflow-y:auto;">${navHtml}</div>
+      <div class="nav-footer">
+        <div class="usage-box">
+          <div class="usage-label">本月调用</div>
+          <div class="usage-value">8,432 / 20,000 次</div>
+          <div class="usage-bar"><div class="usage-bar-inner" style="width:42%"></div></div>
+        </div>
+      </div>
+    </aside>
+  `;
+
+  const crumbHtml = (crumb || []).map((c, i, a) => {
+    if (i === a.length - 1) return `<span class="current">${c}</span>`;
+    return `<span>${c}</span><span class="sep">/</span>`;
+  }).join('');
+
+  const topbar = `
+    <header class="topbar">
+      <div class="crumb">${crumbHtml}</div>
+      <div class="topbar-plat" id="__plat">
+        <span class="plat-dot" id="__plat-dot"></span>
+        <span class="plat-name" id="__plat-name">巨量引擎</span>
+        <svg class="plat-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        <div class="plat-menu" id="__plat-menu">
+          <div class="plat-mi" data-plat="juliang"><span class="plat-dot" style="background:#FF4D4F;"></span>巨量引擎</div>
+          <div class="plat-mi" data-plat="kuaishou"><span class="plat-dot" style="background:#FF6A00;"></span>磁力引擎</div>
+          <div class="plat-mi" data-plat="tencent"><span class="plat-dot" style="background:#0052D9;"></span>腾讯广告</div>
+          <div class="plat-msep"></div>
+          <div class="plat-mi" data-plat="all"><span class="plat-dot plat-dot-all"></span>全平台汇总<span class="plat-mgr">管理视角</span></div>
+        </div>
+      </div>
+      <div class="topbar-spacer"></div>
+      <div class="topbar-search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input placeholder="问问松鼠：例如 '巨量短剧 ROI 怎么提升'" />
+        <span class="kbd">⌘K</span>
+      </div>
+      <button class="topbar-icon" title="通知">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9M10 21a2 2 0 004 0"/></svg>
+        <span class="dot"></span>
+      </button>
+      <button class="topbar-icon" title="帮助">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 015.8 1c0 2-3 3-3 3M12 17h.01"/></svg>
+      </button>
+      <div style="width:1px;height:24px;background:var(--border-base);"></div>
+      <div class="topbar-role" id="__role">
+        <span class="role-vp-label">视角</span>
+        <span class="role-vp-name" id="__role-name">投放主管</span>
+        <svg class="role-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        <div class="role-menu" id="__role-menu">
+          <div class="role-mi" data-role="admin">投放主管</div>
+          <div class="role-mi" data-role="toushou">投手</div>
+          <div class="role-mi" data-role="audit">素材审核</div>
+          <div class="role-mi" data-role="ops">数据运营</div>
+        </div>
+      </div>
+      <div class="topbar-user">
+        <div class="user-avatar">Q</div>
+        <span class="user-name">钱晓彤</span>
+      </div>
+    </header>
+  `;
+
+  // 注入页面
+  document.getElementById('__sidebar').innerHTML = sidebar;
+  document.getElementById('__topbar').innerHTML = topbar;
+  if (!document.getElementById('__role-style')) { var __rs=document.createElement('style'); __rs.id='__role-style'; __rs.textContent=".topbar-role{position:relative;display:flex;align-items:center;gap:5px;padding:5px 10px;margin-right:10px;border-radius:8px;border:1px solid var(--border-base);background:#fff;cursor:pointer;font-size:13px;color:var(--gray-800);user-select:none}.topbar-role:hover{border-color:var(--brand-300);background:var(--brand-50)}.role-vp-label{font-size:11px;color:var(--gray-400)}.role-vp-name{font-weight:600}.role-caret{color:var(--gray-400)}.role-menu{position:absolute;top:calc(100% + 6px);right:0;min-width:152px;background:#fff;border:1px solid var(--border-base);border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,.12);padding:6px;display:none;z-index:50;cursor:default}.role-menu.open{display:block}.role-mi{padding:8px 10px;border-radius:7px;font-size:13px;color:var(--gray-700);font-weight:500;cursor:pointer}.role-mi:hover{background:var(--gray-50)}.role-mi.active{background:var(--brand-50);color:var(--brand-700);font-weight:600}"; document.head.appendChild(__rs); }
+  (function(){
+    var R = { admin:'\u6295\u653e\u4e3b\u7ba1', toushou:'\u6295\u624b', audit:'\u7d20\u6750\u5ba1\u6838', ops:'\u6570\u636e\u8fd0\u8425' };
+    var cur = localStorage.getItem('squirrel_role') || 'admin';
+    if (!R[cur]) cur = 'admin';
+    var wrap = document.getElementById('__role'); if(!wrap) return;
+    var nameEl = document.getElementById('__role-name'), menu = document.getElementById('__role-menu');
+    nameEl.textContent = R[cur];
+    var mis = menu.querySelectorAll('.role-mi');
+    for(var i=0;i<mis.length;i++){ mis[i].classList.toggle('active', mis[i].getAttribute('data-role')===cur); }
+    wrap.addEventListener('click', function(e){
+      var mi = e.target.closest ? e.target.closest('.role-mi') : null;
+      if (mi){ localStorage.setItem('squirrel_role', mi.getAttribute('data-role')); menu.classList.remove('open'); location.reload(); return; }
+      menu.classList.toggle('open'); e.stopPropagation();
+    });
+    document.addEventListener('click', function(){ menu.classList.remove('open'); });
+  })();
+  if (!document.getElementById('__plat-style')) {
+    var __ps = document.createElement('style');
+    __ps.id = '__plat-style';
+    __ps.textContent = ".topbar-plat{position:relative;display:flex;align-items:center;gap:6px;padding:5px 10px;margin-left:14px;border-radius:8px;border:1px solid var(--border-base);background:#fff;cursor:pointer;font-size:13px;color:var(--gray-800);font-weight:600;user-select:none}.topbar-plat:hover{border-color:var(--brand-300);background:var(--brand-50)}.plat-dot{width:7px;height:7px;border-radius:999px;background:#FF4D4F;flex:none}.plat-dot-all{background:linear-gradient(135deg,#FF4D4F,#FF6A00,#0052D9)}.plat-caret{color:var(--gray-400)}.plat-menu{position:absolute;top:calc(100% + 6px);left:0;min-width:190px;background:#fff;border:1px solid var(--border-base);border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,.12);padding:6px;display:none;z-index:50;cursor:default}.plat-menu.open{display:block}.plat-mi{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;font-size:13px;color:var(--gray-700);font-weight:500;cursor:pointer}.plat-mi:hover{background:var(--gray-50)}.plat-mi.active{background:var(--brand-50);color:var(--brand-700);font-weight:600}.plat-msep{height:1px;background:var(--border-base);margin:5px 0}.plat-mgr{margin-left:auto;font-size:10px;color:var(--gray-400);background:var(--gray-100);padding:1px 6px;border-radius:999px;font-weight:500}";
+    document.head.appendChild(__ps);
+  }
+  (function(){
+    var P = { juliang:{n:'\u5de8\u91cf\u5f15\u64ce',c:'#FF4D4F'}, kuaishou:{n:'\u78c1\u529b\u5f15\u64ce',c:'#FF6A00'}, tencent:{n:'\u817e\u8baf\u5e7f\u544a',c:'#0052D9'}, all:{n:'\u5168\u5e73\u53f0\u6c47\u603b',c:''} };
+    var cur = localStorage.getItem('squirrel_platform') || 'juliang';
+    if (!P[cur]) cur = 'juliang';
+    var wrap = document.getElementById('__plat');
+    if (!wrap) return;
+    var nameEl = document.getElementById('__plat-name'), dotEl = document.getElementById('__plat-dot'), menu = document.getElementById('__plat-menu');
+    function paint(){
+      nameEl.textContent = P[cur].n;
+      if (cur === 'all') { dotEl.className = 'plat-dot plat-dot-all'; dotEl.style.background = ''; }
+      else { dotEl.className = 'plat-dot'; dotEl.style.background = P[cur].c; }
+      var mis = menu.querySelectorAll('.plat-mi');
+      for (var i=0;i<mis.length;i++){ mis[i].classList.toggle('active', mis[i].getAttribute('data-plat') === cur); }
+    }
+    paint();
+    wrap.addEventListener('click', function(e){
+      var mi = e.target.closest ? e.target.closest('.plat-mi') : null;
+      if (mi) { cur = mi.getAttribute('data-plat'); localStorage.setItem('squirrel_platform', cur); menu.classList.remove('open'); location.reload(); return; }
+      menu.classList.toggle('open'); e.stopPropagation();
+    });
+    document.addEventListener('click', function(){ menu.classList.remove('open'); });
+  })();
+  if (title) document.title = title + ' · 松鼠投放';
+}
+
+</script>
+<script>
+  renderShell({ active: 'review', title: '投放复盘', crumb: ['智能助手', '投放复盘'] });
+
+  // ===== 投放复盘·两态交互 =====
+  (function() {
+    const states = {};
+    document.querySelectorAll('.rv-state').forEach(el => { states[el.dataset.state] = el; });
+    function setState(s) {
+      Object.keys(states).forEach(k => { states[k].style.display = (k === s) ? '' : 'none'; });
+      const c = document.querySelector('.content'); if (c) c.scrollTop = 0;
+      window.scrollTo(0, 0);
+    }
+    const toastEl = document.createElement('div');
+    toastEl.className = 'rv-toast hidden';
+    document.body.appendChild(toastEl);
+    let tt; function toast(m){ toastEl.textContent=m; toastEl.classList.remove('hidden'); clearTimeout(tt); tt=setTimeout(()=>toastEl.classList.add('hidden'),2200); }
+
+    document.addEventListener('click', (e) => {
+      const t = e.target;
+      if (t.closest('[data-action="open-report"]')) { setState('report'); return; }
+      if (t.closest('[data-action="back-inbox"]')) { setState('inbox'); if (location.hash) history.replaceState(null, '', location.pathname + location.search); return; }
+      if (t.closest('[data-action="new-review"]')) { document.getElementById('rv-launch').classList.remove('hidden'); return; }
+      if (t.closest('[data-action="launch-close"]')) { document.getElementById('rv-launch').classList.add('hidden'); return; }
+      const segItem = t.closest('.rv-seg-item');
+      if (segItem) { const g = segItem.closest('.rv-seg'); g.querySelectorAll('.rv-seg-item').forEach(x => x.classList.remove('active')); segItem.classList.add('active'); return; }
+      if (t.closest('[data-action="launch-start"]')) {
+        document.getElementById('rv-launch').classList.add('hidden');
+        const lo = document.getElementById('rv-launching');
+        lo.classList.remove('hidden');
+        clearTimeout(window.__rvLaunchTimer);
+        window.__rvLaunchTimer = setTimeout(() => { lo.classList.add('hidden'); setState('report'); }, 2000);
+        return;
+      }
+      if (t === document.getElementById('rv-launch')) { document.getElementById('rv-launch').classList.add('hidden'); return; }
+      const rhead = t.closest('.round-head');
+      if (rhead) { rhead.closest('.round').classList.toggle('collapsed'); return; }
+      const togBtn = t.closest('[data-action="toggle-rounds"]');
+      if (togBtn) {
+        const rounds = document.querySelectorAll('.agent-flow .round');
+        const anyOpen = Array.from(rounds).some(r => !r.classList.contains('collapsed'));
+        rounds.forEach(r => r.classList.toggle('collapsed', anyOpen));
+        togBtn.textContent = anyOpen ? '展开全部' : '收起全部';
+        return;
+      }
+      const chip = t.closest('.rv-chip');
+      if (chip) { document.querySelectorAll('.rv-chip').forEach(c => c.classList.remove('active')); chip.classList.add('active'); return; }
+      // 报告内按钮：闭环跳转 + 落地反馈
+      if (t.closest('[data-action="more-history"]')) {
+        const el = t.closest('[data-action="more-history"]');
+        const months = [['A002 都市 · ROI 复盘','5 月 12 日'],['全盘月报 · 4 月','5 月 1 日'],['A001 起量复盘','4 月 28 日']];
+        let h = '<div class="rv-date-label">更早 · 5 月 / 4 月</div>';
+        months.forEach(function(m){ h += '<div class="rv-card done" data-action="open-report"><div class="rv-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></div><div class="rv-card-main"><div class="rv-card-title-row"><span class="rv-card-title">'+m[0]+'</span><span class="rv-source-tag rv-src-done">归档</span></div><div class="rv-card-meta"><span>'+m[1]+'</span><span class="dot">·</span><span class="rv-done-flag">✓ 已处理</span></div></div><div class="rv-card-right"><button class="btn btn-outline btn-sm">查看报告</button></div></div>'; });
+        el.insertAdjacentHTML('beforebegin', h);
+        el.textContent = '已加载全部 286 次复盘';
+        el.removeAttribute('data-action'); el.style.color = 'var(--gray-400)'; el.style.cursor = 'default';
+        return;
+      }
+      if (t.closest('.exec-link')) { location.href = 'monitor.html'; return; }
+      const rbtn = t.closest('button');
+      if (rbtn) {
+        const s = (rbtn.textContent || '').replace(/\s/g, '');
+        if (s.indexOf('查看素材') >= 0) { location.href = 'diagnose.html'; return; }
+        if (s.indexOf('一键执行') >= 0) {
+          var aitem = rbtn.closest('.action-item');
+          if (aitem && !aitem.classList.contains('executed')) {
+            aitem.classList.add('executed');
+            var adesc = aitem.querySelector('.action-desc');
+            if (adesc) adesc.insertAdjacentHTML('afterend', '<div class="exec-status">⏳ 已下发到投放系统 · 执行中，预计 4h 见效 —— 效果可在 <span class="exec-link">数据监控</span> 追踪 A001 的 ROI 回升</div>');
+            rbtn.outerHTML = '<span class="exec-done">✓ 已下发</span>';
+          }
+          return;
+        }
+        if (s.indexOf('导出') >= 0) { toast('已导出复盘报告 PDF'); return; }
+        if (s.indexOf('详细配置') >= 0 || s.indexOf('配置规则') >= 0) { toast('配置面板将在此打开'); return; }
+      }
+    });
+    // 支持从 监控/预警/工作台 跳转直达报告态
+    setState(location.hash === '#report' ? 'report' : 'inbox');
+    window.addEventListener('hashchange', () => setState(location.hash === '#report' ? 'report' : 'inbox'));
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,2651 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>智能问答 · 松鼠投放</title>
+<style>
+/* === design-system.css (inlined) === */
+/* ============================================================
+ * 松鼠投放 · AI 广告投放助手 · 统一设计系统
+ * Design System v1.0
+ * ============================================================ */
+
+:root {
+  /* 主色 - 品牌蓝 */
+  --brand-50: #EEF4FF;
+  --brand-100: #DCE7FE;
+  --brand-200: #BACFFD;
+  --brand-300: #8EAEFB;
+  --brand-400: #5E89F6;
+  --brand-500: #3B6AEE;
+  --brand-600: #2554DC;
+  --brand-700: #1E44BC;
+  --brand-800: #1B3A95;
+  --brand-900: #1A3477;
+
+  /* 辅助色 */
+  --accent-orange: #FF7A2F;
+  --accent-orange-bg: #FFF1E8;
+  --accent-amber: #F5A524;
+  --accent-amber-bg: #FFF8E1;
+
+  /* 语义色 */
+  --success: #16A34A;
+  --success-bg: #ECFDF5;
+  --warning: #F59E0B;
+  --warning-bg: #FFFBEB;
+  --danger: #DC2626;
+  --danger-bg: #FEF2F2;
+  --info: #2563EB;
+  --info-bg: #EFF6FF;
+
+  /* 中性色 */
+  --gray-50: #F8FAFC;
+  --gray-100: #F1F5F9;
+  --gray-200: #E2E8F0;
+  --gray-300: #CBD5E1;
+  --gray-400: #94A3B8;
+  --gray-500: #64748B;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1E293B;
+  --gray-900: #0F172A;
+
+  /* 背景层 */
+  --bg-page: #F5F7FB;
+  --bg-card: #FFFFFF;
+  --bg-sidebar: #FFFFFF;
+  --bg-subtle: #F8FAFC;
+
+  /* 描边 */
+  --border-base: #E5E9F2;
+  --border-light: #F0F2F8;
+  --border-strong: #CBD5E1;
+
+  /* 阴影 */
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 8px -2px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 12px 24px -6px rgba(15, 23, 42, 0.10), 0 4px 8px -4px rgba(15, 23, 42, 0.06);
+
+  /* 圆角 */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* 字号 */
+  --font-xs: 12px;
+  --font-sm: 13px;
+  --font-base: 14px;
+  --font-md: 15px;
+  --font-lg: 16px;
+  --font-xl: 18px;
+  --font-2xl: 20px;
+  --font-3xl: 24px;
+  --font-4xl: 30px;
+
+  /* 间距 */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* 布局 */
+  --sidebar-w: 220px;
+  --sidebar-w-collapsed: 64px;
+  --topbar-h: 56px;
+  --subnav-w: 240px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: -apple-system, "PingFang SC", "HarmonyOS Sans", "SF Pro SC",
+    "Helvetica Neue", "Microsoft YaHei", "Source Han Sans CN", sans-serif;
+  font-size: var(--font-base);
+  color: var(--gray-800);
+  background: var(--bg-page);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input, textarea {
+  font-family: inherit;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ========== 应用主布局 ========== */
+.app {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg-page);
+}
+
+/* ----------- 主导航 ----------- */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-base);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 18px;
+  height: var(--topbar-h);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.brand-logo {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  font-size: 18px;
+}
+
+.brand-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--gray-900);
+  letter-spacing: 0.5px;
+}
+
+.tenant-switcher {
+  margin: 12px 14px 8px;
+  padding: 8px 10px;
+  background: var(--gray-50);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.tenant-switcher:hover { background: var(--brand-50); border-color: var(--brand-200); }
+.tenant-avatar {
+  width: 24px; height: 24px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #FF7A2F, #FFB259);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  display:flex; align-items:center; justify-content:center;
+}
+.tenant-meta { flex: 1; min-width: 0; }
+.tenant-name { font-size: 13px; font-weight: 600; color: var(--gray-800); line-height: 1.3; }
+.tenant-role { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+.tenant-arrow { color: var(--gray-400); font-size: 12px; }
+
+.nav-section {
+  padding: 8px 10px;
+}
+.nav-section + .nav-section { border-top: 1px solid var(--border-light); padding-top: 12px; margin-top: 4px; }
+.nav-title {
+  padding: 8px 10px 6px;
+  font-size: 11px;
+  color: var(--gray-400);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  color: var(--gray-600);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+  margin-bottom: 2px;
+}
+
+.nav-item:hover { background: var(--gray-50); color: var(--gray-900); }
+.nav-item.active {
+  background: var(--brand-50);
+  color: var(--brand-700);
+  font-weight: 600;
+}
+.nav-item.active::before {
+  content: "";
+  position: absolute;
+  left: -10px; top: 8px; bottom: 8px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--brand-600);
+}
+.nav-item .icon { width: 16px; height: 16px; opacity: 0.85; }
+.nav-item .badge {
+  margin-left: auto;
+  background: var(--danger);
+  color: #fff;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.nav-footer { margin-top: auto; padding: 12px 14px; border-top: 1px solid var(--border-light); }
+.usage-box {
+  background: linear-gradient(135deg, var(--brand-50), #fff);
+  border: 1px solid var(--brand-100);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+}
+.usage-label { font-size: 11px; color: var(--gray-500); }
+.usage-value { font-size: 13px; color: var(--brand-700); font-weight: 600; margin-top: 2px; }
+.usage-bar { height: 4px; border-radius: 2px; background: var(--brand-100); margin-top: 6px; overflow: hidden; }
+.usage-bar-inner { height: 100%; background: linear-gradient(90deg, var(--brand-500), var(--brand-700)); border-radius: 2px; }
+
+/* ----------- 主区域 ----------- */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.topbar {
+  height: var(--topbar-h);
+  background: #fff;
+  border-bottom: 1px solid var(--border-base);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 16px;
+  position: sticky; top: 0; z-index: 50;
+}
+
+.crumb { display: flex; align-items: center; gap: 6px; color: var(--gray-500); font-size: 13px; }
+.crumb .sep { color: var(--gray-300); }
+.crumb .current { color: var(--gray-900); font-weight: 600; }
+
+.topbar-spacer { flex: 1; }
+
+.topbar-search {
+  width: 320px;
+  height: 32px;
+  background: var(--gray-50);
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-md);
+  padding: 0 12px;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px;
+  color: var(--gray-500);
+}
+.topbar-search input { flex: 1; background: transparent; border: none; outline: none; font-size: 13px; color: var(--gray-700); }
+.kbd { padding: 1px 6px; background: #fff; border: 1px solid var(--border-base); border-radius: 4px; font-size: 11px; color: var(--gray-500); }
+
+.topbar-icon {
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gray-600);
+  cursor: pointer;
+  position: relative;
+}
+.topbar-icon:hover { background: var(--gray-50); color: var(--gray-900); }
+.topbar-icon .dot {
+  position: absolute; top: 6px; right: 6px;
+  width: 7px; height: 7px; border-radius: 999px; background: var(--danger);
+  border: 2px solid #fff;
+}
+
+.topbar-user {
+  display: flex; align-items: center; gap: 8px;
+  padding: 4px 10px 4px 4px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.topbar-user:hover { background: var(--gray-50); }
+.user-avatar {
+  width: 28px; height: 28px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #3B6AEE, #8EAEFB);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  display:flex; align-items:center; justify-content:center;
+}
+.user-name { font-size: 13px; color: var(--gray-800); }
+
+/* 顶部场景切换 tab */
+.scene-tabs {
+  display: flex;
+  background: var(--gray-100);
+  border-radius: 12px;
+  padding: 3px;
+  gap: 2px;
+}
+.scene-tab {
+  padding: 5px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--gray-600);
+  cursor: pointer;
+  font-weight: 500;
+  display: flex; align-items:center; gap: 6px;
+}
+.scene-tab.active { background: #fff; color: var(--brand-700); box-shadow: var(--shadow-sm); font-weight: 600; }
+
+/* ----------- 内容容器 ----------- */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+}
+
+/* ========== 通用元素 ========== */
+.page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.page-title { font-size: 20px; font-weight: 600; color: var(--gray-900); display: flex; align-items: center; gap: 8px; }
+.page-subtitle { font-size: 13px; color: var(--gray-500); margin-top: 4px; }
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-xs);
+}
+.card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.card-title { font-size: 15px; font-weight: 600; color: var(--gray-900); display: flex; align-items: center; gap: 8px; }
+.card-action { font-size: 13px; color: var(--brand-600); cursor: pointer; }
+
+/* 按钮 */
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: var(--radius-md); font-size: 13px; font-weight: 500; transition: all 0.15s; }
+.btn-primary { background: var(--brand-600); color: #fff; }
+.btn-primary:hover { background: var(--brand-700); }
+.btn-secondary { background: var(--gray-100); color: var(--gray-700); }
+.btn-secondary:hover { background: var(--gray-200); }
+.btn-ghost { color: var(--gray-700); }
+.btn-ghost:hover { background: var(--gray-100); }
+.btn-outline { border: 1px solid var(--border-base); background: #fff; color: var(--gray-700); }
+.btn-outline:hover { border-color: var(--brand-400); color: var(--brand-600); }
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+.btn-lg { padding: 9px 18px; font-size: 14px; }
+
+/* Tag / 标签 */
+.tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.tag-brand { background: var(--brand-50); color: var(--brand-700); }
+.tag-success { background: var(--success-bg); color: var(--success); }
+.tag-warn { background: var(--warning-bg); color: var(--warning); }
+.tag-danger { background: var(--danger-bg); color: var(--danger); }
+.tag-info { background: var(--info-bg); color: var(--info); }
+.tag-gray { background: var(--gray-100); color: var(--gray-600); }
+.tag-orange { background: var(--accent-orange-bg); color: var(--accent-orange); }
+
+/* 平台徽标 */
+.platform { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 500; }
+.platform-juliang { background: #FFEDE3; color: #E25822; }
+.platform-tencent { background: #E3F1FF; color: #1376E5; }
+.platform-kuaishou { background: #FFE8EE; color: #E83A60; }
+
+/* 指标 KPI */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.kpi {
+  background: #fff;
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-lg);
+  padding: 18px 18px 16px;
+}
+.kpi-label { font-size: 13px; color: var(--gray-500); display: flex; align-items:center; gap:4px; }
+.kpi-value { font-size: 26px; font-weight: 700; color: var(--gray-900); margin-top: 6px; letter-spacing: -0.5px; }
+.kpi-trend { display:inline-flex; align-items:center; gap: 4px; font-size: 12px; margin-top: 6px; }
+.trend-up { color: var(--success); }
+.trend-down { color: var(--danger); }
+.kpi-spark { height: 28px; margin-top: 8px; }
+
+/* 表格 */
+.table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.table thead th { background: var(--gray-50); text-align: left; padding: 10px 14px; font-weight: 600; color: var(--gray-600); border-bottom: 1px solid var(--border-base); }
+.table tbody td { padding: 14px; border-bottom: 1px solid var(--border-light); }
+.table tbody tr:hover { background: var(--gray-50); }
+.table tbody tr:last-child td { border-bottom: none; }
+
+/* 列表项 */
+.list-item {
+  display: flex; gap: 12px; padding: 12px 14px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.list-item:hover { background: var(--gray-50); }
+.list-item.active { background: var(--brand-50); }
+
+/* 输入框 */
+.input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  color: var(--gray-800);
+  background: #fff;
+  outline: none;
+  transition: border 0.15s, box-shadow 0.15s;
+}
+.input:focus { border-color: var(--brand-400); box-shadow: 0 0 0 3px var(--brand-50); }
+.input-lg { padding: 11px 14px; font-size: 14px; }
+
+/* 通用 utility */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.gap-1 { gap: 4px; } .gap-2 { gap: 8px; } .gap-3 { gap: 12px; } .gap-4 { gap: 16px; } .gap-6 { gap: 24px; }
+.flex-1 { flex: 1; }
+.text-xs { font-size: 12px; } .text-sm { font-size: 13px; } .text-base { font-size: 14px; } .text-lg { font-size: 16px; } .text-xl { font-size: 18px; } .text-2xl { font-size: 20px; }
+.font-bold { font-weight: 700; } .font-semibold { font-weight: 600; } .font-medium { font-weight: 500; }
+.text-muted { color: var(--gray-500); }
+.text-subtle { color: var(--gray-400); }
+.text-primary { color: var(--brand-700); }
+.text-success { color: var(--success); }
+.text-danger { color: var(--danger); }
+.text-warning { color: var(--warning); }
+.text-gray-700 { color: var(--gray-700); }
+.text-gray-900 { color: var(--gray-900); }
+.mb-1 { margin-bottom: 4px; } .mb-2 { margin-bottom: 8px; } .mb-3 { margin-bottom: 12px; } .mb-4 { margin-bottom: 16px; } .mb-6 { margin-bottom: 24px; }
+.mt-1 { margin-top: 4px; } .mt-2 { margin-top: 8px; } .mt-3 { margin-top: 12px; } .mt-4 { margin-top: 16px; } .mt-6 { margin-top: 24px; }
+.w-full { width: 100%; }
+.rounded-md { border-radius: var(--radius-md); }
+.rounded-lg { border-radius: var(--radius-lg); }
+.divider { height: 1px; background: var(--border-light); margin: 12px 0; }
+.dot-divider { color: var(--gray-300); margin: 0 6px; }
+
+/* 滚动条 */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: var(--gray-300); background-clip: padding-box; border: 2px solid transparent; }
+
+</style>
+<style>
+.qa-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 0;
+  height: calc(100vh - var(--topbar-h));
+  background: var(--bg-page);
+  transition: grid-template-columns 0.22s ease;
+}
+.qa-layout.history-collapsed {
+  grid-template-columns: 44px 1fr;
+}
+
+/* 左：对话历史 */
+.qa-history {
+  background: #fff;
+  border-right: 1px solid var(--border-base);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+/* 折叠按钮 */
+.history-toggle {
+  position: absolute;
+  top: 14px; right: -12px;
+  width: 22px; height: 22px;
+  background: #fff;
+  border: 1px solid var(--border-base);
+  border-radius: 999px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  color: var(--gray-500);
+  box-shadow: var(--shadow-xs);
+  transition: transform 0.2s, color 0.15s;
+}
+.history-toggle:hover { color: var(--brand-700); border-color: var(--brand-300); }
+.qa-layout.history-collapsed .history-toggle { transform: rotate(180deg); }
+
+/* 折叠态：只显示一个 + 按钮的图标轮廓 */
+.qa-layout.history-collapsed .qa-history-head { padding: 12px 6px; }
+.qa-layout.history-collapsed .new-chat {
+  padding: 8px; gap: 0; justify-content: center;
+}
+.qa-layout.history-collapsed .new-chat span { display: none; }
+.qa-layout.history-collapsed .history-list { display: none; }
+
+.qa-history-head { padding: 14px; border-bottom: 1px solid var(--border-light); }
+.new-chat {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--brand-50);
+  color: var(--brand-700);
+  border: 1px dashed var(--brand-300);
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.15s;
+}
+.new-chat:hover { background: var(--brand-100); border-color: var(--brand-400); }
+.history-tabs { display: flex; gap: 2px; margin-top: 12px; background: var(--gray-50); border-radius: 8px; padding: 3px; }
+.history-tab { flex: 1; padding: 5px; text-align: center; font-size: 12px; color: var(--gray-600); cursor: pointer; border-radius: 6px; }
+.history-tab.active { background: #fff; box-shadow: var(--shadow-sm); color: var(--gray-900); font-weight: 600; }
+.history-list { flex: 1; overflow-y: auto; padding: 8px; }
+.history-section-title { padding: 8px 8px 4px; font-size: 11px; color: var(--gray-400); font-weight: 500; }
+.history-item {
+  padding: 10px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 2px;
+  position: relative;
+}
+.history-item:hover { background: var(--gray-50); }
+.history-item.active { background: var(--brand-50); }
+.history-item.active::after { content:""; position:absolute; left:0; top:8px; bottom:8px; width:3px; background: var(--brand-600); border-radius: 0 2px 2px 0; }
+/* 对话历史 hover 操作：置顶 / 删除 */
+.history-item { position: relative; }
+.hist-ops { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); display: none; align-items: center; gap: 2px; }
+.history-item:hover .hist-ops { display: flex; }
+.history-item:hover .history-title { padding-right: 52px; }
+.hist-op { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--gray-400); transition: all 0.12s; }
+.hist-op:hover { background: var(--gray-200); color: var(--gray-700); }
+.hist-op.del:hover { background: var(--danger-bg); color: var(--danger); }
+.history-item.pinned .history-title { padding-left: 16px; }
+.history-item.pinned .history-title::before { content: "\1F4CC"; position: absolute; left: 11px; font-size: 10px; }
+.pinned-sec { color: var(--brand-600) !important; }
+.history-item.confirming .hist-ops { display: flex !important; }
+.history-item.confirming .history-title { padding-right: 78px; }
+.hist-cfm-del { font-size: 11px; color: var(--danger); font-weight: 600; padding: 3px 9px; border-radius: 5px; background: var(--danger-bg); cursor: pointer; }
+.hist-cfm-del:hover { background: var(--danger); color: #fff; }
+.hist-cfm-cancel { font-size: 11px; color: var(--gray-500); padding: 3px 6px; cursor: pointer; }
+.hist-cfm-cancel:hover { color: var(--gray-700); }
+.history-title { font-size: 13px; color: var(--gray-800); line-height: 1.4; }
+.history-meta { font-size: 11px; color: var(--gray-500); margin-top: 4px; display:flex; align-items:center; gap: 6px; }
+
+/* 中：对话区 */
+.qa-main { display: flex; flex-direction: column; min-width: 0; height: 100%; background: var(--bg-page); overflow: hidden; }
+.qa-toolbar {
+  height: 52px;
+  background: #fff;
+  border-bottom: 1px solid var(--border-base);
+  padding: 0 20px;
+  display: flex; align-items: center; gap: 12px;
+}
+.qa-toolbar-title { font-size: 14px; font-weight: 600; color: var(--gray-900); }
+
+.scene-tabs {
+  display: flex; background: var(--gray-100); border-radius: 8px; padding: 3px; gap: 2px;
+}
+.scene-tab {
+  padding: 4px 12px; font-size: 12px; color: var(--gray-600); cursor: pointer; border-radius: 6px;
+  display: flex; align-items: center; gap: 4px;
+}
+.scene-tab.active { background: #fff; color: var(--brand-700); box-shadow: var(--shadow-sm); font-weight: 600; }
+
+.qa-stream {
+  flex: 1 1 0; min-height: 0;
+  overflow-y: auto; padding: 24px 0;
+}
+.msg-wrap { max-width: none; margin: 0; padding: 0 32px; }
+
+/* 消息气泡 */
+.msg { display: flex; gap: 12px; margin-bottom: 24px; }
+.msg-user { justify-content: flex-end; }
+.msg-avatar { width: 32px; height: 32px; border-radius: 999px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.msg-user .msg-avatar { background: linear-gradient(135deg, var(--brand-500), var(--brand-700)); color: #fff; font-size: 12px; font-weight: 600; order: 2; }
+.msg-ai .msg-avatar { background: linear-gradient(135deg, #FF9D5C, #FF7A2F); color: #fff; font-size: 14px; }
+
+.msg-body { max-width: 88%; }
+.msg-user .msg-body {
+  background: var(--brand-600); color: #fff;
+  padding: 10px 14px;
+  border-radius: 14px 14px 4px 14px;
+  font-size: 14px; line-height: 1.55;
+  width: fit-content;          /* 用户消息按内容长度收紧 */
+  max-width: 55%;              /* 不要太宽，给右侧留呼吸 */
+}
+.msg-ai .msg-body {
+  background: #fff; border: 1px solid var(--border-light);
+  padding: 14px 16px;
+  border-radius: 4px 14px 14px 14px;
+  font-size: 14px; line-height: 1.6;
+  color: var(--gray-800);
+  box-shadow: var(--shadow-xs);
+  width: 100%;                 /* 占满可用宽度，使所有 AI 气泡宽度一致 */
+  max-width: 820px;            /* 上限 820，避免大屏下表格过长难读 */
+}
+
+/* 输出卡片：基础回答 */
+.ans-card { padding: 14px; border-radius: 12px; background: var(--success-bg); border: 1px solid #BBE5C8; margin-top: 8px; }
+.ans-card.warn { background: #FEF7E8; border-color: #FBE4A0; }
+.ans-card .ans-head { display:flex; align-items:center; gap:6px; font-weight: 600; color: var(--success); margin-bottom: 8px; }
+.ans-card.warn .ans-head { color: #B7791F; }
+.ans-detail { font-size: 13px; color: var(--gray-700); line-height: 1.65; }
+
+/* 出价建议三栏 */
+.price-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+.price-cell { padding: 14px; border-radius: 12px; text-align: center; border: 1px solid; }
+.price-low { background: #ECFDF5; border-color: #BBE5C8; color: #16A34A; }
+.price-mid { background: var(--brand-50); border-color: var(--brand-200); color: var(--brand-700); }
+.price-high { background: #FFF7ED; border-color: #FED7AA; color: #E25822; }
+.price-cell .label { font-size: 11px; opacity: 0.8; }
+.price-cell .val { font-size: 22px; font-weight: 700; margin-top: 4px; }
+
+/* 步骤引导 */
+.steps { background: #fff; border: 1px solid var(--border-light); border-radius: 12px; padding: 10px; margin-top: 10px; }
+.step-item { display:flex; gap: 10px; padding: 8px; align-items:flex-start; }
+.step-num { width: 22px; height: 22px; border-radius: 999px; background: var(--brand-600); color: #fff; font-size: 12px; font-weight: 700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.step-content { flex: 1; }
+.step-title { font-size: 13px; font-weight: 600; color: var(--gray-800); }
+.step-desc { font-size: 12px; color: var(--gray-500); margin-top: 2px; }
+.step-check { width: 16px; height: 16px; border-radius: 4px; border: 1.5px solid var(--brand-500); flex-shrink:0; margin-top: 4px; background: var(--success); border-color: var(--success); display:flex; align-items:center; justify-content:center; color: #fff; }
+.step-check.unchecked { background: #fff; border-color: var(--gray-300); }
+
+/* 数据卡片 */
+.data-card { background: #fff; border: 1px solid var(--border-light); border-radius: 12px; padding: 14px; margin-top: 10px; }
+.data-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border-light); }
+.data-metric-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.data-metric .label { font-size: 11px; color: var(--gray-500); }
+.data-metric .val { font-size: 20px; font-weight: 700; color: var(--gray-900); margin-top: 4px; }
+.data-metric .delta { font-size: 11px; margin-left: 4px; font-weight: 500; }
+
+/* 引用来源 */
+.sources { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.source-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 8px;
+  background: var(--gray-50);
+  border: 1px solid var(--border-base);
+  border-radius: 999px;
+  font-size: 11px;
+  color: var(--gray-600);
+  cursor: pointer;
+}
+.source-chip:hover { border-color: var(--brand-300); color: var(--brand-700); }
+
+.msg-actions { display: flex; gap: 6px; margin-top: 8px; }
+.msg-action { padding: 4px 8px; border-radius: 6px; font-size: 12px; color: var(--gray-500); cursor:pointer; display: inline-flex; align-items:center; gap: 4px; }
+.msg-action:hover { background: var(--gray-100); color: var(--gray-700); }
+
+/* 后续追问按钮 */
+.follow-ups { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; padding: 0 32px 0 76px; max-width: none; }
+.followup-btn {
+  padding: 6px 12px;
+  background: #fff;
+  border: 1px solid var(--brand-200);
+  color: var(--brand-700);
+  border-radius: 999px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.followup-btn:hover { background: var(--brand-50); }
+
+/* 输入区 */
+.qa-input-wrap {
+  flex-shrink: 0;
+  padding: 14px 24px 18px;
+  background: var(--bg-page);
+  border-top: 1px solid var(--border-light);
+  position: relative;
+  z-index: 5;
+}
+.qa-input {
+  max-width: 960px;
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid var(--border-base);
+  border-radius: 14px;
+  padding: 12px 12px 8px;
+  box-shadow: var(--shadow-md);
+  transition: border 0.15s, box-shadow 0.15s;
+}
+.qa-input:focus-within { border-color: var(--brand-400); box-shadow: 0 0 0 4px var(--brand-50), var(--shadow-md); }
+.qa-input-attach { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-bottom: 6px; }
+.attach-chip { display:inline-flex; gap:4px; align-items:center; padding: 3px 8px; border-radius: 999px; font-size: 11px; }
+.qa-input textarea { width: 100%; border: none; outline: none; resize: none; font-size: 14px; min-height: 38px; line-height: 1.5; }
+.qa-input-toolbar { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+.tool-btn { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--gray-500); cursor: pointer; }
+.tool-btn:hover { background: var(--gray-100); color: var(--gray-700); }
+.send-btn { margin-left: auto; padding: 7px 16px; background: var(--brand-600); color: #fff; border-radius: 8px; font-size: 13px; font-weight: 600; display:flex; align-items:center; gap: 6px; }
+.send-btn:hover { background: var(--brand-700); }
+.send-btn:disabled { background: var(--gray-200); color: var(--gray-400); cursor: not-allowed; }
+
+.input-hint { max-width: 960px; margin: 8px auto 0; font-size: 11px; color: var(--gray-400); display: flex; gap: 12px; justify-content: center; }
+.input-hint code { background: var(--gray-100); color: var(--brand-700); padding: 0 5px; border-radius: 4px; font-size: 10.5px; margin: 0 2px; font-family: 'SF Mono', Menlo, Consolas, monospace; }
+
+/* 右：相关知识 */
+.qa-aside {
+  background: #fff;
+  border-left: 1px solid var(--border-base);
+  overflow-y: auto;
+}
+.aside-section { padding: 16px; border-bottom: 1px solid var(--border-light); }
+.aside-title { font-size: 12px; font-weight: 600; color: var(--gray-500); letter-spacing: 0.5px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+
+.kb-item { padding: 10px 12px; border-radius: 8px; background: var(--gray-50); margin-bottom: 8px; cursor: pointer; }
+.kb-item:hover { background: var(--brand-50); }
+.kb-tag { display:inline-block; padding: 1px 6px; border-radius: 4px; font-size: 10px; margin-bottom: 4px; }
+.kb-title { font-size: 13px; color: var(--gray-800); line-height: 1.45; }
+.kb-meta { font-size: 11px; color: var(--gray-500); margin-top: 4px; }
+
+.related-q { padding: 8px 0; display: flex; gap: 8px; align-items:flex-start; font-size: 13px; color: var(--gray-700); cursor:pointer; }
+.related-q:hover { color: var(--brand-700); }
+.related-q .arrow { color: var(--gray-300); }
+
+.intent-card { background: var(--brand-50); padding: 10px 12px; border-radius: 8px; font-size: 12px; color: var(--brand-700); }
+
+/* Agent 进度 */
+.agent-progress { background: #fff; border: 1px solid var(--border-light); border-radius: 12px; padding: 14px; margin-top: 10px; }
+.agent-step { display: flex; gap: 10px; padding: 8px 0; align-items: center; font-size: 13px; color: var(--gray-600); }
+.agent-step .dot {
+  width: 16px; height: 16px; border-radius: 999px;
+  background: var(--success); color: #fff; font-size: 10px;
+  display: flex; align-items: center; justify-content: center;
+}
+.agent-step.active .dot { background: var(--brand-500); animation: pulse 1.4s ease-in-out infinite; }
+.agent-step.pending .dot { background: var(--gray-200); }
+.agent-step.pending { color: var(--gray-400); }
+@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(59,106,238,0.4);} 50% { box-shadow: 0 0 0 6px rgba(59,106,238,0);} }
+
+/* —— AI 识别出的意图徽章（替代手动切换的 scene-tabs）—— */
+.intent-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 10px;
+  padding: 4px 10px 4px 8px;
+  background: linear-gradient(135deg, var(--brand-50), #F4F8FF);
+  border: 1px solid var(--brand-200);
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--brand-700);
+  font-weight: 600;
+  animation: intent-fade-in 0.35s ease;
+}
+.intent-pill svg { color: var(--brand-600); }
+.intent-confidence {
+  font-size: 10.5px;
+  color: var(--brand-600);
+  background: #fff;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-weight: 500;
+  margin-left: 2px;
+}
+@keyframes intent-fade-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* —— 欢迎区（紧凑居中型）—— */
+.qa-stream { display: flex; flex-direction: column; }
+.qa-welcome {
+  max-width: 720px;
+  width: 100%;
+  margin: auto;       /* 在 qa-stream 内垂直居中 */
+  padding: 24px 24px;
+}
+.welcome-hero { text-align: center; margin-bottom: 20px; }
+.welcome-avatar {
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 10px;
+  box-shadow: 0 6px 18px rgba(59, 106, 238, 0.25);
+}
+.welcome-avatar svg { width: 26px; height: 26px; }
+.welcome-title { font-size: 18px; font-weight: 700; color: var(--gray-900); margin-bottom: 4px; }
+.welcome-sub { font-size: 12.5px; color: var(--gray-500); line-height: 1.55; max-width: 460px; margin: 0 auto; }
+
+.welcome-scene-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.scene-card {
+  background: #fff;
+  border: 1px solid var(--border-base);
+  border-radius: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.18s;
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  column-gap: 10px;
+  align-items: center;
+}
+.scene-card:hover {
+  border-color: var(--brand-400);
+  box-shadow: 0 4px 14px rgba(59, 106, 238, 0.10);
+  transform: translateY(-1px);
+}
+.scene-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  grid-row: span 2;
+}
+.scene-icon svg { width: 16px; height: 16px; }
+.scene-title { font-size: 13px; font-weight: 600; color: var(--gray-900); grid-column: 2; align-self: end; }
+.scene-desc { font-size: 11.5px; color: var(--gray-500); line-height: 1.4; grid-column: 2; align-self: start; }
+.scene-eg { display: none; }        /* 隐藏示例文字，避免过满 */
+.welcome-hint { display: none; }    /* 与输入框下方 input-hint 重复，隐藏 */
+
+/* Toast for qa */
+.qa-toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gray-900);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  z-index: 1000;
+  display: inline-flex; align-items: center; gap: 8px;
+  box-shadow: var(--shadow-lg);
+  animation: qatoast-in 0.22s ease;
+}
+.qa-toast.hidden { display: none; }
+@keyframes qatoast-in {
+  from { opacity: 0; transform: translate(-50%, -10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* —— 附件预览 —— */
+.attached-img {
+  margin-top: 8px;
+  padding: 8px 10px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 8px;
+  display: flex; gap: 8px; align-items: center;
+}
+.att-thumb {
+  width: 40px; height: 40px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.3);
+  display:flex; align-items:center; justify-content:center;
+  color: #fff;
+}
+.att-name { font-size: 12px; font-weight: 600; }
+.att-info { font-size: 11px; opacity: 0.85; }
+
+/* —— 工具调用进度 —— */
+.tool-call {
+  background: var(--gray-50);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+}
+.tc-head { font-size: 12px; font-weight: 600; color: var(--brand-700); margin-bottom: 6px; }
+.tc-item { font-size: 12px; color: var(--gray-600); padding: 3px 0; }
+.tc-item.done { color: var(--success); }
+
+/* —— Agent 任务计划 —— */
+.agent-plan {
+  background: linear-gradient(135deg, #F4F8FF, #fff);
+  border: 1px solid var(--brand-200);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+.ap-head { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--brand-700); margin-bottom: 8px; }
+.ap-item { font-size: 12.5px; padding: 3px 0; color: var(--gray-700); }
+.ap-item.done { color: var(--success); }
+
+/* —— 答案表格 —— */
+.ans-table-wrap { margin: 10px 0; }
+.ans-table-title { font-size: 13px; font-weight: 600; color: var(--gray-900); margin-bottom: 6px; }
+.ans-table {
+  width: 100%;
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  border-collapse: separate; border-spacing: 0;
+  font-size: 12.5px;
+  overflow: hidden;
+}
+.ans-table thead th {
+  background: var(--gray-50);
+  padding: 8px 10px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--gray-700);
+  font-size: 11.5px;
+  border-bottom: 1px solid var(--border-base);
+}
+.ans-table tbody td { padding: 8px 10px; border-bottom: 1px solid var(--border-light); color: var(--gray-800); }
+.ans-table tbody tr:last-child td { border-bottom: none; }
+.ans-table tbody tr:hover { background: var(--brand-50); cursor: pointer; }
+.ans-table code { background: var(--gray-100); padding: 1px 4px; border-radius: 3px; font-size: 11px; font-family: 'SF Mono', Menlo, Consolas, monospace; }
+.td-warn { color: var(--danger); font-weight: 600; }
+.td-info { color: var(--info); font-weight: 600; }
+.link-id { color: var(--brand-700); cursor: pointer; font-family: 'SF Mono', Menlo, Consolas, monospace; font-size: 12px; }
+.link-id:hover { text-decoration: underline; }
+.link-action { color: var(--brand-700); cursor: pointer; font-size: 12px; font-weight: 600; }
+.link-action:hover { text-decoration: underline; }
+
+/* —— 对比表 —— */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 30px 1fr;
+  gap: 10px;
+  align-items: center;
+  margin: 10px 0;
+}
+.cmp-col {
+  padding: 12px;
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+}
+.cmp-title { font-size: 11px; padding: 1px 8px; border-radius: 4px; font-weight: 600; display: inline-block; margin-bottom: 6px; }
+.cmp-bad { background: var(--danger-bg); color: var(--danger); }
+.cmp-good { background: var(--success-bg); color: var(--success); }
+.cmp-content { font-size: 12.5px; color: var(--gray-800); margin-bottom: 6px; line-height: 1.45; }
+.cmp-meta { font-size: 11.5px; color: var(--gray-500); }
+.cmp-arrow { text-align: center; color: var(--brand-500); font-size: 18px; font-weight: 700; }
+
+/* —— Mini Chart —— */
+.mini-chart {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin: 10px 0;
+}
+.mc-title { font-size: 12.5px; font-weight: 600; color: var(--gray-900); margin-bottom: 4px; }
+
+/* —— 归因瀑布 —— */
+.attr-flow {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin: 10px 0;
+}
+.af-title { font-size: 13px; font-weight: 600; color: var(--gray-900); margin-bottom: 8px; }
+.af-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--border-light);
+}
+.af-item:last-child { border-bottom: none; }
+.af-tag {
+  font-size: 10.5px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.af-item.bad .af-tag { background: var(--danger-bg); color: var(--danger); }
+.af-item.warn .af-tag { background: var(--warning-bg); color: var(--warning); }
+.af-item.good .af-tag { background: var(--success-bg); color: var(--success); }
+.af-name { flex: 1; font-size: 12.5px; color: var(--gray-800); }
+.af-val { font-weight: 700; font-size: 13px; }
+.af-item.bad .af-val { color: var(--danger); }
+.af-item.warn .af-val { color: var(--warning); }
+.af-item.good .af-val { color: var(--success); }
+
+/* —— 槽位反问组 —— */
+.slot-group { margin-bottom: 12px; }
+.slot-label { font-size: 12.5px; color: var(--gray-700); font-weight: 600; margin-bottom: 6px; }
+.slot-options { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* —— 多选推荐 —— */
+.recommend-multi {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 12px;
+  margin: 10px 0;
+}
+.rm-head { font-size: 13px; font-weight: 600; color: var(--gray-900); margin-bottom: 10px; }
+.rm-item {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  background: var(--gray-50);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+}
+.rm-item:hover { background: #F4F8FF; }
+.rm-item.recommended { background: var(--brand-50); border-color: var(--brand-200); }
+.rm-item.dangerous { background: var(--danger-bg); border-color: #FECACA; }
+.rm-item input { margin-top: 3px; cursor: pointer; }
+.rm-title { font-size: 13px; font-weight: 600; color: var(--gray-900); }
+.rm-desc { font-size: 11.5px; color: var(--gray-600); margin-top: 3px; line-height: 1.4; }
+.rm-tag-good { background: var(--brand-600); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 4px; margin-left: 4px; }
+.rm-tag-bad { background: var(--danger); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 4px; margin-left: 4px; }
+
+/* —— 反馈细选弹窗 —— */
+.feedback-modal-mask {
+  position: fixed; inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  z-index: 800;
+  display: flex; align-items: center; justify-content: center;
+  animation: fbmask-in 0.18s ease;
+}
+.feedback-modal-mask.hidden { display: none; }
+@keyframes fbmask-in { from { opacity: 0; } to { opacity: 1; } }
+.feedback-modal-panel {
+  width: 460px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+.fb-modal-head { padding: 16px 20px; border-bottom: 1px solid var(--border-light); }
+.fb-modal-title { font-size: 15px; font-weight: 700; color: var(--gray-900); }
+.fb-modal-sub { font-size: 12px; color: var(--gray-500); margin-top: 2px; }
+.fb-modal-body { padding: 16px 20px; }
+.fb-reason-list { display: flex; flex-direction: column; gap: 6px; }
+.fb-reason {
+  padding: 10px 12px;
+  border: 1px solid var(--border-base);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--gray-700);
+  cursor: pointer;
+  display: flex; align-items: center; gap: 8px;
+}
+.fb-reason:hover { border-color: var(--brand-400); background: var(--brand-50); color: var(--brand-700); }
+.fb-reason.active { border-color: var(--brand-500); background: var(--brand-50); color: var(--brand-700); font-weight: 600; }
+.fb-reason-icon { width: 14px; height: 14px; border: 1.5px solid var(--gray-300); border-radius: 999px; flex-shrink: 0; }
+.fb-reason.active .fb-reason-icon { background: var(--brand-600); border-color: var(--brand-600); }
+.fb-textarea {
+  width: 100%;
+  min-height: 70px;
+  margin-top: 12px;
+  border: 1px solid var(--border-base);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+  resize: vertical;
+  font-family: inherit;
+}
+.fb-textarea:focus { outline: none; border-color: var(--brand-400); }
+.fb-modal-foot { padding: 12px 20px; border-top: 1px solid var(--border-light); display: flex; gap: 8px; justify-content: flex-end; }
+
+/* —— 来源详情抽屉 —— */
+.src-drawer-mask {
+  position: fixed; inset: 0;
+  background: rgba(15, 23, 42, 0.35);
+  z-index: 900;
+  display: flex;
+  justify-content: flex-end;
+  animation: srcmask-in 0.18s ease;
+}
+.src-drawer-mask.hidden { display: none; }
+@keyframes srcmask-in { from { opacity: 0; } to { opacity: 1; } }
+
+.src-drawer {
+  width: 480px;
+  max-width: 92vw;
+  background: #fff;
+  height: 100vh;
+  display: flex; flex-direction: column;
+  box-shadow: -8px 0 24px rgba(15, 23, 42, 0.08);
+  animation: srcpanel-in 0.22s ease;
+}
+@keyframes srcpanel-in {
+  from { transform: translateX(40px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.src-head {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--border-light);
+}
+.src-head-row1 { display: flex; align-items: center; gap: 8px; }
+.src-close {
+  width: 28px; height: 28px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--gray-500);
+  transition: background 0.15s;
+}
+.src-close:hover { background: var(--gray-100); color: var(--gray-800); }
+.src-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.src-icon.t-doc { background: #EFF6FF; color: #2563EB; }
+.src-icon.t-rule { background: #FEF3C7; color: #B45309; }
+.src-icon.t-bench { background: #ECFDF5; color: #16A34A; }
+.src-icon.t-rt { background: #EFF6FF; color: #2563EB; }
+.src-icon.t-case { background: #FFF7ED; color: #E25822; }
+
+.src-title { font-size: 15px; font-weight: 700; color: var(--gray-900); }
+.src-subtitle { font-size: 11.5px; color: var(--gray-500); margin-top: 2px; display: flex; align-items: center; gap: 6px; }
+
+.src-tags { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.src-tag {
+  font-size: 10.5px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.src-tag.pub { background: #DBEAFE; color: #1D4ED8; }
+.src-tag.prv-up { background: #FED7AA; color: #9A3412; }
+.src-tag.prv-ai { background: #DBEAFE; color: #1D4ED8; }
+.src-tag.rt { background: #FDE68A; color: #92400E; }
+.src-tag.gray { background: var(--gray-100); color: var(--gray-700); }
+.src-tag.confidence {
+  background: var(--success-bg); color: var(--success);
+}
+
+.src-body { flex: 1; overflow-y: auto; padding: 16px 20px; }
+.src-section { margin-bottom: 18px; }
+.src-section-head {
+  font-size: 11px;
+  color: var(--gray-500);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 4px;
+}
+.src-section-head .hot {
+  background: var(--brand-100); color: var(--brand-700);
+  font-size: 10px; padding: 1px 6px; border-radius: 999px;
+  text-transform: none; letter-spacing: 0;
+}
+
+/* 被引用的 chunk 高亮 */
+.src-chunk {
+  background: linear-gradient(90deg, #FFFBEB, #fff);
+  border: 1px solid #FED7AA;
+  border-left: 3px solid var(--warning);
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--gray-800);
+  position: relative;
+}
+.src-chunk-meta {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px;
+  color: var(--gray-500);
+  margin-bottom: 8px;
+}
+.src-chunk-meta code {
+  font-family: 'SF Mono', Menlo, Consolas, monospace;
+  background: var(--gray-100);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+.src-chunk-meta .badge-cited {
+  background: var(--warning); color: #fff;
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+/* 元数据 */
+.src-meta-grid { display: grid; grid-template-columns: 90px 1fr; gap: 6px 12px; font-size: 12.5px; }
+.src-meta-grid dt { color: var(--gray-500); }
+.src-meta-grid dd { color: var(--gray-800); font-weight: 500; }
+
+/* 实时数据表 */
+.src-rt-table {
+  width: 100%; border-collapse: separate; border-spacing: 0;
+  font-size: 12.5px;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.src-rt-table thead th {
+  background: var(--gray-50);
+  padding: 8px 10px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gray-700);
+}
+.src-rt-table tbody td {
+  padding: 7px 10px;
+  border-top: 1px solid var(--border-light);
+  color: var(--gray-800);
+}
+
+/* 飞轮统计 */
+.src-stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+.src-stat {
+  background: var(--gray-50);
+  border-radius: 8px;
+  padding: 8px 10px;
+  text-align: center;
+}
+.src-stat-label { font-size: 10px; color: var(--gray-500); }
+.src-stat-val { font-size: 16px; font-weight: 700; color: var(--gray-900); margin-top: 2px; }
+
+/* 底部 */
+.src-foot {
+  border-top: 1px solid var(--border-light);
+  padding: 12px 20px;
+  display: flex; gap: 8px;
+  background: #fff;
+}
+.src-foot button { flex: 1; }
+
+/* —— 边界场景演示 —— */
+.welcome-edge { margin-top: 20px; text-align: center; }
+.edge-label { font-size: 12px; color: var(--gray-400); margin-bottom: 10px; }
+.edge-chips { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.edge-chip { padding: 6px 14px; border: 1px solid var(--border-base); border-radius: 999px; font-size: 12px; color: var(--gray-600); background: #fff; cursor: pointer; transition: all 0.15s; }
+.edge-chip:hover { border-color: var(--brand-300); color: var(--brand-700); background: var(--brand-50); }
+/* 边界响应卡 */
+.edge-card { padding: 14px; border-radius: 10px; margin-top: 4px; }
+.edge-refuse { background: var(--danger-bg); border: 1px solid #FECACA; }
+.edge-unknown { background: var(--warning-bg); border: 1px solid #FDE68A; }
+.edge-confirm { background: #FFF7ED; border: 1px solid #FED7AA; }
+.edge-card-head { display: flex; align-items: center; gap: 6px; font-weight: 600; font-size: 13px; margin-bottom: 6px; }
+.edge-refuse .edge-card-head { color: var(--danger); }
+.edge-unknown .edge-card-head { color: #B7791F; }
+.edge-confirm .edge-card-head { color: #C2410C; }
+.edge-card-body { font-size: 13px; color: var(--gray-700); line-height: 1.65; }
+.edge-card-body b { color: var(--gray-900); }
+.edge-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.clarify-opts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+/* 系统异常卡（中性灰蓝，不刺激） */
+.edge-error { background: #F1F5F9; border: 1px solid #E2E8F0; }
+.edge-error .edge-card-head { color: #475569; }
+/* 多轮上下文标注 chip */
+.ctx-note { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; color: var(--brand-700); background: var(--brand-50); padding: 2px 9px; border-radius: 999px; margin-bottom: 7px; }
+.ctx-note.ctx-switch { color: #B7791F; background: var(--warning-bg); }
+</style>
+</head>
+<body>
+<div class="app">
+  <div id="__sidebar"></div>
+
+  <div class="main">
+    <div id="__topbar"></div>
+
+    <div class="qa-layout">
+      <!-- 左：对话历史 -->
+      <aside class="qa-history">
+        <div class="history-toggle" id="history-toggle" title="折叠 / 展开历史">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </div>
+        <div class="qa-history-head">
+          <button class="new-chat">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;"><path d="M12 5v14M5 12h14"/></svg>
+            <span>新建对话</span>
+          </button>
+        </div>
+        <div class="history-list">
+          <div class="history-section-title">今天</div>
+          <div class="history-item active">
+            <div class="history-title">现言短剧 OCPM 起量出价多少？</div>
+            <div class="history-meta">5 分钟前</div>
+          </div>
+          <div class="history-item">
+            <div class="history-title">短剧A 计划1234 ROI 为什么掉了</div>
+            <div class="history-meta">1 小时前</div>
+          </div>
+          <div class="history-item">
+            <div class="history-title">巨量引擎拒审是什么意思</div>
+            <div class="history-meta">2 小时前</div>
+          </div>
+
+          <div class="history-section-title">昨天</div>
+          <div class="history-item">
+            <div class="history-title">快手磁力短剧定向怎么设置</div>
+            <div class="history-meta">15:42</div>
+          </div>
+          <div class="history-item">
+            <div class="history-title">短剧素材跑不动怎么办</div>
+            <div class="history-meta">10:18</div>
+          </div>
+          <div class="history-item">
+            <div class="history-title">查询昨日全账户消耗</div>
+            <div class="history-meta">09:05</div>
+          </div>
+
+          <div class="history-section-title">本周</div>
+          <div class="history-item">
+            <div class="history-title">古言短剧人群包怎么选</div>
+            <div class="history-meta">周二</div>
+          </div>
+          <div class="history-item">
+            <div class="history-title">benchmark 数据查询</div>
+            <div class="history-meta">周一</div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- 中：对话主区 -->
+      <main class="qa-main">
+        <div class="qa-toolbar">
+          <div class="qa-toolbar-title" id="qa-current-title">新对话</div>
+          <div style="flex:1;"></div>
+        </div>
+
+        <div class="qa-stream">
+          <!-- 欢迎区 (默认显示) -->
+          <div class="qa-welcome" id="qa-welcome">
+            <div class="welcome-hero">
+              <div class="welcome-avatar">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/>
+                </svg>
+              </div>
+              <div class="welcome-title">你好，钱晓彤 👋</div>
+              <div class="welcome-sub">今天想问松鼠什么？</div>
+            </div>
+
+            <div class="welcome-scene-grid">
+              <div class="scene-card" data-flow="bid">
+                <div class="scene-icon" style="background: var(--brand-50); color: var(--brand-600);">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 8a4 4 0 11-8 0M12 12v6"/></svg>
+                </div>
+                <div class="scene-title">出价策略咨询</div>
+                <div class="scene-desc">起量出价 / 调价节奏 / ROI 阈值</div>
+                <div class="scene-eg">"现言短剧巨量 OCPM 起量出多少？"</div>
+              </div>
+
+              <div class="scene-card" data-flow="reject">
+                <div class="scene-icon" style="background: var(--danger-bg); color: var(--danger);">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-3 8-10V5l-8-3-8 3v7c0 7 8 10 8 10z"/></svg>
+                </div>
+                <div class="scene-title">素材审核 / 拒答</div>
+                <div class="scene-desc">合规边界 / 修改建议 / 拒审应对</div>
+                <div class="scene-eg">"短剧'追凶'对白能过审吗？"</div>
+              </div>
+
+              <div class="scene-card" data-flow="review">
+                <div class="scene-icon" style="background: var(--success-bg); color: var(--success);">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3zM7 17V9m5 8V5m5 12v-6"/></svg>
+                </div>
+                <div class="scene-title">复盘归因</div>
+                <div class="scene-desc">数据下滑分析 / 计划诊断 / 历史复用</div>
+                <div class="scene-eg">"为什么 A001 户今天 ROI 掉了？"</div>
+              </div>
+
+              <div class="scene-card" data-flow="growth">
+                <div class="scene-icon" style="background: var(--accent-orange-bg); color: var(--accent-orange);">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>
+                </div>
+                <div class="scene-title">起量提速</div>
+                <div class="scene-desc">不消耗诊断 / 突破学习期 / 放量节奏</div>
+                <div class="scene-eg">"计划学不出模型怎么办？"</div>
+              </div>
+            </div>
+
+            <div class="welcome-hint">
+              <span>💡 输入 <code>@</code> 选择要关联的账户，松鼠会自动检索相关知识与历史数据</span>
+            </div>
+          </div>
+
+          <!-- 用户问 -->
+          <div class="msg-wrap" data-flow="bid" data-step="1" style="display:none;">
+            <div class="msg msg-user">
+              <div class="msg-body">现言短剧巨量引擎 OCPM 起量出价多少？</div>
+              <div class="msg-avatar">Q</div>
+            </div>
+          </div>
+
+          <!-- 槽位追问 -->
+          <div class="msg-wrap" data-flow="bid" data-step="1" style="display:none;">
+            <div class="msg msg-ai">
+              <div class="msg-avatar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/></svg>
+              </div>
+              <div class="msg-body">
+                <div style="margin-bottom:10px;">为了给出更准确的出价建议，请问您的投放目标是？</div>
+                <div style="display:flex; gap:8px; flex-wrap: wrap;">
+                  <button class="followup-btn" style="margin:0;">付费 (有效)</button>
+                  <button class="followup-btn" style="margin:0;">IAA (展投增值)</button>
+                  <button class="followup-btn" style="margin:0;">混合变现</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 用户回 -->
+          <div class="msg-wrap" data-flow="bid" data-step="2" style="display:none;">
+            <div class="msg msg-user">
+              <div class="msg-body">付费模式，目标起量</div>
+              <div class="msg-avatar">Q</div>
+            </div>
+          </div>
+
+          <!-- AI 策略建议 -->
+          <div class="msg-wrap" data-flow="bid" data-step="2" style="display:none;">
+            <div class="msg msg-ai">
+              <div class="msg-avatar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/></svg>
+              </div>
+              <div class="msg-body" style="max-width: 90%;">
+                <div style="font-weight: 600; color: var(--gray-900); margin-bottom: 4px;">基于您 8 个账户近 30 天数据 + 行业 benchmark，建议如下：</div>
+
+                <!-- 出价建议 -->
+                <div class="ans-card">
+                  <div class="ans-head">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 8a4 4 0 11-8 0M12 12v6"/></svg>
+                    出价建议
+                  </div>
+                  <div class="ans-detail">现言短剧巨量引擎付费（有效）模式下，OCPM 起量建议区间：</div>
+                  <div class="price-grid">
+                    <div class="price-cell price-low">
+                      <div class="label">最低保起量</div>
+                      <div class="val">18-25 元</div>
+                    </div>
+                    <div class="price-cell price-mid">
+                      <div class="label">推荐区间 ⭐</div>
+                      <div class="val">22-35 元</div>
+                    </div>
+                    <div class="price-cell price-high">
+                      <div class="label">行业均值</div>
+                      <div class="val">28 元</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 调价节奏 -->
+                <div class="steps">
+                  <div style="padding: 6px 8px 4px; font-size: 13px; font-weight: 600; color: var(--gray-900);">📈 调价节奏</div>
+                  <div class="step-item">
+                    <div class="step-num">1</div>
+                    <div class="step-content">
+                      <div class="step-title">首日以 18 元起步学习</div>
+                      <div class="step-desc">2 小时内消耗低于 200 元则提价至 25 元</div>
+                    </div>
+                  </div>
+                  <div class="step-item">
+                    <div class="step-num">2</div>
+                    <div class="step-content">
+                      <div class="step-title">小时维度观测</div>
+                      <div class="step-desc">日消 1000+且转化稳定后调整至 22-35 元区间，ROI＞1.2 时加速放量</div>
+                    </div>
+                  </div>
+                  <div class="step-item">
+                    <div class="step-num">3</div>
+                    <div class="step-content">
+                      <div class="step-title">放量阶段缓步加价</div>
+                      <div class="step-desc">每天调整不超过 2 元，每日预算同步放宽 10-15%</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 注意事项 -->
+                <div class="ans-card warn">
+                  <div class="ans-head">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>
+                    注意事项
+                  </div>
+                  <div class="ans-detail">以上仅供同类项目 3 个月经验数据中位数估算，不同题材可能略有差异，建议结合自身投手实操经验调整。如出现"投不出去"建议先放宽人群包测试。</div>
+                </div>
+
+                <!-- 来源 -->
+                <div class="sources">
+                  <span style="font-size: 11px; color: var(--gray-500); align-self: center;">参考来源</span>
+                  <span class="source-chip" data-source="sop-v2">📘 贵司投放SOP v2.0</span>
+                  <span class="source-chip" data-source="q1-report">📘 贵司Q1复盘报告</span>
+                  <span class="source-chip" data-source="bench-2024q4">📊 行业benchmark 2024Q4</span>
+                  <span class="source-chip" data-source="rt-8accounts">⚡ 实时数据 · 8账户</span>
+                </div>
+
+                <!-- 操作按钮 -->
+                <div class="msg-actions">
+                  <span class="msg-action">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>
+                    采纳
+                  </span>
+                  <span class="msg-action">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 15v4a3 3 0 003 3l4-9V2H5.72a2 2 0 00-2 1.7l-1.38 9a2 2 0 002 2.3zM17 2h3a2 2 0 012 2v7a2 2 0 01-2 2h-3"/></svg>
+                    不准确
+                  </span>
+                  <span class="msg-action" style="margin-left: auto; color: var(--gray-400);">
+                    ⏱ 3.2 秒 · 8 来源 · 置信度 95%
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ============================================
+          ✨ Flow B：素材审核 (reject) — 轻量结论 + 跳转素材诊断
+          ============================================ -->
+          <div class="msg-wrap" data-flow="reject" data-step="1" style="display:none;">
+            <div class="msg msg-user">
+              <div class="msg-body">
+                <div>我们做了一段短剧素材，前 5 秒有"追凶"对白，能过审吗？</div>
+              </div>
+              <div class="msg-avatar">Q</div>
+            </div>
+          </div>
+
+          <div class="msg-wrap" data-flow="reject" data-step="1" style="display:none;">
+            <div class="msg msg-ai">
+              <div class="msg-avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/></svg></div>
+              <div class="msg-body" style="max-width: 90%;">
+                <div class="tool-call">
+                  <div class="tc-head">🔧 已调用「素材诊断」能力…</div>
+                  <div class="tc-item done">✓ 命中审核敏感词库（暴力暗示类）</div>
+                  <div class="tc-item done">✓ 比对巨量审核规则 v3.2 + 历史拒审案例</div>
+                </div>
+                <div class="ans-card warn" style="margin-top: 10px;">
+                  <div class="ans-head"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg> 初步结论：拒审风险 <strong>中-高（~70%）</strong></div>
+                  <div class="ans-detail">「追凶」属于<strong>暴力暗示词</strong>，凶杀类叙事是巨量高频拒审点（历史此类拒审 487 次）。按建议改造（替换敏感词 + 叙事化转场）后，同类素材通过率约 <strong>88%</strong>。</div>
+                </div>
+                <div style="display:flex; gap:8px; margin-top:12px;">
+                  <button class="btn btn-primary btn-sm" data-goto="diagnose.html">查看完整诊断报告 →</button>
+                  <button class="btn btn-outline btn-sm" data-goto="diagnose.html">直接去改素材</button>
+                </div>
+                <div style="font-size:12px; color:var(--gray-500); margin-top:8px;">违规点定位、3 条可执行修改方案、改造前后过审预测，已在「素材诊断」页生成。</div>
+                <div class="sources">
+                  <span style="font-size:11px;color:var(--gray-500);align-self:center;">参考来源</span>
+                  <span class="source-chip" data-source="audit-v3-2">📘 巨量审核规则 v3.2</span>
+                  <span class="source-chip" data-source="reject-history">📊 历史拒审案例库</span>
+                </div>
+                <div class="msg-actions">
+                  <span class="msg-action">👍 采纳</span>
+                  <span class="msg-action">👎 不准确</span>
+                  <span class="msg-action" style="margin-left:auto;color:var(--gray-400);">⏱ 4.1 秒 · 置信度 91%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- ============================================
+          ✨ Flow C：复盘归因 (review) — 轻量结论 + 跳转投放复盘
+          ============================================ -->
+          <div class="msg-wrap" data-flow="review" data-step="1" style="display:none;">
+            <div class="msg msg-user">
+              <div class="msg-body">A001 户今天 ROI 比昨天掉了 30%，帮我分析下原因</div>
+              <div class="msg-avatar">Q</div>
+            </div>
+          </div>
+
+          <div class="msg-wrap" data-flow="review" data-step="1" style="display:none;">
+            <div class="msg msg-ai">
+              <div class="msg-avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/></svg></div>
+              <div class="msg-body" style="max-width: 90%;">
+                <div class="agent-plan">
+                  <div class="ap-head"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 已调用复盘 Agent · 5 步调研完成</div>
+                  <div class="ap-item done">✓ 拉取实时数据 → 对比昨日 → 检查设置变更 → 检索大盘 → 综合归因</div>
+                </div>
+                <div class="ans-card warn" style="margin-top:10px;">
+                  <div class="ans-head"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg> 初步归因：今日 ROI <strong>0.84 ↓30%</strong></div>
+                  <div class="ans-detail">主因：<strong>晚间高价时段消耗下降（-18%）</strong> + <strong>3 条爆款计划被暂停（-10%）</strong>；次因大盘 CPM 上涨（-5%）。预计周止损 <strong>¥12 万</strong>，建议尽快重启计划 + 回补晚间出价。</div>
+                </div>
+                <div style="display:flex;gap:8px;margin-top:12px;">
+                  <button class="btn btn-primary btn-sm" data-goto="review.html#report">查看完整复盘报告 →</button>
+                  <button class="btn btn-outline btn-sm" data-action="exec-plan">⚡ 一键执行止损建议</button>
+                </div>
+                <div style="font-size:12px;color:var(--gray-500);margin-top:8px;">完整 5 步 ReAct 推理、ROI 趋势图、归因因子拆分、分优先级操作建议，已在「投放复盘」页生成。</div>
+                <div class="sources">
+                  <span style="font-size:11px;color:var(--gray-500);align-self:center;">参考来源</span>
+                  <span class="source-chip" data-source="rt-a001">⚡ A001 实时数据</span>
+                  <span class="source-chip" data-source="bench-industry">📊 行业 benchmark</span>
+                  <span class="source-chip" data-source="a001-history">📘 A001 历史复盘</span>
+                </div>
+                <div class="msg-actions">
+                  <span class="msg-action">👍 采纳</span>
+                  <span class="msg-action">👎 不准确</span>
+                  <span class="msg-action" style="margin-left:auto;color:var(--gray-400);">⏱ 6.8 秒 · 5 步 Agent · 置信度 93%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- ============================================
+          ✨ Flow D：起量提速 (growth)
+          ============================================ -->
+          <div class="msg-wrap" data-flow="growth" data-step="1" style="display:none;">
+            <div class="msg msg-user">
+              <div class="msg-body">A005 户的计划学习了一天还学不出来，怎么办？</div>
+              <div class="msg-avatar">Q</div>
+            </div>
+          </div>
+
+          <div class="msg-wrap" data-flow="growth" data-step="1" style="display:none;">
+            <div class="msg msg-ai">
+              <div class="msg-avatar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/></svg>
+              </div>
+              <div class="msg-body" style="max-width: 90%;">
+                <div style="margin-bottom: 12px;">为了准确诊断，请补充几个关键信息：</div>
+
+                <div class="slot-group">
+                  <div class="slot-label">⏱ 已投放时长</div>
+                  <div class="slot-options">
+                    <button class="followup-btn" style="margin:0;">≤24 小时</button>
+                    <button class="followup-btn" style="margin:0;">24-48 小时</button>
+                    <button class="followup-btn" style="margin:0;">48-72 小时</button>
+                    <button class="followup-btn" style="margin:0;">＞72 小时</button>
+                  </div>
+                </div>
+
+                <div class="slot-group">
+                  <div class="slot-label">💰 日消耗</div>
+                  <div class="slot-options">
+                    <button class="followup-btn" style="margin:0;">＜200</button>
+                    <button class="followup-btn" style="margin:0;">200-500</button>
+                    <button class="followup-btn" style="margin:0;">500-1000</button>
+                    <button class="followup-btn" style="margin:0;">＞1000</button>
+                  </div>
+                </div>
+
+                <div class="slot-group">
+                  <div class="slot-label">📈 累计转化数</div>
+                  <div class="slot-options">
+                    <button class="followup-btn" style="margin:0;">0</button>
+                    <button class="followup-btn" style="margin:0;">1-5</button>
+                    <button class="followup-btn" style="margin:0;">5-20</button>
+                    <button class="followup-btn" style="margin:0;">＞20</button>
+                  </div>
+                </div>
+
+                <div class="msg-actions">
+                  <span class="msg-action">↻ 重新理解问题</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- step 2: 用户填完信息 -->
+          <div class="msg-wrap" data-flow="growth" data-step="2" style="display:none;">
+            <div class="msg msg-user">
+              <div class="msg-body">投了 24 小时 · 日消耗 ¥300 · 累计 8 个转化 · 付费目标</div>
+              <div class="msg-avatar">Q</div>
+            </div>
+          </div>
+
+          <div class="msg-wrap" data-flow="growth" data-step="2" style="display:none;">
+            <div class="msg msg-ai">
+              <div class="msg-avatar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/></svg>
+              </div>
+              <div class="msg-body" style="max-width: 90%;">
+                <div class="ans-card">
+                  <div class="ans-head">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 8a4 4 0 11-8 0M12 12v6"/></svg>
+                    📊 诊断结论：<strong>进度停滞型</strong>
+                  </div>
+                  <div class="ans-detail">命中 35% 同期客户特征 · 处于"学习期-1 关键节点"，必须立刻干预，否则 12 小时内进度将清零重新学习</div>
+                </div>
+
+                <!-- 多选建议 -->
+                <div class="recommend-multi">
+                  <div class="rm-head">💡 推荐路径（按 ROI 期望排序，可多选）</div>
+                  <label class="rm-item recommended">
+                    <input type="checkbox" checked>
+                    <div class="rm-body">
+                      <div class="rm-title">提价 15-20% 强制突破学习期 <span class="rm-tag-good">推荐 ⭐</span></div>
+                      <div class="rm-desc">预计 4 小时内完成模型学习 · 风险：单次出价上升</div>
+                    </div>
+                  </label>
+                  <label class="rm-item recommended">
+                    <input type="checkbox" checked>
+                    <div class="rm-body">
+                      <div class="rm-title">新增 2-3 条同题材计划分流 <span class="rm-tag-good">推荐 ⭐</span></div>
+                      <div class="rm-desc">用同素材测不同人群包，规避单计划被卡死</div>
+                    </div>
+                  </label>
+                  <label class="rm-item">
+                    <input type="checkbox">
+                    <div class="rm-body">
+                      <div class="rm-title">拓宽人群定向</div>
+                      <div class="rm-desc">去除性别/兴趣限制，扩大候选池</div>
+                    </div>
+                  </label>
+                  <label class="rm-item dangerous">
+                    <input type="checkbox">
+                    <div class="rm-body">
+                      <div class="rm-title">暂停该计划 / 止损观察 <span class="rm-tag-bad">不推荐</span></div>
+                      <div class="rm-desc">⚠ 注意：已投入预算无法回收，仅当转化质量明显低于预期时考虑</div>
+                    </div>
+                  </label>
+                </div>
+
+                <div style="display: flex; gap: 8px; margin-top: 12px;">
+                  <button class="btn btn-primary btn-sm">⚡ 执行所选 2 项</button>
+                </div>
+
+                <div class="msg-actions">
+                  <span class="msg-action">👍 采纳</span>
+                  <span class="msg-action" data-action="dislike">👎 不准确</span>
+                  <span class="msg-action" style="margin-left: auto; color: var(--gray-400);">⏱ 5.3 秒 · 置信度 89%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- ↓ 以下全部边界 flow 现位于 qa-stream 内（修复早闭合导致的空白 bug）↓ -->
+
+          <!-- 边界①：实时数据查询 → 直接出数据卡 -->
+          <div class="msg-wrap" data-flow="data" data-step="1" style="display:none;"><div class="msg msg-user"><div class="msg-body">今天 A001 户消耗多少？ROI 怎么样？</div><div class="msg-avatar">Q</div></div></div>
+          <div class="msg-wrap" data-flow="data" data-step="1" style="display:none;"><div class="msg msg-ai"><div class="msg-avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/></svg></div><div class="msg-body" style="max-width:90%;"><div style="margin-bottom:8px;color:var(--gray-700);">A001 现言旗舰户 · 今日实时（截至刚刚）：</div>
+            <div class="data-card"><div class="data-head"><span style="font-weight:600;">实时数据</span><span style="font-size:11px;color:var(--gray-400);">⚡ 巨量 API · 1 分钟前</span></div><div class="data-metric-row"><div class="data-metric"><div class="label">今日消耗</div><div class="val">¥86,200</div></div><div class="data-metric"><div class="label">ROI</div><div class="val" style="color:var(--danger);">0.84</div></div><div class="data-metric"><div class="label">转化数</div><div class="val">320</div></div></div></div>
+            <div style="margin-top:10px;">ROI <b>0.84</b> 已低于你的达标线 1.2。这是个异常信号 —— 要不要我帮你<b>归因</b>看看为什么掉？</div>
+            <div class="follow-ups" style="padding-left:0;margin-top:10px;"><button class="followup-btn" data-next-flow="review" data-next-step="1">深入归因 →</button></div></div></div></div>
+
+          <!-- 边界②：知识查询 → RAG 答 + 引用原文 -->
+          <div class="msg-wrap" data-flow="knowledge" data-step="1" style="display:none;"><div class="msg msg-user"><div class="msg-body">巨量审核规则 4.1 条具体说什么？</div><div class="msg-avatar">Q</div></div></div>
+          <div class="msg-wrap" data-flow="knowledge" data-step="1" style="display:none;"><div class="msg msg-ai"><div class="msg-avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/></svg></div><div class="msg-body" style="max-width:90%;"><div class="ans-card"><div class="ans-head"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-3 8-10V5l-8-3-8 3v7c0 7 8 10 8 10z"/></svg>巨量引擎审核规范 v3.2 · 第 4.1 条</div><div class="ans-detail">「<b>诱导点击类</b>」：禁止使用"免费""0 元""点击领取"等绝对化或诱导性词汇；禁止用虚假的系统提示、红点、按钮诱导用户点击。违规将直接拒审。</div></div>
+            <div class="sources"><span style="font-size:11px;color:var(--gray-500);align-self:center;">原文来源</span><span class="source-chip" data-source="audit-v3-2">📘 巨量审核规则 v3.2</span></div>
+            <div class="msg-actions"><span class="msg-action">👍 采纳</span><span class="msg-action" style="margin-left:auto;color:var(--gray-400);">⏱ 0.6 秒 · 直接命中规则库</span></div></div></div></div>
+
+          <!-- 边界③：模糊提问 → 反问澄清 -->
+          <div class="msg-wrap" data-flow="vague" data-step="1" style="display:none;"><div class="msg msg-user"><div class="msg-body">帮我看看</div><div class="msg-avatar">Q</div></div></div>
+          <div class="msg-wrap" data-flow="vague" data-step="1" style="display:none;"><div class="msg msg-ai"><div class="msg-avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/></svg></div><div class="msg-body" style="max-width:90%;"><div>好的 👀 不过"看看"有点宽泛，你具体想看哪方面？点一个，或直接说账户/计划名：</div>
+            <div class="clarify-opts"><button class="followup-btn">今天哪些账户要紧</button><button class="followup-btn">某个计划为什么掉</button><button class="followup-btn">现在该怎么出价</button><button class="followup-btn">素材能不能过审</button></div></div></div></div>
+
+          <!-- 边界④：答不上来 → 老实说，不编 -->
+          <div class="msg-wrap" data-flow="unknown" data-step="1" style="display:none;"><div class="msg msg-user"><div class="msg-body">广点通视频号的分成政策是怎样的？</div><div class="msg-avatar">Q</div></div></div>
+          <div class="msg-wrap" data-flow="unknown" data-step="1" style="display:none;"><div class="msg msg-ai"><div class="msg-avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/></svg></div><div class="msg-body" style="max-width:90%;"><div class="edge-card edge-unknown"><div class="edge-card-head"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>暂无相关沉淀</div><div class="edge-card-body">这块知识库还没收录，我<b>不会瞎编</b>。建议你：<br>① 查广点通官方文档 ② 问平台对接人。<br>我可以把这个问题记下来，等团队补充进知识库后通知你。</div><div class="edge-actions"><button class="btn btn-outline btn-sm">记录待补充</button><button class="btn btn-ghost btn-sm">去知识库看看</button></div></div></div></div></div>
+
+          <!-- 边界⑤：违规请求 → 拒答 + 引导合规 -->
+          <div class="msg-wrap" data-flow="refuse" data-step="1" style="display:none;"><div class="msg msg-user"><div class="msg-body">帮我想个能绕过审核的擦边素材创意</div><div class="msg-avatar">Q</div></div></div>
+          <div class="msg-wrap" data-flow="refuse" data-step="1" style="display:none;"><div class="msg msg-ai"><div class="msg-avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/></svg></div><div class="msg-body" style="max-width:90%;"><div class="edge-card edge-refuse"><div class="edge-card-head"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M4.93 4.93l14.14 14.14"/></svg>这个我没法帮你</div><div class="edge-card-body">绕过审核违反平台规则，<b>账号有封禁风险</b>，得不偿失。<br>但我可以帮你在<b>合规范围内</b>做高点击的创意 —— 比如悬念钩子、情绪冲突、反转开场，这些既能过审又有效。</div><div class="edge-actions"><button class="btn btn-primary btn-sm">看合规爆款案例</button><button class="btn btn-ghost btn-sm">查审核红线</button></div></div></div></div></div>
+
+          <!-- 边界⑥：危险操作 → 二次确认 + 提示影响 -->
+          <div class="msg-wrap" data-flow="confirm" data-step="1" style="display:none;"><div class="msg msg-user"><div class="msg-body">把 A001 所有计划都暂停</div><div class="msg-avatar">Q</div></div></div>
+          <div class="msg-wrap" data-flow="confirm" data-step="1" style="display:none;"><div class="msg msg-ai"><div class="msg-avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/></svg></div><div class="msg-body" style="max-width:90%;"><div class="edge-card edge-confirm"><div class="edge-card-head"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>请确认这个操作</div><div class="edge-card-body">将暂停 A001 现言旗舰户的 <b>全部 12 条计划</b>，其中包含 <b>3 条 ROI &gt; 1.5 的爆款</b>。操作会<b>立即停止消耗</b>，可能影响今日跑量。</div><div class="edge-actions"><button class="btn btn-primary btn-sm" style="background:var(--danger);">确认全部暂停</button><button class="btn btn-outline btn-sm">仅暂停 5 条低效的</button><button class="btn btn-ghost btn-sm">取消</button></div></div></div></div></div>
+
+          <!-- ===== 第二批 · 边界⑦：多轮上下文 → 指代消解 + 话题切换 ===== -->
+          <div class="msg-wrap" data-flow="context" data-step="1" style="display:none;"><div class="msg msg-user"><div class="msg-body">A001 现在 ROI 怎么样？</div><div class="msg-avatar">Q</div></div></div>
+          <div class="msg-wrap" data-flow="context" data-step="1" style="display:none;"><div class="msg msg-ai"><div class="msg-avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/></svg></div><div class="msg-body" style="max-width:90%;">A001 现言旗舰户 ROI <b style="color:var(--danger);">0.84</b>，低于你的达标线 1.2，今天偏弱。</div></div></div>
+          <div class="msg-wrap" data-flow="context" data-step="1" style="display:none;"><div class="msg msg-user"><div class="msg-body">那磁力呢？</div><div class="msg-avatar">Q</div></div></div>
+          <div class="msg-wrap" data-flow="context" data-step="1" style="display:none;"><div class="msg msg-ai"><div class="msg-avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/></svg></div><div class="msg-body" style="max-width:90%;"><div class="ctx-note">🧠 接着上文 · 你在问「ROI」</div>你是想看<b>磁力账户的 ROI</b> —— K007 磁力星图户 ROI <b style="color:var(--success);">1.35</b>，比巨量这边健康不少。</div></div></div>
+          <div class="msg-wrap" data-flow="context" data-step="1" style="display:none;"><div class="msg msg-user"><div class="msg-body">第一个为什么低？</div><div class="msg-avatar">Q</div></div></div>
+          <div class="msg-wrap" data-flow="context" data-step="1" style="display:none;"><div class="msg msg-ai"><div class="msg-avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/></svg></div><div class="msg-body" style="max-width:90%;"><div class="ctx-note">🧠「第一个」= A001（巨量）</div>A001 掉 ROI 主要两个原因：<b>支付粉价涨了 32%</b>（¥18 → ¥24），加上头部素材完读率下滑。要不要我深入归因？<div class="follow-ups" style="padding-left:0;margin-top:10px;"><button class="followup-btn" data-next-flow="review" data-next-step="1">深入归因 →</button></div></div></div></div>
+          <div class="msg-wrap" data-flow="context" data-step="1" style="display:none;"><div class="msg msg-user"><div class="msg-body">对了，今天拒审多吗？</div><div class="msg-avatar">Q</div></div></div>
+          <div class="msg-wrap" data-flow="context" data-step="1" style="display:none;"><div class="msg msg-ai"><div class="msg-avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/></svg></div><div class="msg-body" style="max-width:90%;"><div class="ctx-note ctx-switch">🔄 切换话题 · 仍锁定 A001</div>切到拒审 —— A001 今天 <b>2 条拒审</b>，都是「诱导点击」类文案，其余账户暂无新增。要看拒审详情吗？</div></div></div>
+
+          <!-- ===== 第二批 · 边界⑧：系统异常 → 失败重试 + 额度超限 ===== -->
+          <div class="msg-wrap" data-flow="error" data-step="1" style="display:none;"><div class="msg msg-user"><div class="msg-body">帮我分析 A001 这周的消耗趋势</div><div class="msg-avatar">Q</div></div></div>
+          <div class="msg-wrap" data-flow="error" data-step="1" style="display:none;"><div class="msg msg-ai"><div class="msg-avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/></svg></div><div class="msg-body" style="max-width:90%;"><div class="edge-card edge-error"><div class="edge-card-head"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>生成失败 · 网络波动</div><div class="edge-card-body">刚才回答到一半中断了，<b>你的问题已保留</b>，点重新生成就能继续，不用重新输入。</div><div class="edge-actions"><button class="btn btn-primary btn-sm">🔄 重新生成</button><button class="btn btn-ghost btn-sm">换个问法</button></div></div></div></div></div>
+          <div class="msg-wrap" data-flow="error" data-step="1" style="display:none;"><div class="msg msg-ai"><div class="msg-avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/></svg></div><div class="msg-body" style="max-width:90%;"><div style="font-size:11px;color:var(--gray-400);margin-bottom:7px;">—— 另一种常见情况：额度用完 ——</div><div class="edge-card edge-error"><div class="edge-card-head"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>今日 AI 额度已用完</div><div class="edge-card-body">团队版每天 <b>500 次</b>问答，今天已用满。额度将于 <b>明天 0:00 自动重置</b>；急用可升级套餐扩容。</div><div class="edge-actions"><button class="btn btn-outline btn-sm">升级套餐</button><button class="btn btn-ghost btn-sm">知道了</button></div></div></div></div></div>
+
+        </div>
+        <!-- /qa-stream 结束（含全部 8 个边界 flow）-->
+
+        <!-- 输入区 -->
+        <div class="qa-input-wrap">
+          <div class="qa-input">
+            <textarea placeholder="问松鼠出价、审核、数据，或输入 @ 指定账户…（Enter 发送，Shift+Enter 换行）" rows="2"></textarea>
+            <div class="qa-input-toolbar">
+              <button class="tool-btn" title="选择账户">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              </button>
+              <button class="tool-btn" title="截图">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+              </button>
+              <div style="flex:1;"></div>
+              <button class="send-btn">
+                发送
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="input-hint">
+            <span>💡 问答会基于顶栏所选平台的规则与数据；输入 <code>@</code> 可指定具体账户</span>
+          </div>
+        </div>
+      </main>
+</div>
+  </div>
+</div>
+
+<script>
+/* 松鼠投放 · 共享导航 / 顶栏 / 高亮逻辑 */
+
+function renderShell({ active, title, crumb }) {
+  const navItems = [
+    { group: '智能助手', items: [
+      { key: 'qa',        label: '智能问答', href: 'qa.html',         icon: 'chat' },
+      { key: 'diagnose',  label: '素材诊断', href: 'diagnose.html',   icon: 'shield' },
+      { key: 'review',    label: '投放复盘', href: 'review.html',     icon: 'report' },
+    ]},
+    { group: '工作', items: [
+      { key: 'monitor',   label: '数据监控', href: 'monitor.html',  icon: 'pulse' },
+    ]},
+    { group: '资源管理', items: [
+      { key: 'knowledge', label: '知识库管理', href: 'knowledge.html', icon: 'book' },
+      { key: 'accounts',  label: '账户中心',   href: 'accounts.html',  icon: 'wallet' },
+    ]},
+    { group: '系统', items: [
+      { key: 'team',      label: '团队管理', href: 'team.html',     icon: 'users' },
+      { key: 'settings',  label: '系统设置', href: 'settings.html', icon: 'cog' },
+    ]},
+  ];
+
+  const ICONS = {
+    home:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-8 9 8M5 10v10h14V10"/></svg>',
+    pulse: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>',
+    bell:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9M10 21a2 2 0 004 0"/></svg>',
+    chat:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 01-12 7l-5 2 2-5A8 8 0 1121 12z"/></svg>',
+    shield:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-3 8-10V5l-8-3-8 3v7c0 7 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>',
+    report:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3zM7 17V9m5 8V5m5 12v-6"/></svg>',
+    book:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 012-2h13v18H6a2 2 0 01-2-2zM4 19a2 2 0 012-2h13"/></svg>',
+    image: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>',
+    wallet:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20M16 15h2"/></svg>',
+    users: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>',
+    cog:   '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.6 15a1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09A1.65 1.65 0 0015 4.6a1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>',
+  };
+
+  var __role = (typeof localStorage !== 'undefined' && localStorage.getItem('squirrel_role')) || 'admin';
+  var __roleNav = { admin:['qa','diagnose','review','monitor','knowledge','accounts','team','settings'], toushou:['qa','diagnose','review','monitor','knowledge','settings'], audit:['qa','diagnose','knowledge','settings'], ops:['qa','review','monitor','knowledge','settings'] };
+  var __allowed = __roleNav[__role] || __roleNav.admin;
+  const navHtml = navItems.map(sec => {
+    var __it = sec.items.filter(function(it){ return __allowed.indexOf(it.key) >= 0; });
+    if (!__it.length) return '';
+    return `
+    <div class="nav-section">
+      <div class="nav-title">${sec.group}</div>
+      ${__it.map(it => `
+        <a class="nav-item ${it.key === active ? 'active' : ''}" href="${it.href}">
+          <span class="icon">${ICONS[it.icon] || ''}</span>
+          <span>${it.label}</span>
+          ${it.badge ? `<span class="badge">${it.badge}</span>` : ''}
+        </a>
+      `).join('')}
+    </div>
+  `; }).join('');
+
+  const sidebar = `
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-logo">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/>
+          </svg>
+        </div>
+        <div class="brand-name">松鼠投放</div>
+      </div>
+      <div class="tenant-switcher">
+        <div class="tenant-avatar">悦</div>
+        <div class="tenant-meta">
+          <div class="tenant-name">悦动短剧科技</div>
+          <div class="tenant-role">投放主管 · 32人团队</div>
+        </div>
+        <span class="tenant-arrow">▾</span>
+      </div>
+      <div style="flex:1; overflow-y:auto;">${navHtml}</div>
+      <div class="nav-footer">
+        <div class="usage-box">
+          <div class="usage-label">本月调用</div>
+          <div class="usage-value">8,432 / 20,000 次</div>
+          <div class="usage-bar"><div class="usage-bar-inner" style="width:42%"></div></div>
+        </div>
+      </div>
+    </aside>
+  `;
+
+  const crumbHtml = (crumb || []).map((c, i, a) => {
+    if (i === a.length - 1) return `<span class="current">${c}</span>`;
+    return `<span>${c}</span><span class="sep">/</span>`;
+  }).join('');
+
+  const topbar = `
+    <header class="topbar">
+      <div class="crumb">${crumbHtml}</div>
+      <div class="topbar-plat" id="__plat">
+        <span class="plat-dot" id="__plat-dot"></span>
+        <span class="plat-name" id="__plat-name">巨量引擎</span>
+        <svg class="plat-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        <div class="plat-menu" id="__plat-menu">
+          <div class="plat-mi" data-plat="juliang"><span class="plat-dot" style="background:#FF4D4F;"></span>巨量引擎</div>
+          <div class="plat-mi" data-plat="kuaishou"><span class="plat-dot" style="background:#FF6A00;"></span>磁力引擎</div>
+          <div class="plat-mi" data-plat="tencent"><span class="plat-dot" style="background:#0052D9;"></span>腾讯广告</div>
+          <div class="plat-msep"></div>
+          <div class="plat-mi" data-plat="all"><span class="plat-dot plat-dot-all"></span>全平台汇总<span class="plat-mgr">管理视角</span></div>
+        </div>
+      </div>
+      <div class="topbar-spacer"></div>
+      <div class="topbar-search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input placeholder="问问松鼠：例如 '巨量短剧 ROI 怎么提升'" />
+        <span class="kbd">⌘K</span>
+      </div>
+      <button class="topbar-icon" title="通知">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9M10 21a2 2 0 004 0"/></svg>
+        <span class="dot"></span>
+      </button>
+      <button class="topbar-icon" title="帮助">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 015.8 1c0 2-3 3-3 3M12 17h.01"/></svg>
+      </button>
+      <div style="width:1px;height:24px;background:var(--border-base);"></div>
+      <div class="topbar-role" id="__role">
+        <span class="role-vp-label">视角</span>
+        <span class="role-vp-name" id="__role-name">投放主管</span>
+        <svg class="role-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        <div class="role-menu" id="__role-menu">
+          <div class="role-mi" data-role="admin">投放主管</div>
+          <div class="role-mi" data-role="toushou">投手</div>
+          <div class="role-mi" data-role="audit">素材审核</div>
+          <div class="role-mi" data-role="ops">数据运营</div>
+        </div>
+      </div>
+      <div class="topbar-user">
+        <div class="user-avatar">Q</div>
+        <span class="user-name">钱晓彤</span>
+      </div>
+    </header>
+  `;
+
+  // 注入页面
+  document.getElementById('__sidebar').innerHTML = sidebar;
+  document.getElementById('__topbar').innerHTML = topbar;
+  if (!document.getElementById('__role-style')) { var __rs=document.createElement('style'); __rs.id='__role-style'; __rs.textContent=".topbar-role{position:relative;display:flex;align-items:center;gap:5px;padding:5px 10px;margin-right:10px;border-radius:8px;border:1px solid var(--border-base);background:#fff;cursor:pointer;font-size:13px;color:var(--gray-800);user-select:none}.topbar-role:hover{border-color:var(--brand-300);background:var(--brand-50)}.role-vp-label{font-size:11px;color:var(--gray-400)}.role-vp-name{font-weight:600}.role-caret{color:var(--gray-400)}.role-menu{position:absolute;top:calc(100% + 6px);right:0;min-width:152px;background:#fff;border:1px solid var(--border-base);border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,.12);padding:6px;display:none;z-index:50;cursor:default}.role-menu.open{display:block}.role-mi{padding:8px 10px;border-radius:7px;font-size:13px;color:var(--gray-700);font-weight:500;cursor:pointer}.role-mi:hover{background:var(--gray-50)}.role-mi.active{background:var(--brand-50);color:var(--brand-700);font-weight:600}"; document.head.appendChild(__rs); }
+  (function(){
+    var R = { admin:'\u6295\u653e\u4e3b\u7ba1', toushou:'\u6295\u624b', audit:'\u7d20\u6750\u5ba1\u6838', ops:'\u6570\u636e\u8fd0\u8425' };
+    var cur = localStorage.getItem('squirrel_role') || 'admin';
+    if (!R[cur]) cur = 'admin';
+    var wrap = document.getElementById('__role'); if(!wrap) return;
+    var nameEl = document.getElementById('__role-name'), menu = document.getElementById('__role-menu');
+    nameEl.textContent = R[cur];
+    var mis = menu.querySelectorAll('.role-mi');
+    for(var i=0;i<mis.length;i++){ mis[i].classList.toggle('active', mis[i].getAttribute('data-role')===cur); }
+    wrap.addEventListener('click', function(e){
+      var mi = e.target.closest ? e.target.closest('.role-mi') : null;
+      if (mi){ localStorage.setItem('squirrel_role', mi.getAttribute('data-role')); menu.classList.remove('open'); location.reload(); return; }
+      menu.classList.toggle('open'); e.stopPropagation();
+    });
+    document.addEventListener('click', function(){ menu.classList.remove('open'); });
+  })();
+  if (!document.getElementById('__plat-style')) {
+    var __ps = document.createElement('style');
+    __ps.id = '__plat-style';
+    __ps.textContent = ".topbar-plat{position:relative;display:flex;align-items:center;gap:6px;padding:5px 10px;margin-left:14px;border-radius:8px;border:1px solid var(--border-base);background:#fff;cursor:pointer;font-size:13px;color:var(--gray-800);font-weight:600;user-select:none}.topbar-plat:hover{border-color:var(--brand-300);background:var(--brand-50)}.plat-dot{width:7px;height:7px;border-radius:999px;background:#FF4D4F;flex:none}.plat-dot-all{background:linear-gradient(135deg,#FF4D4F,#FF6A00,#0052D9)}.plat-caret{color:var(--gray-400)}.plat-menu{position:absolute;top:calc(100% + 6px);left:0;min-width:190px;background:#fff;border:1px solid var(--border-base);border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,.12);padding:6px;display:none;z-index:50;cursor:default}.plat-menu.open{display:block}.plat-mi{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;font-size:13px;color:var(--gray-700);font-weight:500;cursor:pointer}.plat-mi:hover{background:var(--gray-50)}.plat-mi.active{background:var(--brand-50);color:var(--brand-700);font-weight:600}.plat-msep{height:1px;background:var(--border-base);margin:5px 0}.plat-mgr{margin-left:auto;font-size:10px;color:var(--gray-400);background:var(--gray-100);padding:1px 6px;border-radius:999px;font-weight:500}";
+    document.head.appendChild(__ps);
+  }
+  (function(){
+    var P = { juliang:{n:'\u5de8\u91cf\u5f15\u64ce',c:'#FF4D4F'}, kuaishou:{n:'\u78c1\u529b\u5f15\u64ce',c:'#FF6A00'}, tencent:{n:'\u817e\u8baf\u5e7f\u544a',c:'#0052D9'}, all:{n:'\u5168\u5e73\u53f0\u6c47\u603b',c:''} };
+    var cur = localStorage.getItem('squirrel_platform') || 'juliang';
+    if (!P[cur]) cur = 'juliang';
+    var wrap = document.getElementById('__plat');
+    if (!wrap) return;
+    var nameEl = document.getElementById('__plat-name'), dotEl = document.getElementById('__plat-dot'), menu = document.getElementById('__plat-menu');
+    function paint(){
+      nameEl.textContent = P[cur].n;
+      if (cur === 'all') { dotEl.className = 'plat-dot plat-dot-all'; dotEl.style.background = ''; }
+      else { dotEl.className = 'plat-dot'; dotEl.style.background = P[cur].c; }
+      var mis = menu.querySelectorAll('.plat-mi');
+      for (var i=0;i<mis.length;i++){ mis[i].classList.toggle('active', mis[i].getAttribute('data-plat') === cur); }
+    }
+    paint();
+    wrap.addEventListener('click', function(e){
+      var mi = e.target.closest ? e.target.closest('.plat-mi') : null;
+      if (mi) { cur = mi.getAttribute('data-plat'); localStorage.setItem('squirrel_platform', cur); menu.classList.remove('open'); location.reload(); return; }
+      menu.classList.toggle('open'); e.stopPropagation();
+    });
+    document.addEventListener('click', function(){ menu.classList.remove('open'); });
+  })();
+  if (title) document.title = title + ' · 松鼠投放';
+}
+
+</script>
+<script>
+  renderShell({ active: 'qa', title: '智能问答', crumb: ['智能助手', '智能问答'] });
+
+  // ============ 智能问答·点击驱动演示 ============
+  (function() {
+    const $ = (s, p = document) => p.querySelector(s);
+    const $$ = (s, p = document) => Array.from(p.querySelectorAll(s));
+
+    const stream = $('.qa-stream');
+    const welcome = $('#qa-welcome');
+    const msgs = $$('.msg-wrap', stream); // [用户问, 槽位追问, 用户回, AI完整答案]
+    // 对话历史：注入「置顶 / 删除」操作
+    function injectHistOps() {
+      $$('.history-item').forEach(function(item){
+        if (item.querySelector('.hist-ops')) return;
+        var ops = document.createElement('div');
+        ops.className = 'hist-ops';
+        ops.innerHTML = '<span class="hist-op pin" title="\u7f6e\u9876"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 10.76V4a1 1 0 011-1h4a1 1 0 011 1v6.76a2 2 0 00.45 1.26l1.1 1.38A2 2 0 0117 16H7a2 2 0 01-1.55-3.6l1.1-1.38A2 2 0 009 10.76z"/><path d="M12 17v5"/></svg></span><span class="hist-op del" title="\u5220\u9664"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></span>';
+        item.appendChild(ops);
+      });
+    }
+    injectHistOps();
+
+    // 注入 toast
+    const toast = document.createElement('div');
+    toast.className = 'qa-toast hidden';
+    toast.innerHTML = '<span class="qa-toast-text"></span>';
+    document.body.appendChild(toast);
+    let toastTimer;
+    function showToast(msg) {
+      $('.qa-toast-text', toast).textContent = msg;
+      toast.classList.remove('hidden');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.add('hidden'), 2000);
+    }
+
+    function scrollBottom() {
+      requestAnimationFrame(() => { stream.scrollTop = stream.scrollHeight; });
+    }
+
+    const titleEl = $('#qa-current-title');
+    // intent pill 已移除 — 容错处理
+    const intentPill = $('#qa-intent-pill') || { style: {} };
+    const intentText = $('#qa-intent-text') || { textContent: '' };
+
+    // 意图映射：flow → {intent, title}
+    const INTENT_MAP = {
+      bid:    { intent: '出价策略咨询',  title: '现言短剧 OCPM 起量出价多少？' },
+      reject: { intent: '素材审核 / 拒答', title: '素材合规咨询' },
+      review: { intent: '复盘归因',      title: '账户复盘咨询' },
+      growth: { intent: '起量提速',      title: '起量诊断咨询' },
+      data:    { intent: '实时数据查询',  title: 'A001 实时数据' },
+      knowledge:{ intent: '知识查询',     title: '审核规则查询' },
+      vague:   { intent: '需求澄清',      title: '请说得更具体' },
+      unknown: { intent: '知识盲区',      title: '暂无相关沉淀' },
+      refuse:  { intent: '合规拒答',      title: '合规提醒' },
+      confirm: { intent: '操作确认',      title: '危险操作确认' },
+      context: { intent: '多轮上下文',    title: '连续追问 · 承接上文' },
+      error:   { intent: '系统异常',      title: '出错与重试' },
+    };
+
+    // —— 重新获取所有 msg-wrap（含 4 个 flow 的）——
+    const allMsgs = () => $$('.msg-wrap[data-flow]', stream);
+
+    // —— 状态切换 (flow + step) ——
+    function setStep(step, flow) {
+      flow = flow || 'bid';   // 兜底：发送/回车等未指定 flow 时默认走 bid，避免对话区空白
+      const all = allMsgs();
+      if (step === 0) {
+        welcome.style.display = 'block';
+        all.forEach(m => m.style.display = 'none');
+        titleEl.textContent = '新对话';
+        intentPill.style.display = 'none';
+      } else {
+        welcome.style.display = 'none';
+        let shown = 0;
+        all.forEach(m => {
+          const mf = m.dataset.flow;
+          const ms = parseInt(m.dataset.step, 10);
+          const should = (mf === flow && ms <= step);
+          m.style.display = should ? 'block' : 'none';
+          if (should) shown++;
+        });
+        const meta = INTENT_MAP[flow] || INTENT_MAP.bid;
+        titleEl.textContent = meta.title;
+        intentText.textContent = meta.intent;
+        intentPill.style.display = '';
+        scrollBottom();
+      }
+    }
+
+    // —— 真·多轮对话：发送后在对话流末尾追加「用户提问 + AI 回复」——
+    const STAR_SVG = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/></svg>';
+    function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function replyFor(q){
+      if (/出价|ocpm|起量|调价|拿量|roi ?目标/i.test(q)) return '起量阶段建议 OCPM 出价 <b>22–35 元</b>，跑出模型后按 3 天阶梯降 8–12%。要给到你账户的精确区间，先在顶栏选好平台，我再结合实时数据细算。';
+      if (/审核|拒审|过审|违规|合规|擦边|能不能投/i.test(q)) return '先自查三处：① 文案有无「最 / 免费 / 点击领取」等诱导词 ② 画面有无烟酒、暴力元素 ③ 封面文字是否遮挡主体。把素材发我，走<b>素材诊断</b>给你逐项过一遍更稳。';
+      if (/复盘|归因|为什么|怎么掉|下降|跌了|涨了/i.test(q)) return '这类要拉数据归因。我可以发起一次复盘：确认现象 → 锁定主因 → 排除人为与大盘 → 给修改建议，完整报告在<b>投放复盘</b>里看。要现在帮你跑吗？';
+      if (/数据|消耗|花了多少|转化|多少钱|实时/i.test(q)) return '当前顶栏所选平台的实时数据我能直接拉。你想看哪个账户、哪个时段？直接说账户名（如 @A001），我给你消耗 / ROI / 转化的实时快照。';
+      return '收到 👀 基于顶栏所选平台的规则与数据，松鼠来帮你分析。问得再具体些会更准 —— 比如某账户的出价、某条素材能不能过审、某天 ROI 为什么掉。';
+    }
+    function appendTurn(text){
+      welcome.style.display = 'none';
+      const u = document.createElement('div');
+      u.className = 'msg-wrap';
+      u.innerHTML = '<div class="msg msg-user"><div class="msg-body">' + escHtml(text) + '</div><div class="msg-avatar">Q</div></div>';
+      stream.appendChild(u);
+      const a = document.createElement('div');
+      a.className = 'msg-wrap';
+      a.innerHTML = '<div class="msg msg-ai"><div class="msg-avatar">' + STAR_SVG + '</div><div class="msg-body" style="max-width:90%;">' + replyFor(text) + '</div></div>';
+      stream.appendChild(a);
+      titleEl.textContent = text.slice(0, 18);
+      scrollBottom();
+    }
+    // —— 切换历史对话：清空当前会话（移除自由追加 + 隐藏预设 flow + 隐藏欢迎）——
+    function clearConversation(){
+      $$('.msg-wrap:not([data-flow])', stream).forEach(function(m){ m.remove(); });
+      $$('.msg-wrap[data-flow]', stream).forEach(function(m){ m.style.display = 'none'; });
+      welcome.style.display = 'none';
+    }
+
+    // —— 反馈细选 Modal（DOM 已精简，降级为 toast，并做 null 兜底防崩）——
+    const fbModal = $('#qa-feedback-modal');
+    function openFbModal() {
+      if (!fbModal) { showToast('感谢反馈，AI 将基于你的意见持续优化'); return; }
+      fbModal.classList.remove('hidden');
+      $$('.fb-reason.active', fbModal).forEach(r => r.classList.remove('active'));
+      const ta = $('.fb-textarea', fbModal); if (ta) ta.value = '';
+    }
+    function closeFbModal() { if (fbModal) fbModal.classList.add('hidden'); }
+
+    // —— 主点击委托 ——
+    document.addEventListener('click', (e) => {
+      const t = e.target;
+
+      // 1. 欢迎区 4 张快捷场景卡片 —— 进入对应 flow 第 1 步
+      // 对话历史：置顶 / 删除
+      var histPin = t.closest('.hist-op.pin');
+      if (histPin) {
+        e.stopPropagation();
+        var pitem = histPin.closest('.history-item');
+        var plist = pitem.closest('.history-list');
+        var psec = plist.querySelector('.pinned-sec');
+        if (!psec) { psec = document.createElement('div'); psec.className = 'history-section-title pinned-sec'; psec.textContent = '\uD83D\uDCCC \u7f6e\u9876'; plist.insertBefore(psec, plist.firstChild); }
+        pitem.classList.add('pinned');
+        plist.insertBefore(pitem, psec.nextSibling);
+        showToast('\u5df2\u7f6e\u9876\u5230\u9876\u90e8');
+        return;
+      }
+      var histDel = t.closest('.hist-op.del');
+      if (histDel) {
+        e.stopPropagation();
+        var ditem = histDel.closest('.history-item');
+        if (!ditem.classList.contains('confirming')) {
+          ditem.classList.add('confirming');
+          var dops = ditem.querySelector('.hist-ops');
+          dops.dataset.orig = dops.innerHTML;
+          dops.innerHTML = '<span class="hist-cfm-del">\u5220\u9664</span><span class="hist-cfm-cancel">\u53d6\u6d88</span>';
+        }
+        return;
+      }
+      var cfmDel = t.closest('.hist-cfm-del');
+      if (cfmDel) { e.stopPropagation(); cfmDel.closest('.history-item').remove(); showToast('\u5df2\u5220\u9664\u8be5\u5bf9\u8bdd'); return; }
+      var cfmCancel = t.closest('.hist-cfm-cancel');
+      if (cfmCancel) {
+        e.stopPropagation();
+        var citem = cfmCancel.closest('.history-item');
+        citem.classList.remove('confirming');
+        var cops = citem.querySelector('.hist-ops');
+        if (cops.dataset.orig) cops.innerHTML = cops.dataset.orig;
+        return;
+      }
+      // 点击历史项 → 切换到该对话（清空当前 + 载入该问题的问答）
+      var histItem = t.closest('.history-item');
+      if (histItem && !t.closest('.hist-op') && !t.closest('.hist-cfm-del') && !t.closest('.hist-cfm-cancel')) {
+        $$('.history-item').forEach(function(h){ h.classList.remove('active'); });
+        histItem.classList.add('active');
+        var ht = histItem.querySelector('.history-title');
+        clearConversation();
+        appendTurn(ht ? ht.textContent.trim() : '');
+        return;
+      }
+            const edgeChip = t.closest('.edge-chip');
+      if (edgeChip) { setStep(1, edgeChip.dataset.flow); return; }
+      const sceneCard = t.closest('.scene-card');
+      if (sceneCard) {
+        const flow = sceneCard.dataset.flow;
+        setStep(1, flow);
+        return;
+      }
+
+      // 1.1 跨页跳转（问答→专门页）
+      const gotoEl = t.closest('[data-goto]');
+      if (gotoEl) { location.href = gotoEl.dataset.goto; return; }
+
+      // 1.5 关闭反馈 Modal
+      if (t.closest('[data-action="fb-cancel"]')) { closeFbModal(); return; }
+      if (t.closest('[data-action="fb-submit"]')) {
+        closeFbModal();
+        showToast('感谢反馈，AI 将基于你的意见重新学习');
+        return;
+      }
+      const fbReason = t.closest('.fb-reason');
+      if (fbReason) {
+        $$('.fb-reason.active').forEach(r => r.classList.remove('active'));
+        fbReason.classList.add('active');
+        return;
+      }
+      if (t === fbModal && !t.closest('.feedback-modal-panel')) {
+        closeFbModal();
+        return;
+      }
+
+      // 1.6 任意 follow-up 按钮 data-next-flow + data-next-step
+      const advBtn = t.closest('[data-next-flow]');
+      if (advBtn) {
+        const nf = advBtn.dataset.nextFlow;
+        const ns = parseInt(advBtn.dataset.nextStep, 10);
+        setStep(ns, nf);
+        return;
+      }
+
+      // 1.7 「立即执行 / 复盘」演示按钮
+      if (t.closest('[data-action="exec-plan"]')) {
+        showToast('已加入执行队列，预计 4 小时内完成');
+        return;
+      }
+      
+      // 1.8 表格的可点 link
+      const linkId = t.closest('.link-id');
+      if (linkId) { showToast(`跳转到计划详情：${linkId.textContent}`); return; }
+      const linkAction = t.closest('.link-action');
+      if (linkAction) { showToast(`已${linkAction.textContent.trim()}`); return; }
+
+      // 2. Bid flow 槽位追问按钮 → step 2
+      if (t.closest('#qa-welcome')) return;
+      const bidSlot = t.closest('.msg-wrap[data-flow="bid"][data-step="1"] .followup-btn');
+      if (bidSlot) { setStep(2, 'bid'); return; }
+      // Growth flow 槽位反问按钮 → step 2
+      const growthSlot = t.closest('.msg-wrap[data-flow="growth"][data-step="1"] .followup-btn');
+      if (growthSlot) { setStep(2, 'growth'); return; }
+
+      // 3. msg-actions: 采纳 / 不准确 / 重新理解（追问、复制已移除）
+      const msgAction = t.closest('.msg-action');
+      if (msgAction) {
+        const txt = msgAction.textContent.trim().slice(0, 4);
+        if (txt.includes('采纳') || txt.includes('👍')) showToast('已采纳，沉淀到团队知识库（L2）');
+        else if (txt.includes('不准') || txt.includes('👎')) openFbModal();  // 不准确 → 打开细选 Modal
+        else if (txt.includes('↻')) showToast('AI 正在重新理解');
+        else showToast('操作完成');
+        return;
+      }
+
+      // 4. follow-ups 4 个追问按钮（AI 答案下方）
+      const followUp = t.closest('.follow-ups .followup-btn');
+      if (followUp) {
+        showToast(`继续追问：${followUp.textContent.trim()}`);
+        return;
+      }
+
+      // 6. 新对话
+      const newChatBtn = t.closest('.new-chat');
+      if (newChatBtn) {
+        setStep(0);
+        $$('.history-item.active').forEach(h => h.classList.remove('active'));
+        showToast('已开启新对话');
+        return;
+      }
+
+      // 6.5 历史栏折叠/展开
+      if (t.closest('#history-toggle')) {
+        document.querySelector('.qa-layout').classList.toggle('history-collapsed');
+        return;
+      }
+
+      // 7. 顶部场景 tab
+      const sceneTab = t.closest('.scene-tab');
+      if (sceneTab) {
+        $$('.scene-tab.active').forEach(b => b.classList.remove('active'));
+        sceneTab.classList.add('active');
+        return;
+      }
+
+      // 8. 历史 tab
+      const histTab = t.closest('.history-tab');
+      if (histTab) {
+        $$('.history-tab.active').forEach(b => b.classList.remove('active'));
+        histTab.classList.add('active');
+        return;
+      }
+
+      // 9. 来源 chip → 打开来源详情抽屉
+      const sourceChip = t.closest('.source-chip');
+      if (sourceChip) {
+        openSourceDrawer(sourceChip.dataset.source || 'unknown', sourceChip.textContent.trim());
+        return;
+      }
+
+      // 9.1 关闭抽屉
+      if (t.closest('[data-action="src-close"]')) { closeSourceDrawer(); return; }
+      if (t.closest('[data-action="src-go-knowledge"]')) { closeSourceDrawer(); showToast('已为你定位到知识库对应条目'); return; }
+      if (t.closest('[data-action="src-thank"]')) { showToast('感谢反馈，已记录"准确"评分'); closeSourceDrawer(); return; }
+      const srcMask = document.getElementById('src-drawer-mask');
+      if (srcMask && t === srcMask) { closeSourceDrawer(); return; }
+
+      // 10. 顶部按钮 (导出 / 分享 / 收藏 / 发送)
+      const btn = t.closest('button.btn, .send-btn');
+      if (btn) {
+        const label = btn.textContent.replace(/\s+/g, '');
+        if (label.includes('导出')) showToast('已导出对话为 Markdown');
+        else if (label.includes('分享')) showToast('分享链接已复制');
+        else if (label.includes('收藏')) showToast('已收藏对话');
+        else if (label.includes('发送')) {
+          const textarea = $('.qa-input textarea');
+          const v = textarea?.value?.trim();
+          if (!v) { showToast('请先输入问题'); return; }
+          appendTurn(v);
+          textarea.value = '';
+        }
+        return;
+      }
+
+      // 11. tool-btn / attach-chip
+      if (t.closest('.tool-btn')) {
+        showToast(t.closest('.tool-btn').title || '工具');
+        return;
+      }
+      if (t.closest('.attach-chip')) {
+        showToast(`关联：${t.closest('.attach-chip').textContent.trim()}`);
+        return;
+      }
+
+      // 12. 右栏 aside 任何 cursor:pointer 元素 (相关知识、推荐问题)
+      const asideItem = t.closest('.qa-aside .source-chip, .qa-aside .knowledge-item, .qa-aside .related-item');
+      if (asideItem) {
+        showToast('已打开关联资源');
+        return;
+      }
+    });
+
+    // 回车发送
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey && e.target.matches('.qa-input textarea')) {
+        e.preventDefault();
+        const v = e.target.value.trim();
+        if (v) {
+          appendTurn(v);
+          e.target.value = '';
+        }
+      }
+    });
+
+
+    // ========== 来源详情数据 + 抽屉控制 ==========
+    const SOURCE_MAP = {
+      'sop-v2': {
+        icon: '📘', iconClass: 't-doc',
+        title: '贵司投放SOP v2.0',
+        subtitle: '私域 · L2 团队战术 · 团队上传',
+        tags: [{cls:'prv-up', text:'🔒 私域'}, {cls:'gray', text:'L2 团队'}, {cls:'confidence', text:'命中度 92%'}],
+        chunkId: 'CHUNK_017',
+        chunkTokens: 412,
+        citedTimes: 38,
+        chunk: '现言短剧 OCPM 起量阶段建议出价区间：22-35 元。首日以 1.1× 基础出价测水温，2 小时内消耗低于 200 元则提价至 25 元；日消 1000+ 且转化稳定后，调整至 22-35 元区间，ROI > 1.2 时加速放量。放量阶段缓步加价，每天调整不超过 2 元，每日预算同步放宽 10-15%。',
+        meta: {
+          '上传人': '钱晓彤',
+          '上传时间': '2026-05-14（14 天前）',
+          '版本': 'v2.0（v1.0 见历史版本）',
+          '文档大小': '2.4 MB（PDF · 32 页）',
+          '索引模型': 'bge-large-zh-v1.5',
+        },
+        stats: { '被引用': 142, '命中率': '92%', '点赞': 98 },
+      },
+      'q1-report': {
+        icon: '📘', iconClass: 't-doc',
+        title: '贵司 Q1 复盘报告',
+        subtitle: '私域 · L2 团队战术 · 复盘自动归档',
+        tags: [{cls:'prv-ai', text:'🤖 AI 沉淀'}, {cls:'gray', text:'L2 团队'}, {cls:'confidence', text:'命中度 88%'}],
+        chunkId: 'CHUNK_006',
+        chunkTokens: 388,
+        citedTimes: 21,
+        chunk: '2024Q1 共投放 23 个现言短剧账户，OCPM 起量阶段均价 22-30 元，单计划 ROI ≥ 1.2 占比 67%。首日 18 元起步策略在 A001/A003/A005 等账户表现最优，日均消耗稳定上升 25-40%。建议沿用首日低出价试水 + 2 小时观测调价 + 突破后阶梯加价的"三步法"。',
+        meta: {
+          '生成方式': 'Agent 自动沉淀（已主管审核）',
+          '原始来源': '12 次复盘对话片段',
+          '归档时间': '2024-04-08',
+          '关联账户': 'A001 / A003 / A005 等 23 个',
+        },
+        stats: { '被引用': 78, '命中率': '88%', '点赞': 67 },
+      },
+      'bench-2024q4': {
+        icon: '📊', iconClass: 't-bench',
+        title: '行业 benchmark · 短剧 2024 Q4',
+        subtitle: '公域 · L1 平台数据 · API 自动同步',
+        tags: [{cls:'pub', text:'🌐 公域'}, {cls:'gray', text:'L1 平台'}, {cls:'confidence', text:'命中度 78%'}],
+        chunkId: 'CHUNK_002',
+        chunkTokens: 256,
+        citedTimes: 94,
+        chunk: '2024 Q4 现言短剧大盘 OCPM 起量阶段平均出价 28 元（中位数 26 元），付费目标平均 ROI 1.15。Top10% 账户出价区间 22-33 元、ROI ≥ 1.4。男频题材出价平均高出 12%，女频虐恋题材高出 8%。冷启动阶段消耗破万天数中位数 3.2 天。',
+        meta: {
+          '数据来源': '巨量行业大盘 API',
+          '数据周期': '2024-10-01 至 2024-12-31',
+          '同步时间': '2025-01-08（30 天前）',
+          '样本量': '全行业 12,400 账户',
+        },
+        stats: { '被引用': 94, '命中率': '78%', '点赞': 71 },
+      },
+      'rt-8accounts': {
+        icon: '⚡', iconClass: 't-rt',
+        title: '实时数据 · 8 个账户',
+        subtitle: '实时查询 · 5 秒前完成',
+        tags: [{cls:'rt', text:'⚡ 实时'}, {cls:'gray', text:'8 个账户'}, {cls:'confidence', text:'数据新鲜度 100%'}],
+        isTable: true,
+        meta: {
+          '查询范围': '8 个授权账户',
+          '查询时间': '刚刚（5 秒前）',
+          '数据 lag': '< 60 秒',
+          'API': '巨量本地 SDK · v2.4',
+        },
+        stats: { '今日调用': 12, '本月引用': 384, '准确率': '99.9%' },
+      },
+      'audit-v3-2': {
+        icon: '📘', iconClass: 't-rule',
+        title: '巨量审核规则 v3.2',
+        subtitle: '公域 · L1 平台规则 · API 自动同步',
+        tags: [{cls:'pub', text:'🌐 公域'}, {cls:'gray', text:'L1 平台'}, {cls:'confidence', text:'命中度 94%'}],
+        chunkId: 'CHUNK_014',
+        chunkTokens: 320,
+        citedTimes: 412,
+        chunk: '【规则 #14】短剧广告中禁止出现明显暗示性肢体动作、过度血腥场面（含卡通化呈现）；男女对峙类场景须避免直接喊话挑衅形式。【规则 #08】凶杀类对白须以叙事化呈现，不得直接陈述凶器、行凶对象、伤口部位等具象细节。',
+        meta: {
+          '数据来源': '巨量审核中心 API',
+          '版本': 'v3.2（2025-04-12 更新）',
+          '生效时间': '2025-04-15',
+          '关联规则数': '14 / 482 条',
+        },
+        stats: { '被引用': 412, '命中率': '94%', '点赞': 305 },
+      },
+      'reject-history': {
+        icon: '📊', iconClass: 't-case',
+        title: '历史拒审案例库',
+        subtitle: '私域 · L2 团队战术 · 自动归档',
+        tags: [{cls:'prv-ai', text:'🤖 AI 沉淀'}, {cls:'gray', text:'L2 团队'}, {cls:'confidence', text:'命中度 91%'}],
+        chunkId: 'CHUNK_023',
+        chunkTokens: 286,
+        citedTimes: 67,
+        chunk: '本团队累计 1,247 条拒审案例。其中"追凶/凶杀/暴力暗示"类拒审 487 次（39%）—— 该类案例改造后通过率 88%（基于 142 次相似改造）。典型改造路径：①替换敏感词；②叙事化转场；③弱化 BGM 压迫感。',
+        meta: {
+          '案例总数': '1,247 条',
+          '时间范围': '近 12 个月',
+          '更新方式': '每条拒审自动归档',
+          '关联规则': '巨量 v3.2 #14, #08',
+        },
+        stats: { '被引用': 67, '命中率': '91%', '点赞': 52 },
+      },
+      'rt-a001': {
+        icon: '⚡', iconClass: 't-rt',
+        title: 'A001 户 · 实时数据',
+        subtitle: '实时查询 · 0.8 秒前',
+        tags: [{cls:'rt', text:'⚡ 实时'}, {cls:'gray', text:'A001'}, {cls:'confidence', text:'数据新鲜度 100%'}],
+        isTable: true,
+        a001Mode: true,
+        meta: {
+          '账户': 'A001 · 现言短剧旗舰户',
+          '查询时间': '0.8 秒前',
+          'API': '巨量本地 SDK',
+          '权限': '已授权',
+        },
+        stats: { '今日 ROI': '0.84', '昨日 ROI': '1.20', '掉幅': '-30%' },
+      },
+      'bench-industry': {
+        icon: '📊', iconClass: 't-bench',
+        title: '行业 benchmark · 短剧大盘',
+        subtitle: '公域 · L1 平台数据',
+        tags: [{cls:'pub', text:'🌐 公域'}, {cls:'gray', text:'L1 平台'}, {cls:'confidence', text:'命中度 82%'}],
+        chunkId: 'CHUNK_009',
+        chunkTokens: 198,
+        citedTimes: 56,
+        chunk: '今日大盘短剧 CPM 较昨日上涨 6.8%。Q1 末-Q2 初为传统淡季尾声，行业 ROI 平均值小幅波动 ±5% 属正常区间。建议关注本周末后 3 天反弹趋势。',
+        meta: {
+          '数据来源': '巨量行业大盘',
+          '同步时间': '今日 09:00',
+          '题材覆盖': '现言/古言/玄幻/都市',
+        },
+        stats: { '被引用': 56, '命中率': '82%', '点赞': 41 },
+      },
+      'a001-history': {
+        icon: '📘', iconClass: 't-doc',
+        title: 'A001 户 · 历史复盘',
+        subtitle: '私域 · L3 个人偏好',
+        tags: [{cls:'prv-up', text:'🔒 私域'}, {cls:'gray', text:'L3 个人'}, {cls:'confidence', text:'命中度 90%'}],
+        chunkId: 'CHUNK_004',
+        chunkTokens: 364,
+        citedTimes: 12,
+        chunk: 'A001 户最近 30 天 ROI 在晚 21:00-23:00 时段最高（均值 1.45），其中"现言-都市悬疑"题材表现最佳。上月同期出现过类似下滑情况，3 条爆款计划被错误暂停，重启后 ROI 4 小时恢复至 1.2 以上。',
+        meta: {
+          '账户': 'A001',
+          '复盘数量': '14 次（近 30 天）',
+          '主要题材': '现言、都市悬疑',
+          '所属投手': '钱晓彤',
+        },
+        stats: { '被引用': 12, '命中率': '90%', '点赞': 9 },
+      },
+    };
+
+    const getSrcMask = () => document.getElementById('src-drawer-mask');
+    function closeSourceDrawer() { getSrcMask().classList.add('hidden'); }
+    function openSourceDrawer(key, fallback) {
+      const data = SOURCE_MAP[key];
+      if (!data) {
+        showToast('该来源暂无详情：' + fallback);
+        return;
+      }
+      const $id = (id) => document.getElementById(id);
+      $id('src-icon').className = 'src-icon ' + data.iconClass;
+      $id('src-icon').textContent = data.icon;
+      $id('src-title').textContent = data.title;
+      $id('src-subtitle').textContent = data.subtitle;
+      // tags
+      const tagsHtml = (data.tags || []).map(t => `<span class="src-tag ${t.cls}">${t.text}</span>`).join('');
+      $id('src-tags').innerHTML = tagsHtml;
+      // body
+      let bodyHtml = '';
+      // 飞轮统计
+      if (data.stats) {
+        bodyHtml += '<div class="src-stat-row">';
+        for (const [k, v] of Object.entries(data.stats)) {
+          bodyHtml += `<div class="src-stat"><div class="src-stat-label">${k}</div><div class="src-stat-val">${v}</div></div>`;
+        }
+        bodyHtml += '</div>';
+      }
+      // 被引用的 chunk（如果有）
+      if (data.chunk) {
+        bodyHtml += '<div class="src-section">';
+        bodyHtml += '<div class="src-section-head">本次回答引用的片段 <span class="hot">高亮黄底</span></div>';
+        bodyHtml += '<div class="src-chunk">';
+        bodyHtml += `<div class="src-chunk-meta">`;
+        if (data.chunkId) bodyHtml += `<code>${data.chunkId}</code>`;
+        if (data.chunkTokens) bodyHtml += `<span>${data.chunkTokens} tokens</span>`;
+        if (data.citedTimes) bodyHtml += `<span class="badge-cited">累计被引 ${data.citedTimes} 次</span>`;
+        bodyHtml += `</div>`;
+        bodyHtml += data.chunk.replace(/\n/g, '<br>');
+        bodyHtml += '</div>';
+        bodyHtml += '</div>';
+      }
+      // 实时数据表
+      if (data.isTable) {
+        if (data.a001Mode) {
+          bodyHtml += '<div class="src-section"><div class="src-section-head">本次召回的实时数据</div>';
+          bodyHtml += '<table class="src-rt-table"><thead><tr><th>指标</th><th>今日</th><th>昨日</th><th>近 7 日均</th></tr></thead><tbody>';
+          bodyHtml += '<tr><td>ROI</td><td><strong style="color: var(--danger);">0.84</strong></td><td>1.20</td><td>1.18</td></tr>';
+          bodyHtml += '<tr><td>消耗</td><td>¥86,200</td><td>¥78,400</td><td>¥81,500</td></tr>';
+          bodyHtml += '<tr><td>CPM</td><td>¥38</td><td>¥36</td><td>¥35</td></tr>';
+          bodyHtml += '<tr><td>转化数</td><td>320</td><td>298</td><td>305</td></tr>';
+          bodyHtml += '</tbody></table></div>';
+        } else {
+          bodyHtml += '<div class="src-section"><div class="src-section-head">本次召回的实时数据</div>';
+          bodyHtml += '<table class="src-rt-table"><thead><tr><th>账户</th><th>题材</th><th>出价</th><th>ROI</th></tr></thead><tbody>';
+          bodyHtml += '<tr><td>A001</td><td>现言</td><td>26</td><td>0.84</td></tr>';
+          bodyHtml += '<tr><td>A002</td><td>现言</td><td>22</td><td>1.18</td></tr>';
+          bodyHtml += '<tr><td>A003</td><td>都市悬疑</td><td>24</td><td>1.45</td></tr>';
+          bodyHtml += '<tr><td>A005</td><td>女频虐恋</td><td>25</td><td>0.92</td></tr>';
+          bodyHtml += '<tr><td>A006</td><td>男频爽文</td><td>23</td><td>1.28</td></tr>';
+          bodyHtml += '<tr><td>A007</td><td>古言</td><td>21</td><td>1.05</td></tr>';
+          bodyHtml += '<tr><td>A008</td><td>都市</td><td>24</td><td>1.15</td></tr>';
+          bodyHtml += '<tr><td>A009</td><td>悬疑反转</td><td>26</td><td>1.38</td></tr>';
+          bodyHtml += '</tbody></table></div>';
+        }
+      }
+      // 元数据
+      if (data.meta) {
+        bodyHtml += '<div class="src-section"><div class="src-section-head">来源元数据</div>';
+        bodyHtml += '<dl class="src-meta-grid">';
+        for (const [k, v] of Object.entries(data.meta)) {
+          bodyHtml += `<dt>${k}</dt><dd>${v}</dd>`;
+        }
+        bodyHtml += '</dl></div>';
+      }
+      $id('src-body').innerHTML = bodyHtml;
+      getSrcMask().classList.remove('hidden');
+    }
+
+        // 初始：欢迎区
+    setStep(0);
+  })();
+</script>
+
+  <!-- 来源详情抽屉 -->
+  <div id="src-drawer-mask" class="src-drawer-mask hidden">
+    <div class="src-drawer">
+      <div class="src-head">
+        <div class="src-head-row1">
+          <div class="src-close" data-action="src-close">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </div>
+          <div class="src-icon" id="src-icon">📘</div>
+          <div style="flex:1; min-width:0;">
+            <div class="src-title" id="src-title">来源详情</div>
+            <div class="src-subtitle" id="src-subtitle">加载中…</div>
+          </div>
+        </div>
+        <div class="src-tags" id="src-tags"></div>
+      </div>
+      <div class="src-body" id="src-body">
+        <!-- 内容由 JS 动态填充 -->
+      </div>
+      <div class="src-foot">
+        <button class="btn btn-outline btn-sm" data-action="src-go-knowledge">查看完整 / 跳转知识库</button>
+        <button class="btn btn-primary btn-sm" data-action="src-thank">👍 这条引用准确</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

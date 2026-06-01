@@ -1,0 +1,9 @@
+{
+  "stage": "design",
+  "mode": "new",
+  "design_ready": true,
+  "development_ready": true,
+  "current_task": null,
+  "blocked": false,
+  "notes": "SDD 三件套齐备：PRD.md + api-contracts.md + Plan.md（均定稿 C，互相对齐）；11 页原型 + 2 份输出样式规范在 docs/prototypes/。可进入多 Agent 开发阶段。"
+}

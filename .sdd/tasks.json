@@ -1,0 +1,48 @@
+{
+  "project": "ad-placement",
+  "project_type": "web",
+  "created": "2026-05-31",
+  "source_files": ["docs/PRD.md", "docs/api-contracts.md", "docs/Plan.md"],
+  "external_services": [
+    {"name": "巨量/磁力/腾讯开放API", "use": "账户实时数据、下发出价/预算", "status": "待授权"},
+    {"name": "LLM", "use": "意图识别+问答+归因", "status": "待选型"},
+    {"name": "向量库+重排", "use": "L1/L2/L3 知识检索", "status": "待选型"},
+    {"name": "视觉/OCR", "use": "素材违规识别（仅图片）", "status": "待选型"}
+  ],
+  "tasks": [
+    {
+      "id": "FE-01",
+      "title": "共享外壳 + 平台/角色全局态（前端 Mock）",
+      "type": "frontend",
+      "phase": "1-frontend-mock",
+      "status": "done",
+      "description": "搭 Vue 3 + Vite + TS 工程，实现共享外壳 AppShell：左侧 sidebar（按角色过滤导航，对应 8功能×4角色 权限矩阵）+ 顶栏 topbar（平台切换器 juliang/kuaishou/tencent/all + 视角切换 admin/toushou/audit/ops）。Pinia stores: platform（投手锁单平台，仅 admin 可 all）+ role；状态存 localStorage。Vue Router 配 11 页路由 + 守卫。Mock 层（VITE_USE_MOCK）模拟 /api/auth/me、/api/platforms。不调真实后端。视觉/布局严格对齐 docs/prototypes/ 的 renderShell 与 design-system（品牌蓝 #2563EB）。",
+      "source_feature": "FE-01",
+      "dependencies": [],
+      "priority": 1,
+      "retry_count": 0,
+      "blocked": false,
+      "user_gate": false,
+      "rules_files": ["harness-core/dev-standards/frontend.md"],
+      "acceptanceCriteria": [
+        "npm run build 通过，无 TS 报错",
+        "切平台 → 全局态变更并持久化 localStorage；非 admin 选 all 被拦（提示无权）",
+        "切视角 → sidebar 按角色权限矩阵过滤，无权模块不渲染",
+        "11 页路由可达（占位页即可），刷新后平台/角色保持",
+        "外壳视觉对齐原型：左导航 + 顶栏布局、品牌蓝 #2563EB、无紫色"
+      ],
+      "technicalChecks": ["npm run build 成功", "tsc 无 error"],
+      "notes": "试跑多 Agent 开发流程的第一个任务（地基）"
+    },
+    {"id": "FE-02", "title": "智能问答（SSE+15样式+历史+来源抽屉）", "type": "frontend", "phase": "1-frontend-mock", "status": "done", "dependencies": ["FE-01"], "priority": 2},
+    {"id": "FE-03", "title": "素材诊断（上传+批量+报告6模块+拦视频）", "type": "frontend", "phase": "1-frontend-mock", "status": "done", "dependencies": ["FE-01"], "priority": 3},
+    {"id": "FE-04", "title": "数据监控（纯数据：账户表+趋势+留存cohort+明细）", "type": "frontend", "phase": "1-frontend-mock", "status": "done", "dependencies": ["FE-01"], "priority": 4},
+    {"id": "FE-05", "title": "投放复盘（Agent归因5步+一键执行）", "type": "frontend", "phase": "1-frontend-mock", "status": "done", "dependencies": ["FE-01", "FE-04"], "priority": 5},
+    {"id": "FE-06", "title": "知识库（搜索+5筛选chip+卡片+反馈）", "type": "frontend", "phase": "1-frontend-mock", "status": "done", "dependencies": ["FE-01"], "priority": 6},
+    {"id": "FE-07", "title": "账户中心/团队权限矩阵/系统设置/登录页", "type": "frontend", "phase": "1-frontend-mock", "status": "done", "dependencies": ["FE-01"], "priority": 7},
+    {"id": "BE-01", "title": "认证JWT + 平台/角色scope中间件", "type": "backend", "phase": "2-backend", "status": "pending", "dependencies": ["FE-01"], "priority": 8},
+    {"id": "BE-02", "title": "问答：意图识别+知识路由+RAG+SSE", "type": "backend", "phase": "2-backend", "status": "pending", "dependencies": ["BE-01"], "priority": 9},
+    {"id": "BE-03", "title": "素材诊断：图片校验+视觉OCR+规则比对", "type": "backend", "phase": "2-backend", "status": "pending", "dependencies": ["BE-01"], "priority": 10},
+    {"id": "BE-04", "title": "数据监控：三平台取数（只返事实）", "type": "backend", "phase": "2-backend", "status": "pending", "dependencies": ["BE-01"], "priority": 11}
+  ]
+}

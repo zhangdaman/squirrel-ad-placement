@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>数据监控 · 松鼠投放</title>
+<style>
+/* === design-system.css (inlined) === */
+/* ============================================================
+ * 松鼠投放 · AI 广告投放助手 · 统一设计系统
+ * Design System v1.0
+ * ============================================================ */
+
+:root {
+  /* 主色 - 品牌蓝 */
+  --brand-50: #EEF4FF;
+  --brand-100: #DCE7FE;
+  --brand-200: #BACFFD;
+  --brand-300: #8EAEFB;
+  --brand-400: #5E89F6;
+  --brand-500: #3B6AEE;
+  --brand-600: #2554DC;
+  --brand-700: #1E44BC;
+  --brand-800: #1B3A95;
+  --brand-900: #1A3477;
+
+  /* 辅助色 */
+  --accent-orange: #FF7A2F;
+  --accent-orange-bg: #FFF1E8;
+  --accent-amber: #F5A524;
+  --accent-amber-bg: #FFF8E1;
+
+  /* 语义色 */
+  --success: #16A34A;
+  --success-bg: #ECFDF5;
+  --warning: #F59E0B;
+  --warning-bg: #FFFBEB;
+  --danger: #DC2626;
+  --danger-bg: #FEF2F2;
+  --info: #2563EB;
+  --info-bg: #EFF6FF;
+
+  /* 中性色 */
+  --gray-50: #F8FAFC;
+  --gray-100: #F1F5F9;
+  --gray-200: #E2E8F0;
+  --gray-300: #CBD5E1;
+  --gray-400: #94A3B8;
+  --gray-500: #64748B;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1E293B;
+  --gray-900: #0F172A;
+
+  /* 背景层 */
+  --bg-page: #F5F7FB;
+  --bg-card: #FFFFFF;
+  --bg-sidebar: #FFFFFF;
+  --bg-subtle: #F8FAFC;
+
+  /* 描边 */
+  --border-base: #E5E9F2;
+  --border-light: #F0F2F8;
+  --border-strong: #CBD5E1;
+
+  /* 阴影 */
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 8px -2px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 12px 24px -6px rgba(15, 23, 42, 0.10), 0 4px 8px -4px rgba(15, 23, 42, 0.06);
+
+  /* 圆角 */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* 字号 */
+  --font-xs: 12px;
+  --font-sm: 13px;
+  --font-base: 14px;
+  --font-md: 15px;
+  --font-lg: 16px;
+  --font-xl: 18px;
+  --font-2xl: 20px;
+  --font-3xl: 24px;
+  --font-4xl: 30px;
+
+  /* 间距 */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* 布局 */
+  --sidebar-w: 220px;
+  --sidebar-w-collapsed: 64px;
+  --topbar-h: 56px;
+  --subnav-w: 240px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: -apple-system, "PingFang SC", "HarmonyOS Sans", "SF Pro SC",
+    "Helvetica Neue", "Microsoft YaHei", "Source Han Sans CN", sans-serif;
+  font-size: var(--font-base);
+  color: var(--gray-800);
+  background: var(--bg-page);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input, textarea {
+  font-family: inherit;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ========== 应用主布局 ========== */
+.app {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg-page);
+}
+
+/* ----------- 主导航 ----------- */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-base);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 18px;
+  height: var(--topbar-h);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.brand-logo {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  font-size: 18px;
+}
+
+.brand-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--gray-900);
+  letter-spacing: 0.5px;
+}
+
+.tenant-switcher {
+  margin: 12px 14px 8px;
+  padding: 8px 10px;
+  background: var(--gray-50);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.tenant-switcher:hover { background: var(--brand-50); border-color: var(--brand-200); }
+.tenant-avatar {
+  width: 24px; height: 24px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #FF7A2F, #FFB259);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  display:flex; align-items:center; justify-content:center;
+}
+.tenant-meta { flex: 1; min-width: 0; }
+.tenant-name { font-size: 13px; font-weight: 600; color: var(--gray-800); line-height: 1.3; }
+.tenant-role { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+.tenant-arrow { color: var(--gray-400); font-size: 12px; }
+
+.nav-section {
+  padding: 8px 10px;
+}
+.nav-section + .nav-section { border-top: 1px solid var(--border-light); padding-top: 12px; margin-top: 4px; }
+.nav-title {
+  padding: 8px 10px 6px;
+  font-size: 11px;
+  color: var(--gray-400);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  color: var(--gray-600);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+  margin-bottom: 2px;
+}
+
+.nav-item:hover { background: var(--gray-50); color: var(--gray-900); }
+.nav-item.active {
+  background: var(--brand-50);
+  color: var(--brand-700);
+  font-weight: 600;
+}
+.nav-item.active::before {
+  content: "";
+  position: absolute;
+  left: -10px; top: 8px; bottom: 8px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--brand-600);
+}
+.nav-item .icon { width: 16px; height: 16px; opacity: 0.85; }
+.nav-item .badge {
+  margin-left: auto;
+  background: var(--danger);
+  color: #fff;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.nav-footer { margin-top: auto; padding: 12px 14px; border-top: 1px solid var(--border-light); }
+.usage-box {
+  background: linear-gradient(135deg, var(--brand-50), #fff);
+  border: 1px solid var(--brand-100);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+}
+.usage-label { font-size: 11px; color: var(--gray-500); }
+.usage-value { font-size: 13px; color: var(--brand-700); font-weight: 600; margin-top: 2px; }
+.usage-bar { height: 4px; border-radius: 2px; background: var(--brand-100); margin-top: 6px; overflow: hidden; }
+.usage-bar-inner { height: 100%; background: linear-gradient(90deg, var(--brand-500), var(--brand-700)); border-radius: 2px; }
+
+/* ----------- 主区域 ----------- */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.topbar {
+  height: var(--topbar-h);
+  background: #fff;
+  border-bottom: 1px solid var(--border-base);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 16px;
+  position: sticky; top: 0; z-index: 50;
+}
+
+.crumb { display: flex; align-items: center; gap: 6px; color: var(--gray-500); font-size: 13px; }
+.crumb .sep { color: var(--gray-300); }
+.crumb .current { color: var(--gray-900); font-weight: 600; }
+
+.topbar-spacer { flex: 1; }
+
+.topbar-search {
+  width: 320px;
+  height: 32px;
+  background: var(--gray-50);
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-md);
+  padding: 0 12px;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px;
+  color: var(--gray-500);
+}
+.topbar-search input { flex: 1; background: transparent; border: none; outline: none; font-size: 13px; color: var(--gray-700); }
+.kbd { padding: 1px 6px; background: #fff; border: 1px solid var(--border-base); border-radius: 4px; font-size: 11px; color: var(--gray-500); }
+
+.topbar-icon {
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gray-600);
+  cursor: pointer;
+  position: relative;
+}
+.topbar-icon:hover { background: var(--gray-50); color: var(--gray-900); }
+.topbar-icon .dot {
+  position: absolute; top: 6px; right: 6px;
+  width: 7px; height: 7px; border-radius: 999px; background: var(--danger);
+  border: 2px solid #fff;
+}
+
+.topbar-user {
+  display: flex; align-items: center; gap: 8px;
+  padding: 4px 10px 4px 4px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.topbar-user:hover { background: var(--gray-50); }
+.user-avatar {
+  width: 28px; height: 28px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #3B6AEE, #8EAEFB);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  display:flex; align-items:center; justify-content:center;
+}
+.user-name { font-size: 13px; color: var(--gray-800); }
+
+/* 顶部场景切换 tab */
+.scene-tabs {
+  display: flex;
+  background: var(--gray-100);
+  border-radius: 12px;
+  padding: 3px;
+  gap: 2px;
+}
+.scene-tab {
+  padding: 5px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--gray-600);
+  cursor: pointer;
+  font-weight: 500;
+  display: flex; align-items:center; gap: 6px;
+}
+.scene-tab.active { background: #fff; color: var(--brand-700); box-shadow: var(--shadow-sm); font-weight: 600; }
+
+/* ----------- 内容容器 ----------- */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+}
+
+/* ========== 通用元素 ========== */
+.page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.page-title { font-size: 20px; font-weight: 600; color: var(--gray-900); display: flex; align-items: center; gap: 8px; }
+.page-subtitle { font-size: 13px; color: var(--gray-500); margin-top: 4px; }
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-xs);
+}
+.card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.card-title { font-size: 15px; font-weight: 600; color: var(--gray-900); display: flex; align-items: center; gap: 8px; }
+.card-action { font-size: 13px; color: var(--brand-600); cursor: pointer; }
+
+/* 按钮 */
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: var(--radius-md); font-size: 13px; font-weight: 500; transition: all 0.15s; }
+.btn-primary { background: var(--brand-600); color: #fff; }
+.btn-primary:hover { background: var(--brand-700); }
+.btn-secondary { background: var(--gray-100); color: var(--gray-700); }
+.btn-secondary:hover { background: var(--gray-200); }
+.btn-ghost { color: var(--gray-700); }
+.btn-ghost:hover { background: var(--gray-100); }
+.btn-outline { border: 1px solid var(--border-base); background: #fff; color: var(--gray-700); }
+.btn-outline:hover { border-color: var(--brand-400); color: var(--brand-600); }
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+.btn-lg { padding: 9px 18px; font-size: 14px; }
+
+/* Tag / 标签 */
+.tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.tag-brand { background: var(--brand-50); color: var(--brand-700); }
+.tag-success { background: var(--success-bg); color: var(--success); }
+.tag-warn { background: var(--warning-bg); color: var(--warning); }
+.tag-danger { background: var(--danger-bg); color: var(--danger); }
+.tag-info { background: var(--info-bg); color: var(--info); }
+.tag-gray { background: var(--gray-100); color: var(--gray-600); }
+.tag-orange { background: var(--accent-orange-bg); color: var(--accent-orange); }
+
+/* 平台徽标 */
+.platform { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 500; }
+.platform-juliang { background: #FFEDE3; color: #E25822; }
+.platform-tencent { background: #E3F1FF; color: #1376E5; }
+.platform-kuaishou { background: #FFE8EE; color: #E83A60; }
+
+/* 指标 KPI */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.kpi {
+  background: #fff;
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-lg);
+  padding: 18px 18px 16px;
+}
+.kpi-label { font-size: 13px; color: var(--gray-500); display: flex; align-items:center; gap:4px; }
+.kpi-value { font-size: 26px; font-weight: 700; color: var(--gray-900); margin-top: 6px; letter-spacing: -0.5px; }
+.kpi-trend { display:inline-flex; align-items:center; gap: 4px; font-size: 12px; margin-top: 6px; }
+.trend-up { color: var(--success); }
+.trend-down { color: var(--danger); }
+.kpi-spark { height: 28px; margin-top: 8px; }
+
+/* 表格 */
+.table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.table thead th { background: var(--gray-50); text-align: left; padding: 10px 14px; font-weight: 600; color: var(--gray-600); border-bottom: 1px solid var(--border-base); }
+.table tbody td { padding: 14px; border-bottom: 1px solid var(--border-light); }
+.table tbody tr:hover { background: var(--gray-50); }
+.table tbody tr:last-child td { border-bottom: none; }
+
+/* 列表项 */
+.list-item {
+  display: flex; gap: 12px; padding: 12px 14px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.list-item:hover { background: var(--gray-50); }
+.list-item.active { background: var(--brand-50); }
+
+/* 输入框 */
+.input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  color: var(--gray-800);
+  background: #fff;
+  outline: none;
+  transition: border 0.15s, box-shadow 0.15s;
+}
+.input:focus { border-color: var(--brand-400); box-shadow: 0 0 0 3px var(--brand-50); }
+.input-lg { padding: 11px 14px; font-size: 14px; }
+
+/* 通用 utility */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.gap-1 { gap: 4px; } .gap-2 { gap: 8px; } .gap-3 { gap: 12px; } .gap-4 { gap: 16px; } .gap-6 { gap: 24px; }
+.flex-1 { flex: 1; }
+.text-xs { font-size: 12px; } .text-sm { font-size: 13px; } .text-base { font-size: 14px; } .text-lg { font-size: 16px; } .text-xl { font-size: 18px; } .text-2xl { font-size: 20px; }
+.font-bold { font-weight: 700; } .font-semibold { font-weight: 600; } .font-medium { font-weight: 500; }
+.text-muted { color: var(--gray-500); }
+.text-subtle { color: var(--gray-400); }
+.text-primary { color: var(--brand-700); }
+.text-success { color: var(--success); }
+.text-danger { color: var(--danger); }
+.text-warning { color: var(--warning); }
+.text-gray-700 { color: var(--gray-700); }
+.text-gray-900 { color: var(--gray-900); }
+.mb-1 { margin-bottom: 4px; } .mb-2 { margin-bottom: 8px; } .mb-3 { margin-bottom: 12px; } .mb-4 { margin-bottom: 16px; } .mb-6 { margin-bottom: 24px; }
+.mt-1 { margin-top: 4px; } .mt-2 { margin-top: 8px; } .mt-3 { margin-top: 12px; } .mt-4 { margin-top: 16px; } .mt-6 { margin-top: 24px; }
+.w-full { width: 100%; }
+.rounded-md { border-radius: var(--radius-md); }
+.rounded-lg { border-radius: var(--radius-lg); }
+.divider { height: 1px; background: var(--border-light); margin: 12px 0; }
+.dot-divider { color: var(--gray-300); margin: 0 6px; }
+
+/* 滚动条 */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: var(--gray-300); background-clip: padding-box; border: 2px solid transparent; }
+
+</style>
+<style>
+.mon-toolbar {
+  background: #fff;
+  border: 1px solid var(--border-base);
+  border-radius: 12px;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.mon-filter { display: flex; gap: 6px; align-items: center; background: var(--gray-50); padding: 3px; border-radius: 8px; }
+.mon-fc { padding: 5px 12px; border-radius: 6px; font-size: 12px; color: var(--gray-600); cursor: pointer; }
+.mon-fc.active { background: #fff; color: var(--brand-700); font-weight: 600; box-shadow: var(--shadow-sm); }
+
+.realtime-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px;
+  background: var(--success-bg);
+  color: var(--success);
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 999px;
+}
+.pulse-dot {
+  width: 8px; height: 8px;
+  border-radius: 999px;
+  background: var(--success);
+  animation: pulse-anim 1.6s ease infinite;
+}
+@keyframes pulse-anim { 0%,100% { opacity: 1; transform: scale(1);} 50% { opacity: 0.5; transform: scale(1.3);} }
+
+.mon-kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+.plat-pane th:nth-child(2), .plat-pane td:nth-child(2) { display: none; }
+.plat-pane[data-plat="juliang"] th:nth-child(n+5):nth-child(-n+8), .plat-pane[data-plat="juliang"] td:nth-child(n+5):nth-child(-n+8) { display: none; }
+.plat-pane[data-plat="kuaishou"] th:nth-child(n+5):nth-child(-n+7), .plat-pane[data-plat="kuaishou"] td:nth-child(n+5):nth-child(-n+7) { display: none; }
+.plat-pane[data-plat="tencent"] th:nth-child(n+5):nth-child(-n+7), .plat-pane[data-plat="tencent"] td:nth-child(n+5):nth-child(-n+7) { display: none; }
+.mon-kpi {
+  background: #fff;
+  border: 1px solid var(--border-base);
+  border-radius: 12px;
+  padding: 14px 16px;
+  position: relative;
+}
+.mon-kpi .label { font-size: 12px; color: var(--gray-500); }
+.mon-kpi .val { font-size: 20px; font-weight: 700; color: var(--gray-900); margin-top: 2px; }
+.mon-kpi .sub { font-size: 11px; margin-top: 2px; }
+.mon-kpi .spark { position: absolute; right: 14px; bottom: 14px; width: 60px; height: 22px; }
+
+.mon-main { display: block; }
+
+.chart-card {
+  background: #fff;
+  border: 1px solid var(--border-base);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 16px;
+}
+.chart-tabs { display: flex; gap: 6px; }
+.ct-tab {
+  padding: 4px 12px;
+  font-size: 12px;
+  color: var(--gray-600);
+  cursor: pointer;
+  border-radius: 6px;
+}
+.ct-tab.active { background: var(--brand-50); color: var(--brand-700); font-weight: 600; }
+
+.plat-sum { display: flex; align-items: center; gap: 16px; padding: 10px 18px 0; font-size: 13px; color: var(--gray-600); flex-wrap: wrap; }
+.ps-item { display: inline-flex; align-items: center; gap: 5px; }
+.ps-item b { color: var(--gray-900); font-weight: 600; }
+.ps-total { margin-left: auto; font-weight: 600; color: var(--brand-700); }
+
+/* 表格 */
+.account-table {
+  background: #fff;
+  border: 1px solid var(--border-base);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.account-table thead th {
+  background: var(--gray-50);
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gray-600);
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border-base);
+}
+.account-table tbody td {
+  padding: 12px 14px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--border-light);
+}
+.account-table tbody tr:hover { background: var(--gray-50); cursor: pointer; }
+.account-table tbody tr:last-child td { border-bottom: none; }
+
+.mini-progress { width: 70px; height: 5px; background: var(--gray-100); border-radius: 999px; overflow: hidden; display: inline-block; vertical-align: middle; margin-left: 6px; }
+.mini-progress .fill { height: 100%; background: var(--brand-500); border-radius: 999px; }
+
+.heat-grid { display: grid; grid-template-columns: repeat(24, 1fr); gap: 3px; margin-top: 12px; }
+.heat-cell { aspect-ratio: 1; border-radius: 3px; background: var(--gray-100); transition: transform 0.15s; }
+.heat-cell:hover { transform: scale(1.15); }
+
+.legend { display: flex; gap: 16px; font-size: 11px; color: var(--gray-500); align-items: center; }
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+
+.right-side .card { margin-bottom: 16px; padding: 14px 16px; }
+
+.split-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--border-light);
+  font-size: 12px;
+}
+.split-row:last-child { border-bottom: none; }
+.split-name { color: var(--gray-700); }
+.split-bar-wrap { display: flex; align-items: center; gap: 6px; }
+.split-bar { width: 70px; height: 5px; background: var(--gray-100); border-radius: 999px; overflow: hidden; }
+.split-pct { font-weight: 600; color: var(--gray-800); width: 38px; text-align: right; }
+
+.toppers-list { display: flex; flex-direction: column; gap: 8px; }
+.topper-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px;
+  border-radius: 8px;
+  background: var(--gray-50);
+}
+.topper-rank {
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  background: var(--brand-600); color: #fff;
+  font-size: 11px; font-weight: 700;
+  display:flex; align-items:center; justify-content:center;
+}
+.topper-rank.gold { background: linear-gradient(135deg, #FFD668, #FFA500); }
+.topper-rank.silver { background: linear-gradient(135deg, #C0C8D1, #94A3B8); }
+.topper-rank.bronze { background: linear-gradient(135deg, #E8A87C, #C39E78); }
+
+/* ===== 账户详情页（独立设计，短剧字段）===== */
+.mon-detail-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.mon-back { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border-base); background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--gray-600); }
+.mon-back:hover { border-color: var(--brand-300); color: var(--brand-700); }
+.mon-detail-title { font-size: 18px; font-weight: 700; color: var(--gray-900); }
+
+.mon-detail-tabs { display: flex; gap: 28px; border-bottom: 1px solid var(--border-base); margin-bottom: 18px; }
+.mdt { padding: 10px 0; font-size: 14px; color: var(--gray-500); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; display: flex; align-items: center; gap: 4px; }
+.mdt:hover { color: var(--gray-800); }
+.mdt.active { color: var(--brand-700); border-bottom-color: var(--brand-600); font-weight: 600; }
+
+.mon-date-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.mdb-label { font-size: 13px; color: var(--gray-600); }
+.mdb-range { font-size: 13px; color: var(--gray-800); background: #fff; border: 1px solid var(--border-base); border-radius: 8px; padding: 6px 12px; }
+.mdb-quick { display: flex; gap: 4px; margin-left: 8px; }
+.mdb-quick span { font-size: 13px; color: var(--gray-500); padding: 4px 10px; border-radius: 6px; cursor: pointer; }
+.mdb-quick span.active { color: var(--brand-700); font-weight: 600; }
+.mdb-quick span:hover { background: var(--gray-50); }
+
+/* 完成度 KPI（浅蓝卡 + 蓝数字，参考短剧平台）*/
+.mon-detail-kpi { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 24px; }
+.dt-card { background:#fff; border:1px solid var(--border-base); border-radius:12px; padding:16px 18px; margin-bottom:16px; }
+.dt-card-title { font-size:14px; font-weight:600; color:var(--gray-900); margin-bottom:12px; }
+.dt-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+.funnel { display:flex; flex-direction:column; gap:8px; }
+.funnel-row { display:flex; align-items:center; gap:10px; }
+.fl-label { width:64px; font-size:13px; color:var(--gray-600); flex-shrink:0; text-align:right; }
+.fl-bar { background:linear-gradient(90deg,var(--brand-600),var(--brand-400)); color:#fff; font-size:12px; padding:7px 12px; border-radius:6px; white-space:nowrap; min-width:64px; }
+.fl-bar b { font-weight:700; }
+.bid-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
+.bid-item { background:var(--gray-50); border-radius:8px; padding:9px 12px; }
+.bid-label { font-size:12px; color:var(--gray-500); }
+.bid-val { font-size:16px; font-weight:700; color:var(--gray-900); margin-top:2px; }
+.bid-progress-head { display:flex; justify-content:space-between; font-size:12px; color:var(--gray-600); margin-bottom:6px; }
+.bid-bar { height:8px; background:var(--gray-100); border-radius:4px; overflow:hidden; }
+.bid-bar > div { height:100%; background:linear-gradient(90deg,var(--brand-500),var(--brand-700)); border-radius:4px; }
+.bid-hint { font-size:11px; color:var(--warning); margin-top:9px; }
+.mdk { background: var(--brand-50); border: 1px solid var(--brand-100); border-radius: 12px; padding: 16px; }
+.mdk-label { font-size: 13px; color: var(--gray-600); }
+.mdk-val { font-size: 22px; font-weight: 700; color: var(--brand-700); margin-top: 6px; }
+.mdk-completion { grid-column: 5; grid-row: span 2; display: flex; flex-direction: column; }
+.mdk-comp-bar { height: 8px; background: #fff; border-radius: 999px; overflow: hidden; margin: 12px 0 10px; }
+.mdk-comp-bar > div { height: 100%; background: var(--brand-500); border-radius: 999px; }
+.mdk-comp-detail { font-size: 13px; color: var(--gray-700); }
+.mdk-comp-detail b { color: var(--gray-900); }
+
+/* 详细数据 */
+.mon-detail-data { background: #fff; border: 1px solid var(--border-base); border-radius: 12px; overflow: hidden; }
+.ret-kpi { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px; }
+.ret-item { background:var(--gray-50); border:1px solid var(--border-light); border-radius:10px; padding:14px 16px; }
+.ret-label { font-size:12px; color:var(--gray-500); }
+.ret-val { font-size:24px; font-weight:700; color:var(--brand-700); margin-top:4px; }
+.cohort-table { width:100%; border-collapse:collapse; font-size:12px; }
+.cohort-table th { padding:7px 5px; font-size:12px; color:var(--gray-500); font-weight:600; text-align:center; border-bottom:1px solid var(--border-base); }
+.cohort-table th:first-child, .cohort-table th:nth-child(2) { text-align:left; }
+.cohort-table td { padding:7px 5px; text-align:center; border-bottom:2px solid #fff; }
+.cohort-table td:first-child, .cohort-table td:nth-child(2) { text-align:left; color:var(--gray-700); }
+.mon-detail-data table { font-size:13px; border-collapse:collapse; }
+.mon-detail-data th { text-align:left; padding:10px 14px; font-size:12px; color:var(--gray-500); font-weight:600; border-bottom:1px solid var(--border-base); }
+.mon-detail-data td { padding:10px 14px; border-bottom:1px solid var(--border-light); color:var(--gray-800); }
+.mdd-scroll { overflow-x: auto; }
+.ret-filter { background:var(--gray-50); border:1px solid var(--border-light); border-radius:10px; padding:2px 16px; margin-bottom:16px; }
+.rf-row { display:flex; align-items:center; gap:14px; padding:11px 0; border-bottom:1px solid var(--border-light); flex-wrap:wrap; }
+.rf-row:last-child { border-bottom:none; }
+.rf-label { font-size:13px; color:var(--gray-500); width:60px; flex-shrink:0; }
+.rf-date { display:flex; align-items:center; gap:8px; height:34px; padding:0 12px; background:#fff; border:1px solid var(--border-base); border-radius:8px; font-size:13px; color:var(--gray-800); }
+.rf-sep { color:var(--gray-400); }
+.rf-clear { color:var(--gray-300); cursor:pointer; margin-left:2px; font-size:15px; }
+.rf-clear:hover { color:var(--gray-500); }
+.rf-quick { font-size:13px; color:var(--gray-600); cursor:pointer; padding:0 2px; }
+.rf-quick:hover { color:var(--brand-600); }
+.rf-quick.rf-on { color:var(--brand-600); font-weight:600; }
+.rf-more { font-size:13px; color:var(--brand-600); cursor:pointer; }
+.rf-chk, .rf-rdo { display:inline-flex; align-items:center; gap:6px; font-size:13px; color:var(--gray-700); cursor:pointer; }
+.rf-chk input, .rf-rdo input { accent-color:var(--brand-600); width:15px; height:15px; cursor:pointer; margin:0; }
+.rf-i { font-weight:700; }
+.rf-male { color:#3B82F6; }
+.rf-female { color:#EC4899; }
+.cohort-table { white-space:nowrap; width:auto; min-width:100%; }
+.cohort-table .coh-sticky { position:sticky; left:0; background:#fff; z-index:2; box-shadow:1px 0 0 var(--border-light); }
+.cohort-table thead .coh-sticky { z-index:3; background:#fff; }
+.cohort-table th:nth-child(n+3), .cohort-table td:nth-child(n+3) { min-width:76px; }
+.cohort-table .coh-sticky { min-width:96px; }
+.mon-detail-data .mdd-pivot { font-size:13px; border-collapse:collapse; white-space:nowrap; }
+.mon-detail-data .mdd-pivot th { text-align:right; padding:10px 16px; font-size:12px; color:var(--gray-500); font-weight:600; border-bottom:1px solid var(--border-base); }
+.mon-detail-data .mdd-pivot td { text-align:right; padding:10px 16px; border-bottom:1px solid var(--border-light); color:var(--gray-800); }
+.mon-detail-data .mdd-pivot .mdd-sticky { position:sticky; left:0; background:#fff; text-align:left; font-weight:600; color:var(--gray-700); z-index:2; box-shadow:1px 0 0 var(--border-light); }
+.mon-detail-data .mdd-pivot thead .mdd-sticky { color:var(--gray-500); z-index:3; }
+.mon-detail-data .mdd-pivot .mdd-today { background:var(--brand-50); color:var(--brand-700); font-weight:600; }
+.mon-detail-data .mdd-pivot thead .mdd-today { color:var(--brand-600); }
+.mon-detail-data .mdd-pivot .mdd-sub { font-size:11px; font-weight:400; margin-top:2px; }
+.mdd-head { padding: 16px 18px; border-bottom: 1px solid var(--border-light); }
+.mdd-title { font-size: 15px; font-weight: 700; color: var(--gray-900); margin-bottom: 12px; }
+.mdd-tabs { display: flex; gap: 0; }
+.mdd-tab { padding: 8px 20px; font-size: 13px; color: var(--gray-600); cursor: pointer; border: 1px solid var(--border-base); border-bottom: none; border-radius: 8px 8px 0 0; margin-right: 4px; background: var(--gray-50); }
+.mdd-tab.active { color: var(--brand-700); font-weight: 600; background: #fff; border-color: var(--brand-200); }
+.mdd-filter { padding: 12px 18px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid var(--border-light); }
+.mdd-search { height: 30px; border: 1px solid var(--border-base); border-radius: 7px; padding: 0 10px; font-size: 12px; width: 160px; }
+.mdd-fgroup { display: flex; align-items: center; gap: 6px; }
+.mdd-fgroup .fl { font-size: 12px; color: var(--gray-500); }
+.mdd-fchip { font-size: 12px; padding: 4px 12px; border-radius: 6px; color: var(--gray-600); cursor: pointer; border: 1px solid var(--border-base); }
+.mdd-fchip.active { background: var(--brand-600); color: #fff; border-color: var(--brand-600); }
+.mdd-table-wrap { overflow-x: auto; }
+.mdd-table { width: 100%; border-collapse: collapse; min-width: 1100px; }
+.mdd-table thead th { background: var(--gray-50); text-align: right; padding: 10px 14px; font-size: 11.5px; font-weight: 600; color: var(--gray-600); white-space: nowrap; border-bottom: 1px solid var(--border-base); }
+.mdd-table thead th:first-child { text-align: left; }
+.mdd-table tbody td { padding: 12px 14px; font-size: 12.5px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--border-light); color: var(--gray-800); }
+.mdd-table tbody td:first-child { text-align: left; }
+.mdd-table tbody tr:last-child td { border-bottom: none; }
+.mdd-table tbody tr:hover { background: var(--gray-50); }
+.mdd-group-name { font-weight: 600; color: var(--gray-900); }
+.mdd-group-id { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
+
+/* 平台 tab（不同平台指标体系不同，分开展示）*/
+.plat-tabs { display: flex; gap: 0; margin-top: 14px; border-bottom: 1px solid var(--border-base); }
+.plat-tab { padding: 10px 18px; font-size: 13px; color: var(--gray-600); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; display: flex; align-items: center; gap: 6px; }
+.plat-tab:hover { color: var(--gray-800); }
+.plat-tab.active { color: var(--brand-700); font-weight: 600; border-bottom-color: var(--brand-600); }
+.plat-tab .pdot { width: 8px; height: 8px; border-radius: 3px; }
+.plat-tab.active .pdot.juliang { background: #E25822; }
+.plat-tab .pdot.juliang { background: #FFB259; }
+.plat-tab .pdot.kuaishou { background: #FF5C8A; }
+.plat-tab .pdot.tencent { background: #4E8CFF; }
+.plat-pane table { width: 100%; }
+.plat-hint { font-size: 11px; color: var(--gray-400); padding: 8px 18px 0; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div id="__sidebar"></div>
+
+  <div class="main">
+    <div id="__topbar"></div>
+
+    <div class="content">
+      <div class="mon-view" data-view="list">
+      <div class="page-header">
+        <div>
+          <div class="page-title">
+            数据监控
+            <span class="realtime-pill"><span class="pulse-dot"></span> 实时</span>
+          </div>
+          <div class="page-subtitle">8 个账户 · 3 大平台 · 数据每 60s 刷新一次</div>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-outline">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            导出报表
+          </button>
+          <button class="btn btn-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 01-12 7l-5 2 2-5A8 8 0 1121 12z"/></svg>
+            问 AI：今天数据怎么样
+          </button>
+        </div>
+      </div>
+
+      <!-- 工具栏 -->
+      <div class="mon-toolbar">
+        <div class="mon-filter">
+          <div class="mon-fc">今日</div>
+          <div class="mon-fc active">实时</div>
+          <div class="mon-fc">昨日</div>
+          <div class="mon-fc">7 日</div>
+          <div class="mon-fc">30 日</div>
+          <div class="mon-fc">自定义</div>
+        </div>
+
+        <div style="width:1px; height: 18px; background: var(--border-base);"></div>
+
+        <button class="btn btn-ghost btn-sm">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          全部账户 (8) ▾
+        </button>
+        <button class="btn btn-ghost btn-sm">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>
+          全部题材 ▾
+        </button>
+        <button class="btn btn-ghost btn-sm">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/></svg>
+          所有投手 ▾
+        </button>
+
+        <div style="flex:1;"></div>
+
+        <div style="font-size: 12px; color: var(--gray-500);">数据更新 12 秒前</div>
+        <button class="btn btn-ghost btn-sm">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 11-3-6.7M21 5v5h-5"/></svg>
+          手动刷新
+        </button>
+      </div>
+
+      <!-- KPI -->
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+        <span style="font-size:12px; color:var(--gray-500); display:flex; align-items:center; gap:6px;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+          数据来自 8 个授权账户 · 巨量/磁力/腾讯 API 实时拉取
+        </span>
+        <span style="font-size:12px; color:var(--gray-400);">更新于 刚刚 · 每 60s 自动刷新</span>
+      </div>
+      <div class="mon-kpi-row">
+        <div class="mon-kpi">
+          <div class="label">实时消耗</div>
+          <div class="val">¥480,000</div>
+          <div class="sub trend-up">▲ 16.1% vs 昨日</div>
+          <svg class="spark" viewBox="0 0 60 22"><polyline points="0,18 10,14 20,16 30,10 40,12 50,6 60,4" fill="none" stroke="#3B6AEE" stroke-width="2"/></svg>
+        </div>
+        <div class="mon-kpi">
+          <div class="label">今日涨粉</div>
+          <div class="val">12,670</div>
+          <div class="sub trend-up">▲ 8.3%</div>
+          <svg class="spark" viewBox="0 0 60 22"><polyline points="0,16 10,15 20,12 30,14 40,9 50,8 60,5" fill="none" stroke="#3B6AEE" stroke-width="2"/></svg>
+        </div>
+        <div class="mon-kpi">
+          <div class="label">ROI</div>
+          <div class="val">1.42</div>
+          <div class="sub trend-up">▲ 0.08</div>
+          <svg class="spark" viewBox="0 0 60 22"><polyline points="0,10 10,9 20,11 30,8 40,7 50,5 60,4" fill="none" stroke="#16A34A" stroke-width="2"/></svg>
+        </div>
+        <div class="mon-kpi">
+          <div class="label">完成度（整体）</div>
+          <div class="val">64%</div>
+          <div class="sub trend-up">▲ 6% vs 昨日</div>
+          <svg class="spark" viewBox="0 0 60 22"><polyline points="0,16 10,14 20,13 30,11 40,9 50,7 60,5" fill="none" stroke="#3B6AEE" stroke-width="2"/></svg>
+        </div>
+      </div>
+
+      <!-- 实时消耗趋势 -->
+      <div class="chart-card">
+        <div class="card-header">
+          <div class="card-title">实时消耗 · 24 小时趋势</div>
+          <div class="chart-tabs">
+            <div class="ct-tab active">消耗</div>
+            <div class="ct-tab">转化</div>
+            <div class="ct-tab">ROI</div>
+            <div class="ct-tab">支付粉价</div>
+          </div>
+        </div>
+        <svg viewBox="0 0 700 220" style="width:100%; height:220px;">
+          <defs>
+            <linearGradient id="grad1" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="#3B6AEE" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#3B6AEE" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <!-- grid -->
+          <line x1="40" y1="40" x2="680" y2="40" stroke="#F1F5F9"/>
+          <line x1="40" y1="90" x2="680" y2="90" stroke="#F1F5F9"/>
+          <line x1="40" y1="140" x2="680" y2="140" stroke="#F1F5F9"/>
+          <line x1="40" y1="190" x2="680" y2="190" stroke="#E2E8F0"/>
+          <text x="10" y="44" font-size="11" fill="#94A3B8">25K</text>
+          <text x="10" y="94" font-size="11" fill="#94A3B8">18K</text>
+          <text x="10" y="144" font-size="11" fill="#94A3B8">10K</text>
+          <text x="10" y="194" font-size="11" fill="#94A3B8">2K</text>
+          <!-- 今日 -->
+          <path d="M40,170 L80,175 L120,160 L160,165 L200,155 L240,148 L280,145 L320,130 L360,120 L400,110 L440,105 L480,95 L520,85 L560,75 L600,70 L640,55 L680,40 L680,190 L40,190 Z" fill="url(#grad1)"/>
+          <path d="M40,170 L80,175 L120,160 L160,165 L200,155 L240,148 L280,145 L320,130 L360,120 L400,110 L440,105 L480,95 L520,85 L560,75 L600,70 L640,55 L680,40" fill="none" stroke="#3B6AEE" stroke-width="2"/>
+          <!-- 昨日参考线 -->
+          <path d="M40,180 L80,178 L120,170 L160,172 L200,165 L240,160 L280,155 L320,145 L360,140 L400,130 L440,125 L480,118 L520,108 L560,98 L600,90 L640,80 L680,70" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="4 4"/>
+          <!-- 当前点 -->
+          <circle cx="640" cy="55" r="5" fill="#3B6AEE" stroke="#fff" stroke-width="2"/>
+          <text x="640" y="32" font-size="11" font-weight="600" fill="#1A3477" text-anchor="middle">¥480,000</text>
+          <!-- X -->
+          <text x="40" y="210" font-size="10" fill="#94A3B8">00:00</text>
+          <text x="200" y="210" font-size="10" fill="#94A3B8">06:00</text>
+          <text x="360" y="210" font-size="10" fill="#94A3B8">12:00</text>
+          <text x="520" y="210" font-size="10" fill="#94A3B8">18:00</text>
+          <text x="640" y="210" font-size="10" fill="#94A3B8" font-weight="600">现在 14:30</text>
+        </svg>
+        <div class="legend" style="margin-top: 8px;">
+          <div class="legend-item"><span class="legend-dot" style="background:#3B6AEE;"></span>今日实时</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#94A3B8;"></span>昨日同时段</div>
+          <div class="legend-item" style="margin-left:auto; color: var(--brand-700);">较昨日 ▲ 16.1%</div>
+        </div>
+      </div>
+
+      <div class="mon-main">
+        <div>
+          <div class="account-table" id="acct-table">
+            <div style="padding: 16px 18px 0;">
+              <div class="card-title">账户明细</div>
+              <div class="plat-hint" style="padding:2px 0 0;">不同平台指标体系不同，已分开展示 · 点击账户行查看详情</div>
+              <div class="plat-tabs">
+                <div class="plat-tab active" data-plat="juliang"><span class="pdot juliang"></span>巨量引擎 · 5</div>
+                <div class="plat-tab" data-plat="kuaishou"><span class="pdot kuaishou"></span>磁力引擎 · 2</div>
+                <div class="plat-tab" data-plat="tencent"><span class="pdot tencent"></span>腾讯广告 · 1</div>
+              </div>
+            </div>
+
+            <!-- 巨量引擎（转化目标量/目标转化率/完成度）-->
+            <div class="plat-pane" data-plat="juliang">
+              <table style="width:100%;">
+                <thead><tr><th>账户</th><th>状态</th><th>消耗</th><th>支付粉价</th><th>点击率</th><th>转化目标量</th><th>转化目标成本</th><th>目标转化率</th><th>完成度</th><th>操作</th></tr></thead>
+                <tbody>
+                <tr>
+                  <td><div style="font-weight:600;">A001 · 现言短剧旗舰户</div><div class="text-xs text-muted">投手 王磊</div></td>
+                  <td><span class="tag tag-danger">异常</span></td>
+                  <td>¥86,200</td><td>91.77</td><td>3.10%</td><td>36</td><td>2,394</td><td>0.26%</td><td>26%</td><td><a class="text-primary">归因 →</a></td>
+                </tr>
+                <tr>
+                  <td><div style="font-weight:600;">A002 · 主力 IP 大盘户</div><div class="text-xs text-muted">投手 张涛</div></td>
+                  <td><span class="tag tag-success">优异</span></td>
+                  <td>¥124,800</td><td>78.30</td><td>5.20%</td><td>48</td><td>620.40</td><td>0.85%</td><td>88%</td><td><a class="text-primary">扩量</a></td>
+                </tr>
+                <tr>
+                  <td><div style="font-weight:600;">A005 · 古言短剧扩量户</div><div class="text-xs text-muted">投手 李婉</div></td>
+                  <td><span class="tag tag-danger">拒审激增</span></td>
+                  <td>¥42,800</td><td>105.20</td><td>2.40%</td><td>6</td><td>1,108</td><td>0.18%</td><td>42%</td><td><a class="text-primary">诊断 →</a></td>
+                </tr>
+                <tr>
+                  <td><div style="font-weight:600;">A006 · 男频爽文主户</div><div class="text-xs text-muted">投手 钱晓彤</div></td>
+                  <td><span class="tag tag-success">正常</span></td>
+                  <td>¥68,400</td><td>82.10</td><td>4.30%</td><td>32</td><td>710.20</td><td>0.62%</td><td>71%</td><td>—</td>
+                </tr>
+                <tr>
+                  <td><div style="font-weight:600;">A008 · 都市悬疑户</div><div class="text-xs text-muted">投手 李响</div></td>
+                  <td><span class="tag tag-success">正常</span></td>
+                  <td>¥51,200</td><td>89.50</td><td>3.80%</td><td>24</td><td>805.40</td><td>0.48%</td><td>65%</td><td>—</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- 磁力引擎（粉价/转化数/转化成本/ROI）-->
+            <div class="plat-pane" data-plat="kuaishou" style="display:none;">
+              <table style="width:100%;">
+                <thead><tr><th>账户</th><th>状态</th><th>消耗</th><th>支付粉价</th><th>点击率</th><th>转化数</th><th>转化成本</th><th>ROI</th><th>操作</th></tr></thead>
+                <tbody>
+                <tr>
+                  <td><div style="font-weight:600;">K001 · 快手短剧主户</div><div class="text-xs text-muted">投手 王宇</div></td>
+                  <td><span class="tag tag-success">正常</span></td>
+                  <td>¥56,000</td><td>88.40</td><td>4.10%</td><td>320</td><td>175</td><td>1.46</td><td>—</td>
+                </tr>
+                <tr>
+                  <td><div style="font-weight:600;">K002 · 快手测试户</div><div class="text-xs text-muted">投手 李响</div></td>
+                  <td><span class="tag tag-success">正常</span></td>
+                  <td>¥18,200</td><td>95.10</td><td>3.50%</td><td>98</td><td>186</td><td>1.12</td><td>—</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- 腾讯广告（关注成本/下单/客单价/回本率）-->
+            <div class="plat-pane" data-plat="tencent" style="display:none;">
+              <table style="width:100%;">
+                <thead><tr><th>账户</th><th>状态</th><th>消耗</th><th>关注成本</th><th>下单率</th><th>下单成本</th><th>客单价</th><th>新增回本率</th><th>操作</th></tr></thead>
+                <tbody>
+                <tr>
+                  <td><div style="font-weight:600;">T001 · 腾讯系短剧户</div><div class="text-xs text-muted">投手 钱晓彤</div></td>
+                  <td><span class="tag tag-success">正常</span></td>
+                  <td>¥32,400</td><td>3.49</td><td>3.22%</td><td>942.76</td><td>9.87</td><td>11.07%</td><td>—</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div><!-- /list view -->
+
+      <!-- ============ 账户详情页 ============ -->
+      <div class="mon-view" data-view="detail" style="display:none;">
+        <div class="mon-detail-head">
+          <div class="mon-back" data-action="back-list"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
+          <div class="mon-detail-title" id="mon-detail-name">A001 · 现言短剧旗舰户</div>
+          <span class="platform platform-juliang">巨量</span>
+        </div>
+
+        <div class="mon-detail-tabs">
+          <div class="mdt active" data-dtab="overview">数据总览</div>
+          <div class="mdt" data-dtab="retention">订单留存</div>
+          <div class="mdt" data-dtab="detail">数据明细</div>
+        </div>
+
+        <!-- 数据总览 -->
+        <div class="mon-dpane" data-dpane="overview">
+          <div class="mon-date-bar">
+            <span class="mdb-label">日期</span>
+            <span class="mdb-range">2026-05-28 至 2026-05-28</span>
+            <div class="mdb-quick"><span class="active">今天</span><span>昨天</span><span>7天</span><span>30天</span></div>
+          </div>
+
+          <div class="mon-detail-kpi">
+            <div class="mdk"><div class="mdk-label">消耗</div><div class="mdk-val">86,200</div></div>
+            <div class="mdk"><div class="mdk-label">ROI</div><div class="mdk-val">0.84</div></div>
+            <div class="mdk"><div class="mdk-label">支付粉价</div><div class="mdk-val">91.77</div></div>
+            <div class="mdk"><div class="mdk-label">点击率</div><div class="mdk-val">3.10%</div></div>
+            <div class="mdk"><div class="mdk-label">转化目标量</div><div class="mdk-val">36</div></div>
+            <div class="mdk"><div class="mdk-label">转化目标成本</div><div class="mdk-val">2,394</div></div>
+            <div class="mdk"><div class="mdk-label">目标转化率</div><div class="mdk-val">0.26%</div></div>
+            <div class="mdk mdk-completion">
+              <div class="mdk-label">完成度</div>
+              <div class="mdk-val">26%</div>
+              <div class="mdk-comp-bar"><div style="width:26%"></div></div>
+              <div class="mdk-comp-detail">转化目标 <b>36</b> ｜ 目标 <b>139</b></div>
+            </div>
+          </div>
+
+          <!-- 账户 24h 趋势 -->
+          <div class="dt-card">
+            <div class="dt-card-title">今日消耗趋势 · 24 小时</div>
+            <svg viewBox="0 0 700 140" style="width:100%;height:120px;">
+              <line x1="0" y1="110" x2="700" y2="110" stroke="#F1F5F9"/>
+              <line x1="0" y1="70" x2="700" y2="70" stroke="#F8FAFC"/>
+              <path d="M0,95 L90,92 L180,80 L270,72 L360,75 L450,58 L540,50 L630,42 L670,38" fill="none" stroke="#3B6AEE" stroke-width="2.5"/>
+              <circle cx="670" cy="38" r="4" fill="#3B6AEE" stroke="#fff" stroke-width="2"/>
+              <text x="2" y="132" font-size="10" fill="#94A3B8">00:00</text>
+              <text x="338" y="132" font-size="10" fill="#94A3B8">12:00</text>
+              <text x="636" y="132" font-size="10" fill="#94A3B8" font-weight="600">现在 14:30</text>
+            </svg>
+          </div>
+
+          <div class="dt-row">
+            <div class="dt-card" style="margin-bottom:0;">
+              <div class="dt-card-title">转化漏斗</div>
+              <div class="funnel">
+                <div class="funnel-row"><span class="fl-label">曝光</span><div class="fl-bar" style="width:100%;"><b>446,600</b></div></div>
+                <div class="funnel-row"><span class="fl-label">点击</span><div class="fl-bar" style="width:64%;"><b>13,846</b> · 点击率 3.10%</div></div>
+                <div class="funnel-row"><span class="fl-label">加粉</span><div class="fl-bar" style="width:40%;"><b>939</b> · 粉价 ¥91.77</div></div>
+                <div class="funnel-row"><span class="fl-label">付费下单</span><div class="fl-bar" style="width:20%;"><b>36</b> · 成本 ¥2,394</div></div>
+              </div>
+            </div>
+            <div class="dt-card" style="margin-bottom:0;">
+              <div class="dt-card-title">出价 & 预算</div>
+              <div class="bid-grid">
+                <div class="bid-item"><div class="bid-label">出价方式</div><div class="bid-val">OCPM</div></div>
+                <div class="bid-item"><div class="bid-label">当前出价</div><div class="bid-val">¥26</div></div>
+                <div class="bid-item"><div class="bid-label">日预算</div><div class="bid-val">¥120,000</div></div>
+                <div class="bid-item"><div class="bid-label">已消耗</div><div class="bid-val">¥86,200</div></div>
+              </div>
+              <div class="bid-progress-head"><span>预算消耗进度</span><span style="font-weight:600;color:var(--gray-800);">72%</span></div>
+              <div class="bid-bar"><div style="width:72%;"></div></div>
+            </div>
+          </div>
+
+          <div class="mon-detail-data">
+            <div class="mdd-head">
+              <div class="mdd-title">详细数据</div>
+              <div class="mdd-tabs">
+                <div class="mdd-tab active" data-gtab="group">广告组</div>
+                <div class="mdd-tab" data-gtab="plan">投放计划</div>
+                <div class="mdd-tab" data-gtab="creative">创意</div>
+              </div>
+            </div>
+            <div class="mdd-filter">
+              <input class="mdd-search" placeholder="广告组名称">
+              <div class="mdd-fgroup"><span class="fl">综合评价</span><span class="mdd-fchip active">全部</span><span class="mdd-fchip">合格</span><span class="mdd-fchip">观察</span><span class="mdd-fchip">不合格</span></div>
+              <div class="mdd-fgroup"><span class="fl">状态</span><span class="mdd-fchip active">全部</span><span class="mdd-fchip">投放中</span><span class="mdd-fchip">已暂停</span><span class="mdd-fchip">待投放</span></div>
+            </div>
+            <div class="mdd-table-wrap">
+              <table class="mdd-table">
+                <thead><tr>
+                  <th>广告组</th><th>消耗(元)</th><th>支付粉价</th><th>完成度</th><th>曝光次数</th><th>点击次数</th><th>点击率</th><th>转化目标量</th><th>转化目标成本</th><th>目标转化率</th><th>下单成本</th><th>客单价</th>
+                </tr></thead>
+                <tbody>
+                  <tr><td><div class="mdd-group-name">现言-5秒钩子-A组</div><div class="mdd-group-id">1738657931934739</div></td><td>38,420</td><td>545.81</td><td>22.70%</td><td>149,893</td><td>4,221</td><td>2.82%</td><td>11</td><td>942.76</td><td>0.26%</td><td>942.76</td><td>20.21</td></tr>
+                  <tr><td><div class="mdd-group-name">现言-反转开场-B组</div><div class="mdd-group-id">1738657931920012</div></td><td>26,100</td><td>418.30</td><td>34.10%</td><td>98,420</td><td>3,180</td><td>3.23%</td><td>18</td><td>876.40</td><td>0.57%</td><td>790.20</td><td>22.80</td></tr>
+                  <tr><td><div class="mdd-group-name">现言-情绪痛点-C组</div><div class="mdd-group-id">1738657931900388</div></td><td>21,680</td><td>602.15</td><td>18.40%</td><td>72,310</td><td>1,980</td><td>2.74%</td><td>7</td><td>1,120.50</td><td>0.35%</td><td>1,008.30</td><td>18.40</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 订单留存（占位）-->
+        <div class="mon-dpane" data-dpane="retention" style="display:none;">
+          <div class="ret-filter">
+            <div class="rf-row">
+              <span class="rf-label">注册日期</span>
+              <div class="rf-date"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.4" style="color:var(--gray-400);"><rect x="2" y="3" width="12" height="11" rx="1.5"/><path d="M2 6.5h12M5.5 1.5v2M10.5 1.5v2"/></svg><span>2026-05-01</span><span class="rf-sep">至</span><span>2026-05-30</span><span class="rf-clear">×</span></div>
+              <span class="rf-quick">7 天</span>
+              <span class="rf-quick rf-on">30 天</span>
+              <span class="rf-more">更多选项 ⌄</span>
+            </div>
+            <div class="rf-row">
+              <span class="rf-label">频道</span>
+              <label class="rf-chk"><input type="checkbox"><span class="rf-i rf-male">♂</span>男</label>
+              <label class="rf-chk"><input type="checkbox"><span class="rf-i rf-female">♀</span>女</label>
+            </div>
+            <div class="rf-row">
+              <span class="rf-label">选择模式</span>
+              <label class="rf-rdo"><input type="radio" name="retmode" checked onclick="setRetMode('days')">天数模式</label>
+              <label class="rf-rdo"><input type="radio" name="retmode" onclick="setRetMode('date')">日期模式</label>
+            </div>
+          </div>
+          <div class="dt-card" style="margin-bottom:16px;">
+            <div class="dt-card-title" id="cohortTitle">回本进度 · 按注册日期 <span style="font-weight:400;color:var(--gray-400);font-size:12px;">（颜色越深，累计回本越好；— 为尚未到的天数）</span></div>
+            <div class="mdd-scroll">
+              <table class="cohort-table" id="cohortDays"><thead><tr><th class="coh-sticky">注册日期</th><th>新增粉</th><th>当天</th><th>D1</th><th>D2</th><th>D3</th><th>D4</th><th>D5</th><th>D6</th><th>D7</th><th>D8</th><th>D9</th><th>D10</th><th>D11</th><th>D12</th><th>D13</th><th>D14</th><th>D15</th><th>D16</th><th>D17</th><th>D18</th><th>D19</th><th>D20</th><th>D21</th><th>D22</th><th>D23</th><th>D24</th><th>D25</th><th>D26</th><th>D27</th><th>D28</th><th>D29</th><th>D30</th></tr></thead><tbody><tr><td class="coh-sticky">05-28 <span style="font-size:11px;color:var(--brand-600);">今天</span></td><td>939</td><td style="background:#EEF4FF;color:#1E44BC;font-weight:600;">18%</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td></tr><tr><td class="coh-sticky">05-25</td><td>1,310</td><td style="background:#EEF4FF;color:#1E44BC;font-weight:600;">22%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">38%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">51%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">62%</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td></tr><tr><td class="coh-sticky">05-22</td><td>1,180</td><td style="background:#EEF4FF;color:#1E44BC;font-weight:600;">20%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">35%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">46%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">56%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">63%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">70%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">76%</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td></tr><tr><td class="coh-sticky">05-19</td><td>1,140</td><td style="background:#EEF4FF;color:#1E44BC;font-weight:600;">19%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">33%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">44%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">53%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">60%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">66%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">72%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">78%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">81%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">84%</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td></tr><tr><td class="coh-sticky">05-16</td><td>1,020</td><td style="background:#EEF4FF;color:#1E44BC;font-weight:600;">21%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">37%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">48%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">59%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">66%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">74%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">80%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">86%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">90%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">93%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">97%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">100%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">103%</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td></tr><tr><td class="coh-sticky">05-13</td><td>1,170</td><td style="background:#EEF4FF;color:#1E44BC;font-weight:600;">18%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">32%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">41%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">50%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">57%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">63%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">68%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">74%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">77%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">80%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">83%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">86%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">88%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">91%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">94%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">96%</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td></tr><tr><td class="coh-sticky">05-10</td><td>1,260</td><td style="background:#EEF4FF;color:#1E44BC;font-weight:600;">20%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">35%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">46%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">56%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">63%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">70%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">76%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">82%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">85%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">89%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">92%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">95%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">98%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">101%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">104%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">106%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">109%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">111%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">113%</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td></tr><tr><td class="coh-sticky">05-07</td><td>1,090</td><td style="background:#EEF4FF;color:#1E44BC;font-weight:600;">22%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">38%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">51%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">62%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">69%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">77%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">84%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">90%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">94%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">98%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">101%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">105%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">108%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">111%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">114%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">117%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">119%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">122%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">124%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">127%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">129%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">132%</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td></tr><tr><td class="coh-sticky">05-04</td><td>1,210</td><td style="background:#EEF4FF;color:#1E44BC;font-weight:600;">19%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">33%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">44%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">53%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">60%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">66%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">72%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">78%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">81%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">84%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">87%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">90%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">93%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">96%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">99%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">101%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">103%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">105%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">107%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">110%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">112%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">114%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">116%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">117%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">119%</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td></tr><tr><td class="coh-sticky">05-01</td><td>1,150</td><td style="background:#EEF4FF;color:#1E44BC;font-weight:600;">21%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">37%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">48%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">59%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">66%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">74%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">80%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">86%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">90%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">93%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">97%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">100%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">103%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">106%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">109%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">112%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">114%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">116%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">119%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">121%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">124%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">126%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">128%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">130%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">131%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">133%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">135%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">136%</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td></tr><tr><td class="coh-sticky">04-28</td><td>1,080</td><td style="background:#EEF4FF;color:#1E44BC;font-weight:600;">20%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">35%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">46%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">56%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">63%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">70%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">76%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">82%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">85%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">89%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">92%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">95%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">98%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">101%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">104%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">106%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">109%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">111%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">113%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">115%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">118%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">120%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">122%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">123%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">125%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">127%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">128%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">130%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">132%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">133%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">135%</td></tr></tbody></table>
+              <table class="cohort-table" id="cohortDate" style="display:none;"><thead><tr><th class="coh-sticky">注册日期</th><th>新增粉</th><th>05-15</th><th>05-16</th><th>05-17</th><th>05-18</th><th>05-19</th><th>05-20</th><th>05-21</th><th>05-22</th><th>05-23</th><th>05-24</th><th>05-25</th><th>05-26</th><th>05-27</th><th>05-28</th></tr></thead><tbody><tr><td class="coh-sticky">05-28 <span style="font-size:11px;color:var(--brand-600);">今天</span></td><td>939</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="background:#EEF4FF;color:#1E44BC;font-weight:600;">18%</td></tr><tr><td class="coh-sticky">05-25</td><td>1,310</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="background:#EEF4FF;color:#1E44BC;font-weight:600;">22%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">37%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">49%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">60%</td></tr><tr><td class="coh-sticky">05-22</td><td>1,180</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="background:#EEF4FF;color:#1E44BC;font-weight:600;">20%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">34%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">46%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">57%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">64%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">70%</td><td style="color:var(--gray-300);">—</td></tr><tr><td class="coh-sticky">05-19</td><td>1,140</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="background:#EEF4FF;color:#1E44BC;font-weight:600;">19%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">33%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">45%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">56%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">62%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">69%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">75%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">81%</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td></tr><tr><td class="coh-sticky">05-16</td><td>1,020</td><td style="color:var(--gray-300);">—</td><td style="background:#EEF4FF;color:#1E44BC;font-weight:600;">21%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">36%</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">48%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">59%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">66%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">72%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">78%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">84%</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td></tr><tr><td class="coh-sticky">05-13</td><td>1,170</td><td style="background:#DCE7FE;color:#1E44BC;font-weight:600;">43%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">54%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">60%</td><td style="background:#BACFFD;color:#1B3A95;font-weight:600;">67%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">73%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">79%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">82%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">85%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">88%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">91%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">94%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">97%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">100%</td><td style="color:var(--gray-300);">—</td></tr><tr><td class="coh-sticky">05-10</td><td>1,260</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">71%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">77%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">83%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">86%</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">89%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">92%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">96%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">99%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">102%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">105%</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td></tr><tr><td class="coh-sticky">05-07</td><td>1,090</td><td style="background:#8EAEFB;color:#1A3477;font-weight:600;">88%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">92%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">95%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">98%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">101%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">105%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">108%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">110%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">113%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">115%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">117%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">119%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">122%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">124%</td></tr><tr><td class="coh-sticky">05-04</td><td>1,210</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">93%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">96%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">99%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">102%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">104%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">107%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">109%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">111%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">113%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">116%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">118%</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td></tr><tr><td class="coh-sticky">05-01</td><td>1,150</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">106%</td><td style="background:#5E89F6;color:#ffffff;font-weight:600;">108%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">111%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">113%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">115%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">117%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">120%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">122%</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td><td style="color:var(--gray-300);">—</td></tr><tr><td class="coh-sticky">04-28</td><td>1,080</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">111%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">113%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">115%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">118%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">120%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">122%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">123%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">125%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">127%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">128%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">130%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">132%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">133%</td><td style="background:#2554DC;color:#ffffff;font-weight:600;">135%</td></tr></tbody></table>
+            </div>
+          </div>
+          <div class="dt-card" style="margin-bottom:0;">
+            <div class="dt-card-title">复购 & LTV</div>
+            <div class="bid-grid">
+              <div class="bid-item"><div class="bid-label">复购率</div><div class="bid-val">23%</div></div>
+              <div class="bid-item"><div class="bid-label">平均复购金额</div><div class="bid-val">¥38</div></div>
+              <div class="bid-item"><div class="bid-label">7 日 LTV</div><div class="bid-val">¥85</div></div>
+              <div class="bid-item"><div class="bid-label">30 日 LTV</div><div class="bid-val">¥142</div></div>
+            </div>
+          </div>
+        </div>
+        <!-- 数据明细（占位）-->
+        <div class="mon-dpane" data-dpane="detail" style="display:none;">
+          <div class="mon-detail-data">
+            <div class="mdd-head"><div class="mdd-title">数据明细 · 近 14 天</div></div>
+            <table style="width:100%;">
+              <thead><tr><th>日期</th><th>消耗</th><th>曝光</th><th>点击</th><th>转化目标量</th><th>支付粉价</th><th>ROI</th></tr></thead>
+              <tbody><tr style="font-weight:600; background:var(--brand-50);"><td>05-28 <span style="font-size:11px;color:var(--brand-600);">今天</span></td><td>¥86,200</td><td>446,600</td><td>13,846</td><td>36</td><td>91.77</td><td>0.84</td></tr><tr><td>05-27 <span style="font-size:11px;color:var(--gray-400);">昨日</span></td><td>¥78,400</td><td>405,700</td><td>12,577</td><td>38</td><td>91.10</td><td>1.20</td></tr><tr><td>05-26</td><td>¥79,800</td><td>412,900</td><td>12,800</td><td>42</td><td>90.40</td><td>1.28</td></tr><tr><td>05-25</td><td>¥84,100</td><td>435,200</td><td>13,491</td><td>48</td><td>89.80</td><td>1.38</td></tr><tr><td>05-24</td><td>¥80,600</td><td>417,100</td><td>12,930</td><td>50</td><td>88.60</td><td>1.45</td></tr><tr><td>05-23</td><td>¥83,200</td><td>430,600</td><td>13,348</td><td>54</td><td>87.90</td><td>1.50</td></tr><tr><td>05-22</td><td>¥81,500</td><td>421,800</td><td>13,070</td><td>52</td><td>88.20</td><td>1.48</td></tr><tr><td>05-21</td><td>¥82,400</td><td>426,400</td><td>13,218</td><td>53</td><td>87.70</td><td>1.51</td></tr><tr><td>05-20</td><td>¥78,600</td><td>406,700</td><td>12,608</td><td>52</td><td>88.00</td><td>1.46</td></tr><tr><td>05-19</td><td>¥80,300</td><td>415,500</td><td>12,881</td><td>54</td><td>87.60</td><td>1.49</td></tr><tr><td>05-18</td><td>¥79,100</td><td>409,300</td><td>12,688</td><td>57</td><td>86.40</td><td>1.58</td></tr><tr><td>05-17</td><td>¥75,400</td><td>390,100</td><td>12,093</td><td>53</td><td>87.20</td><td>1.52</td></tr><tr><td>05-16</td><td>¥77,800</td><td>402,500</td><td>12,478</td><td>56</td><td>86.90</td><td>1.57</td></tr><tr><td>05-15</td><td>¥76,200</td><td>394,200</td><td>12,220</td><td>55</td><td>86.50</td><td>1.55</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* 松鼠投放 · 共享导航 / 顶栏 / 高亮逻辑 */
+
+function renderShell({ active, title, crumb }) {
+  const navItems = [
+    { group: '智能助手', items: [
+      { key: 'qa',        label: '智能问答', href: 'qa.html',         icon: 'chat' },
+      { key: 'diagnose',  label: '素材诊断', href: 'diagnose.html',   icon: 'shield' },
+      { key: 'review',    label: '投放复盘', href: 'review.html',     icon: 'report' },
+    ]},
+    { group: '工作', items: [
+      { key: 'monitor',   label: '数据监控', href: 'monitor.html',  icon: 'pulse' },
+    ]},
+    { group: '资源管理', items: [
+      { key: 'knowledge', label: '知识库管理', href: 'knowledge.html', icon: 'book' },
+      { key: 'accounts',  label: '账户中心',   href: 'accounts.html',  icon: 'wallet' },
+    ]},
+    { group: '系统', items: [
+      { key: 'team',      label: '团队管理', href: 'team.html',     icon: 'users' },
+      { key: 'settings',  label: '系统设置', href: 'settings.html', icon: 'cog' },
+    ]},
+  ];
+
+  const ICONS = {
+    home:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-8 9 8M5 10v10h14V10"/></svg>',
+    pulse: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>',
+    bell:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9M10 21a2 2 0 004 0"/></svg>',
+    chat:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 01-12 7l-5 2 2-5A8 8 0 1121 12z"/></svg>',
+    shield:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-3 8-10V5l-8-3-8 3v7c0 7 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>',
+    report:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3zM7 17V9m5 8V5m5 12v-6"/></svg>',
+    book:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 012-2h13v18H6a2 2 0 01-2-2zM4 19a2 2 0 012-2h13"/></svg>',
+    image: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>',
+    wallet:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20M16 15h2"/></svg>',
+    users: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>',
+    cog:   '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.6 15a1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09A1.65 1.65 0 0015 4.6a1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>',
+  };
+
+  var __role = (typeof localStorage !== 'undefined' && localStorage.getItem('squirrel_role')) || 'admin';
+  var __roleNav = { admin:['qa','diagnose','review','monitor','knowledge','accounts','team','settings'], toushou:['qa','diagnose','review','monitor','knowledge','settings'], audit:['qa','diagnose','knowledge','settings'], ops:['qa','review','monitor','knowledge','settings'] };
+  var __allowed = __roleNav[__role] || __roleNav.admin;
+  const navHtml = navItems.map(sec => {
+    var __it = sec.items.filter(function(it){ return __allowed.indexOf(it.key) >= 0; });
+    if (!__it.length) return '';
+    return `
+    <div class="nav-section">
+      <div class="nav-title">${sec.group}</div>
+      ${__it.map(it => `
+        <a class="nav-item ${it.key === active ? 'active' : ''}" href="${it.href}">
+          <span class="icon">${ICONS[it.icon] || ''}</span>
+          <span>${it.label}</span>
+          ${it.badge ? `<span class="badge">${it.badge}</span>` : ''}
+        </a>
+      `).join('')}
+    </div>
+  `; }).join('');
+
+  const sidebar = `
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-logo">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/>
+          </svg>
+        </div>
+        <div class="brand-name">松鼠投放</div>
+      </div>
+      <div class="tenant-switcher">
+        <div class="tenant-avatar">悦</div>
+        <div class="tenant-meta">
+          <div class="tenant-name">悦动短剧科技</div>
+          <div class="tenant-role">投放主管 · 32人团队</div>
+        </div>
+        <span class="tenant-arrow">▾</span>
+      </div>
+      <div style="flex:1; overflow-y:auto;">${navHtml}</div>
+      <div class="nav-footer">
+        <div class="usage-box">
+          <div class="usage-label">本月调用</div>
+          <div class="usage-value">8,432 / 20,000 次</div>
+          <div class="usage-bar"><div class="usage-bar-inner" style="width:42%"></div></div>
+        </div>
+      </div>
+    </aside>
+  `;
+
+  const crumbHtml = (crumb || []).map((c, i, a) => {
+    if (i === a.length - 1) return `<span class="current">${c}</span>`;
+    return `<span>${c}</span><span class="sep">/</span>`;
+  }).join('');
+
+  const topbar = `
+    <header class="topbar">
+      <div class="crumb">${crumbHtml}</div>
+      <div class="topbar-plat" id="__plat">
+        <span class="plat-dot" id="__plat-dot"></span>
+        <span class="plat-name" id="__plat-name">巨量引擎</span>
+        <svg class="plat-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        <div class="plat-menu" id="__plat-menu">
+          <div class="plat-mi" data-plat="juliang"><span class="plat-dot" style="background:#FF4D4F;"></span>巨量引擎</div>
+          <div class="plat-mi" data-plat="kuaishou"><span class="plat-dot" style="background:#FF6A00;"></span>磁力引擎</div>
+          <div class="plat-mi" data-plat="tencent"><span class="plat-dot" style="background:#0052D9;"></span>腾讯广告</div>
+          <div class="plat-msep"></div>
+          <div class="plat-mi" data-plat="all"><span class="plat-dot plat-dot-all"></span>全平台汇总<span class="plat-mgr">管理视角</span></div>
+        </div>
+      </div>
+      <div class="topbar-spacer"></div>
+      <div class="topbar-search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input placeholder="问问松鼠：例如 '巨量短剧 ROI 怎么提升'" />
+        <span class="kbd">⌘K</span>
+      </div>
+      <button class="topbar-icon" title="通知">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9M10 21a2 2 0 004 0"/></svg>
+        <span class="dot"></span>
+      </button>
+      <button class="topbar-icon" title="帮助">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 015.8 1c0 2-3 3-3 3M12 17h.01"/></svg>
+      </button>
+      <div style="width:1px;height:24px;background:var(--border-base);"></div>
+      <div class="topbar-role" id="__role">
+        <span class="role-vp-label">视角</span>
+        <span class="role-vp-name" id="__role-name">投放主管</span>
+        <svg class="role-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        <div class="role-menu" id="__role-menu">
+          <div class="role-mi" data-role="admin">投放主管</div>
+          <div class="role-mi" data-role="toushou">投手</div>
+          <div class="role-mi" data-role="audit">素材审核</div>
+          <div class="role-mi" data-role="ops">数据运营</div>
+        </div>
+      </div>
+      <div class="topbar-user">
+        <div class="user-avatar">Q</div>
+        <span class="user-name">钱晓彤</span>
+      </div>
+    </header>
+  `;
+
+  // 注入页面
+  document.getElementById('__sidebar').innerHTML = sidebar;
+  document.getElementById('__topbar').innerHTML = topbar;
+  if (!document.getElementById('__role-style')) { var __rs=document.createElement('style'); __rs.id='__role-style'; __rs.textContent=".topbar-role{position:relative;display:flex;align-items:center;gap:5px;padding:5px 10px;margin-right:10px;border-radius:8px;border:1px solid var(--border-base);background:#fff;cursor:pointer;font-size:13px;color:var(--gray-800);user-select:none}.topbar-role:hover{border-color:var(--brand-300);background:var(--brand-50)}.role-vp-label{font-size:11px;color:var(--gray-400)}.role-vp-name{font-weight:600}.role-caret{color:var(--gray-400)}.role-menu{position:absolute;top:calc(100% + 6px);right:0;min-width:152px;background:#fff;border:1px solid var(--border-base);border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,.12);padding:6px;display:none;z-index:50;cursor:default}.role-menu.open{display:block}.role-mi{padding:8px 10px;border-radius:7px;font-size:13px;color:var(--gray-700);font-weight:500;cursor:pointer}.role-mi:hover{background:var(--gray-50)}.role-mi.active{background:var(--brand-50);color:var(--brand-700);font-weight:600}"; document.head.appendChild(__rs); }
+  (function(){
+    var R = { admin:'\u6295\u653e\u4e3b\u7ba1', toushou:'\u6295\u624b', audit:'\u7d20\u6750\u5ba1\u6838', ops:'\u6570\u636e\u8fd0\u8425' };
+    var cur = localStorage.getItem('squirrel_role') || 'admin';
+    if (!R[cur]) cur = 'admin';
+    var wrap = document.getElementById('__role'); if(!wrap) return;
+    var nameEl = document.getElementById('__role-name'), menu = document.getElementById('__role-menu');
+    nameEl.textContent = R[cur];
+    var mis = menu.querySelectorAll('.role-mi');
+    for(var i=0;i<mis.length;i++){ mis[i].classList.toggle('active', mis[i].getAttribute('data-role')===cur); }
+    wrap.addEventListener('click', function(e){
+      var mi = e.target.closest ? e.target.closest('.role-mi') : null;
+      if (mi){ localStorage.setItem('squirrel_role', mi.getAttribute('data-role')); menu.classList.remove('open'); location.reload(); return; }
+      menu.classList.toggle('open'); e.stopPropagation();
+    });
+    document.addEventListener('click', function(){ menu.classList.remove('open'); });
+  })();
+  if (!document.getElementById('__plat-style')) {
+    var __ps = document.createElement('style');
+    __ps.id = '__plat-style';
+    __ps.textContent = ".topbar-plat{position:relative;display:flex;align-items:center;gap:6px;padding:5px 10px;margin-left:14px;border-radius:8px;border:1px solid var(--border-base);background:#fff;cursor:pointer;font-size:13px;color:var(--gray-800);font-weight:600;user-select:none}.topbar-plat:hover{border-color:var(--brand-300);background:var(--brand-50)}.plat-dot{width:7px;height:7px;border-radius:999px;background:#FF4D4F;flex:none}.plat-dot-all{background:linear-gradient(135deg,#FF4D4F,#FF6A00,#0052D9)}.plat-caret{color:var(--gray-400)}.plat-menu{position:absolute;top:calc(100% + 6px);left:0;min-width:190px;background:#fff;border:1px solid var(--border-base);border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,.12);padding:6px;display:none;z-index:50;cursor:default}.plat-menu.open{display:block}.plat-mi{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;font-size:13px;color:var(--gray-700);font-weight:500;cursor:pointer}.plat-mi:hover{background:var(--gray-50)}.plat-mi.active{background:var(--brand-50);color:var(--brand-700);font-weight:600}.plat-msep{height:1px;background:var(--border-base);margin:5px 0}.plat-mgr{margin-left:auto;font-size:10px;color:var(--gray-400);background:var(--gray-100);padding:1px 6px;border-radius:999px;font-weight:500}";
+    document.head.appendChild(__ps);
+  }
+  (function(){
+    var P = { juliang:{n:'\u5de8\u91cf\u5f15\u64ce',c:'#FF4D4F'}, kuaishou:{n:'\u78c1\u529b\u5f15\u64ce',c:'#FF6A00'}, tencent:{n:'\u817e\u8baf\u5e7f\u544a',c:'#0052D9'}, all:{n:'\u5168\u5e73\u53f0\u6c47\u603b',c:''} };
+    var cur = localStorage.getItem('squirrel_platform') || 'juliang';
+    if (!P[cur]) cur = 'juliang';
+    var wrap = document.getElementById('__plat');
+    if (!wrap) return;
+    var nameEl = document.getElementById('__plat-name'), dotEl = document.getElementById('__plat-dot'), menu = document.getElementById('__plat-menu');
+    function paint(){
+      nameEl.textContent = P[cur].n;
+      if (cur === 'all') { dotEl.className = 'plat-dot plat-dot-all'; dotEl.style.background = ''; }
+      else { dotEl.className = 'plat-dot'; dotEl.style.background = P[cur].c; }
+      var mis = menu.querySelectorAll('.plat-mi');
+      for (var i=0;i<mis.length;i++){ mis[i].classList.toggle('active', mis[i].getAttribute('data-plat') === cur); }
+    }
+    paint();
+    wrap.addEventListener('click', function(e){
+      var mi = e.target.closest ? e.target.closest('.plat-mi') : null;
+      if (mi) { cur = mi.getAttribute('data-plat'); localStorage.setItem('squirrel_platform', cur); menu.classList.remove('open'); location.reload(); return; }
+      menu.classList.toggle('open'); e.stopPropagation();
+    });
+    document.addEventListener('click', function(){ menu.classList.remove('open'); });
+  })();
+  if (title) document.title = title + ' · 松鼠投放';
+}
+
+</script>
+<script>
+  renderShell({ active: 'monitor', title: '数据监控', crumb: ['工作', '数据监控'] });
+
+  // ===== 数据监控·交互补全 =====
+  (function(){
+    var _t=document.createElement('div');
+    _t.style.cssText='position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#0F172A;color:#fff;padding:10px 18px;border-radius:999px;font-size:13px;z-index:9999;display:none;box-shadow:0 8px 24px rgba(0,0,0,.2);';
+    document.body.appendChild(_t);
+    var _tt;
+    function toast(m){_t.textContent=m;_t.style.display='';clearTimeout(_tt);_tt=setTimeout(function(){_t.style.display='none';},2000);}
+    function go(u){location.href=u;}
+    function norm(el){return (el.textContent||'').replace(/\s+/g,'');}
+    // 账户详情 list/detail 切换
+    function openDetail(name){ var n=document.getElementById('mon-detail-name'); if(n&&name) n.textContent=name; document.querySelector('.mon-view[data-view="list"]').style.display='none'; document.querySelector('.mon-view[data-view="detail"]').style.display=''; window.scrollTo(0,0); }
+    function backList(){ document.querySelector('.mon-view[data-view="detail"]').style.display='none'; document.querySelector('.mon-view[data-view="list"]').style.display=''; }
+    window.setRetMode = function(mode){ var d=document.getElementById('cohortDays'),t=document.getElementById('cohortDate'),h=document.getElementById('cohortTitle'); if(!d||!t)return; if(mode==='date'){ d.style.display='none'; t.style.display=''; if(h)h.firstChild.nodeValue='回本进度 · 按数据日期 '; } else { d.style.display=''; t.style.display='none'; if(h)h.firstChild.nodeValue='回本进度 · 按注册日期 '; } };
+    function setDetailTab(tab){ Array.prototype.forEach.call(document.querySelectorAll('.mdt'),function(x){x.classList.toggle('active',x.dataset.dtab===tab);}); Array.prototype.forEach.call(document.querySelectorAll('.mon-dpane'),function(p){p.style.display=(p.dataset.dpane===tab)?'':'none';}); }
+    document.addEventListener('click',function(e){
+      var t=e.target;
+      var fc=t.closest('.mon-fc');
+      if(fc){ var p=fc.parentElement; Array.prototype.forEach.call(p.querySelectorAll('.mon-fc'),function(x){x.classList.remove('active');}); fc.classList.add('active'); return; }
+      var pt=t.closest('.plat-tab'); if(pt){ Array.prototype.forEach.call(document.querySelectorAll('.plat-tab'),function(x){x.classList.remove('active');}); pt.classList.add('active'); Array.prototype.forEach.call(document.querySelectorAll('.plat-pane'),function(pn){pn.style.display=(pn.dataset.plat===pt.dataset.plat)?'':'none';}); return; }
+      // 趋势图指标 tab → 切换高亮 + 提示当前指标
+      var ctab=t.closest('.ct-tab'); if(ctab){ var ctp=ctab.parentElement; Array.prototype.forEach.call(ctp.querySelectorAll('.ct-tab'),function(x){x.classList.remove('active');}); ctab.classList.add('active'); toast('已切换到 '+(ctab.textContent.trim()||'')+' 趋势'); return; }
+      // 详情页交互
+      if(t.closest('[data-action="back-list"]')){ backList(); return; }
+      var mdt=t.closest('.mdt'); if(mdt){ setDetailTab(mdt.dataset.dtab); return; }
+      var gtab=t.closest('.mdd-tab'); if(gtab){ var gp=gtab.parentElement; Array.prototype.forEach.call(gp.querySelectorAll('.mdd-tab'),function(x){x.classList.remove('active');}); gtab.classList.add('active'); if(gtab.dataset.gtab!=='group') toast((gtab.textContent.trim()||'该维度')+'维度数据接入中'); return; }
+      var fchip=t.closest('.mdd-fchip'); if(fchip){ var ffp=fchip.parentElement; Array.prototype.forEach.call(ffp.querySelectorAll('.mdd-fchip'),function(x){x.classList.remove('active');}); fchip.classList.add('active'); return; }
+      var dq=t.closest('.mdb-quick span'); if(dq){ var dqp=dq.parentElement; Array.prototype.forEach.call(dqp.querySelectorAll('span'),function(x){x.classList.remove('active');}); dq.classList.add('active'); return; }
+      var a=t.closest('td a, a.text-primary');
+      if(a){ var s=norm(a);
+        if(s.indexOf('诊断')>=0) return go('diagnose.html');
+        if(s.indexOf('归因')>=0||s.indexOf('复盘')>=0) return go('review.html#report');
+        if(s.indexOf('扩量')>=0) return toast('打开扩量配置');
+        if(s.indexOf('预算')>=0) return toast('打开预算配置');
+        toast((a.textContent.trim().replace('▾','').trim()||'操作已执行')); return; }
+      var tr=t.closest('.account-table tbody tr');
+      if(tr){ var nameEl=tr.querySelector('td div'); openDetail(nameEl?nameEl.textContent.trim():'账户详情'); return; }
+      var btn=t.closest('.btn');
+      if(btn){ var s2=norm(btn);
+        if(s2.indexOf('诊断')>=0) return go('diagnose.html');
+        if(s2.indexOf('归因')>=0||s2.indexOf('复盘')>=0) return go('review.html#report');
+        if(s2.indexOf('AI')>=0||s2.indexOf('问')>=0) return go('qa.html');
+        if(s2.indexOf('导出')>=0) return toast('报表已导出');
+        toast((btn.textContent.trim().replace('▾','').trim()||'操作已执行')); return; }
+    });
+  })();
+</script>
+</body>
+</html>

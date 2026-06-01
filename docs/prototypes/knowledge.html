@@ -1,0 +1,2564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>知识库管理 · 松鼠投放</title>
+<style>
+/* === design-system.css (inlined) === */
+/* ============================================================
+ * 松鼠投放 · AI 广告投放助手 · 统一设计系统
+ * Design System v1.0
+ * ============================================================ */
+
+:root {
+  /* 主色 - 品牌蓝 */
+  --brand-50: #EEF4FF;
+  --brand-100: #DCE7FE;
+  --brand-200: #BACFFD;
+  --brand-300: #8EAEFB;
+  --brand-400: #5E89F6;
+  --brand-500: #3B6AEE;
+  --brand-600: #2554DC;
+  --brand-700: #1E44BC;
+  --brand-800: #1B3A95;
+  --brand-900: #1A3477;
+
+  /* 辅助色 */
+  --accent-orange: #FF7A2F;
+  --accent-orange-bg: #FFF1E8;
+  --accent-amber: #F5A524;
+  --accent-amber-bg: #FFF8E1;
+
+  /* 语义色 */
+  --success: #16A34A;
+  --success-bg: #ECFDF5;
+  --warning: #F59E0B;
+  --warning-bg: #FFFBEB;
+  --danger: #DC2626;
+  --danger-bg: #FEF2F2;
+  --info: #2563EB;
+  --info-bg: #EFF6FF;
+
+  /* 中性色 */
+  --gray-50: #F8FAFC;
+  --gray-100: #F1F5F9;
+  --gray-200: #E2E8F0;
+  --gray-300: #CBD5E1;
+  --gray-400: #94A3B8;
+  --gray-500: #64748B;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1E293B;
+  --gray-900: #0F172A;
+
+  /* 背景层 */
+  --bg-page: #F5F7FB;
+  --bg-card: #FFFFFF;
+  --bg-sidebar: #FFFFFF;
+  --bg-subtle: #F8FAFC;
+
+  /* 描边 */
+  --border-base: #E5E9F2;
+  --border-light: #F0F2F8;
+  --border-strong: #CBD5E1;
+
+  /* 阴影 */
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 8px -2px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 12px 24px -6px rgba(15, 23, 42, 0.10), 0 4px 8px -4px rgba(15, 23, 42, 0.06);
+
+  /* 圆角 */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* 字号 */
+  --font-xs: 12px;
+  --font-sm: 13px;
+  --font-base: 14px;
+  --font-md: 15px;
+  --font-lg: 16px;
+  --font-xl: 18px;
+  --font-2xl: 20px;
+  --font-3xl: 24px;
+  --font-4xl: 30px;
+
+  /* 间距 */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* 布局 */
+  --sidebar-w: 220px;
+  --sidebar-w-collapsed: 64px;
+  --topbar-h: 56px;
+  --subnav-w: 240px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: -apple-system, "PingFang SC", "HarmonyOS Sans", "SF Pro SC",
+    "Helvetica Neue", "Microsoft YaHei", "Source Han Sans CN", sans-serif;
+  font-size: var(--font-base);
+  color: var(--gray-800);
+  background: var(--bg-page);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input, textarea {
+  font-family: inherit;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ========== 应用主布局 ========== */
+.app {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg-page);
+}
+
+/* ----------- 主导航 ----------- */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-base);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 18px;
+  height: var(--topbar-h);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.brand-logo {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  font-size: 18px;
+}
+
+.brand-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--gray-900);
+  letter-spacing: 0.5px;
+}
+
+.tenant-switcher {
+  margin: 12px 14px 8px;
+  padding: 8px 10px;
+  background: var(--gray-50);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.tenant-switcher:hover { background: var(--brand-50); border-color: var(--brand-200); }
+.tenant-avatar {
+  width: 24px; height: 24px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #FF7A2F, #FFB259);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  display:flex; align-items:center; justify-content:center;
+}
+.tenant-meta { flex: 1; min-width: 0; }
+.tenant-name { font-size: 13px; font-weight: 600; color: var(--gray-800); line-height: 1.3; }
+.tenant-role { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+.tenant-arrow { color: var(--gray-400); font-size: 12px; }
+
+.nav-section {
+  padding: 8px 10px;
+}
+.nav-section + .nav-section { border-top: 1px solid var(--border-light); padding-top: 12px; margin-top: 4px; }
+.nav-title {
+  padding: 8px 10px 6px;
+  font-size: 11px;
+  color: var(--gray-400);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  color: var(--gray-600);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+  margin-bottom: 2px;
+}
+
+.nav-item:hover { background: var(--gray-50); color: var(--gray-900); }
+.nav-item.active {
+  background: var(--brand-50);
+  color: var(--brand-700);
+  font-weight: 600;
+}
+.nav-item.active::before {
+  content: "";
+  position: absolute;
+  left: -10px; top: 8px; bottom: 8px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--brand-600);
+}
+.nav-item .icon { width: 16px; height: 16px; opacity: 0.85; }
+.nav-item .badge {
+  margin-left: auto;
+  background: var(--danger);
+  color: #fff;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.nav-footer { margin-top: auto; padding: 12px 14px; border-top: 1px solid var(--border-light); }
+.usage-box {
+  background: linear-gradient(135deg, var(--brand-50), #fff);
+  border: 1px solid var(--brand-100);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+}
+.usage-label { font-size: 11px; color: var(--gray-500); }
+.usage-value { font-size: 13px; color: var(--brand-700); font-weight: 600; margin-top: 2px; }
+.usage-bar { height: 4px; border-radius: 2px; background: var(--brand-100); margin-top: 6px; overflow: hidden; }
+.usage-bar-inner { height: 100%; background: linear-gradient(90deg, var(--brand-500), var(--brand-700)); border-radius: 2px; }
+
+/* ----------- 主区域 ----------- */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.topbar {
+  height: var(--topbar-h);
+  background: #fff;
+  border-bottom: 1px solid var(--border-base);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 16px;
+  position: sticky; top: 0; z-index: 50;
+}
+
+.crumb { display: flex; align-items: center; gap: 6px; color: var(--gray-500); font-size: 13px; }
+.crumb .sep { color: var(--gray-300); }
+.crumb .current { color: var(--gray-900); font-weight: 600; }
+
+.topbar-spacer { flex: 1; }
+
+.topbar-search {
+  width: 320px;
+  height: 32px;
+  background: var(--gray-50);
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-md);
+  padding: 0 12px;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px;
+  color: var(--gray-500);
+}
+.topbar-search input { flex: 1; background: transparent; border: none; outline: none; font-size: 13px; color: var(--gray-700); }
+.kbd { padding: 1px 6px; background: #fff; border: 1px solid var(--border-base); border-radius: 4px; font-size: 11px; color: var(--gray-500); }
+
+.topbar-icon {
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gray-600);
+  cursor: pointer;
+  position: relative;
+}
+.topbar-icon:hover { background: var(--gray-50); color: var(--gray-900); }
+.topbar-icon .dot {
+  position: absolute; top: 6px; right: 6px;
+  width: 7px; height: 7px; border-radius: 999px; background: var(--danger);
+  border: 2px solid #fff;
+}
+
+.topbar-user {
+  display: flex; align-items: center; gap: 8px;
+  padding: 4px 10px 4px 4px;
+  border-radius: 999px;
+}
+.user-avatar {
+  width: 28px; height: 28px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #3B6AEE, #8EAEFB);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  display:flex; align-items:center; justify-content:center;
+}
+.user-name { font-size: 13px; color: var(--gray-800); }
+
+/* 顶部场景切换 tab */
+.scene-tabs {
+  display: flex;
+  background: var(--gray-100);
+  border-radius: 12px;
+  padding: 3px;
+  gap: 2px;
+}
+.scene-tab {
+  padding: 5px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--gray-600);
+  cursor: pointer;
+  font-weight: 500;
+  display: flex; align-items:center; gap: 6px;
+}
+.scene-tab.active { background: #fff; color: var(--brand-700); box-shadow: var(--shadow-sm); font-weight: 600; }
+
+/* ----------- 内容容器 ----------- */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+}
+
+/* ========== 通用元素 ========== */
+.page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.page-title { font-size: 20px; font-weight: 600; color: var(--gray-900); display: flex; align-items: center; gap: 8px; }
+.page-subtitle { font-size: 13px; color: var(--gray-500); margin-top: 4px; }
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-xs);
+}
+.card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.card-title { font-size: 15px; font-weight: 600; color: var(--gray-900); display: flex; align-items: center; gap: 8px; }
+.card-action { font-size: 13px; color: var(--brand-600); cursor: pointer; }
+
+/* 按钮 */
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: var(--radius-md); font-size: 13px; font-weight: 500; transition: all 0.15s; }
+.btn-primary { background: var(--brand-600); color: #fff; }
+.btn-primary:hover { background: var(--brand-700); }
+.btn-secondary { background: var(--gray-100); color: var(--gray-700); }
+.btn-secondary:hover { background: var(--gray-200); }
+.btn-ghost { color: var(--gray-700); }
+.btn-ghost:hover { background: var(--gray-100); }
+.btn-outline { border: 1px solid var(--border-base); background: #fff; color: var(--gray-700); }
+.btn-outline:hover { border-color: var(--brand-400); color: var(--brand-600); }
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+.btn-lg { padding: 9px 18px; font-size: 14px; }
+
+/* Tag / 标签 */
+.tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.tag-brand { background: var(--brand-50); color: var(--brand-700); }
+.tag-success { background: var(--success-bg); color: var(--success); }
+.tag-warn { background: var(--warning-bg); color: var(--warning); }
+.tag-danger { background: var(--danger-bg); color: var(--danger); }
+.tag-info { background: var(--info-bg); color: var(--info); }
+.tag-gray { background: var(--gray-100); color: var(--gray-600); }
+.tag-orange { background: var(--accent-orange-bg); color: var(--accent-orange); }
+
+/* 平台徽标 */
+.platform { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 500; }
+.platform-juliang { background: #FFEDE3; color: #E25822; }
+.platform-tencent { background: #E3F1FF; color: #1376E5; }
+.platform-kuaishou { background: #FFE8EE; color: #E83A60; }
+
+/* 指标 KPI */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.kpi {
+  background: #fff;
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-lg);
+  padding: 18px 18px 16px;
+}
+.kpi-label { font-size: 13px; color: var(--gray-500); display: flex; align-items:center; gap:4px; }
+.kpi-value { font-size: 26px; font-weight: 700; color: var(--gray-900); margin-top: 6px; letter-spacing: -0.5px; }
+.kpi-trend { display:inline-flex; align-items:center; gap: 4px; font-size: 12px; margin-top: 6px; }
+.trend-up { color: var(--success); }
+.trend-down { color: var(--danger); }
+.kpi-spark { height: 28px; margin-top: 8px; }
+
+/* 表格 */
+.table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.table thead th { background: var(--gray-50); text-align: left; padding: 10px 14px; font-weight: 600; color: var(--gray-600); border-bottom: 1px solid var(--border-base); }
+.table tbody td { padding: 14px; border-bottom: 1px solid var(--border-light); }
+.table tbody tr:hover { background: var(--gray-50); }
+.table tbody tr:last-child td { border-bottom: none; }
+
+/* 列表项 */
+.list-item {
+  display: flex; gap: 12px; padding: 12px 14px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.list-item:hover { background: var(--gray-50); }
+.list-item.active { background: var(--brand-50); }
+
+/* 输入框 */
+.input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  color: var(--gray-800);
+  background: #fff;
+  outline: none;
+  transition: border 0.15s, box-shadow 0.15s;
+}
+.input:focus { border-color: var(--brand-400); box-shadow: 0 0 0 3px var(--brand-50); }
+.input-lg { padding: 11px 14px; font-size: 14px; }
+
+/* 通用 utility */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.gap-1 { gap: 4px; } .gap-2 { gap: 8px; } .gap-3 { gap: 12px; } .gap-4 { gap: 16px; } .gap-6 { gap: 24px; }
+.flex-1 { flex: 1; }
+.text-xs { font-size: 12px; } .text-sm { font-size: 13px; } .text-base { font-size: 14px; } .text-lg { font-size: 16px; } .text-xl { font-size: 18px; } .text-2xl { font-size: 20px; }
+.font-bold { font-weight: 700; } .font-semibold { font-weight: 600; } .font-medium { font-weight: 500; }
+.text-muted { color: var(--gray-500); }
+.text-subtle { color: var(--gray-400); }
+.text-primary { color: var(--brand-700); }
+.text-success { color: var(--success); }
+.text-danger { color: var(--danger); }
+.text-warning { color: var(--warning); }
+.text-gray-700 { color: var(--gray-700); }
+.text-gray-900 { color: var(--gray-900); }
+.mb-1 { margin-bottom: 4px; } .mb-2 { margin-bottom: 8px; } .mb-3 { margin-bottom: 12px; } .mb-4 { margin-bottom: 16px; } .mb-6 { margin-bottom: 24px; }
+.mt-1 { margin-top: 4px; } .mt-2 { margin-top: 8px; } .mt-3 { margin-top: 12px; } .mt-4 { margin-top: 16px; } .mt-6 { margin-top: 24px; }
+.w-full { width: 100%; }
+.rounded-md { border-radius: var(--radius-md); }
+.rounded-lg { border-radius: var(--radius-lg); }
+.divider { height: 1px; background: var(--border-light); margin: 12px 0; }
+.dot-divider { color: var(--gray-300); margin: 0 6px; }
+
+/* 滚动条 */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: var(--gray-300); background-clip: padding-box; border: 2px solid transparent; }
+
+</style>
+<style>
+/* ===== 知识库页 · 双栏 + 详情抽屉 ===== */
+.kb-page { display: flex; flex-direction: column; height: calc(100vh - var(--topbar-h)); }
+
+/* —— 顶部 page-header 紧凑型 —— */
+.kb-header {
+  background: #fff;
+  border-bottom: 1px solid var(--border-base);
+  padding: 16px 24px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.kb-header-row1 { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.kb-title { font-size: 18px; font-weight: 700; color: var(--gray-900); display: flex; align-items: center; gap: 10px; }
+.kb-title .kb-title-sub { font-size: 12px; color: var(--gray-500); font-weight: 400; }
+
+.kb-actions { display: flex; gap: 8px; align-items: center; }
+.kb-actions .divider { width: 1px; height: 22px; background: var(--border-base); margin: 0 2px; }
+
+/* —— KPI 行 —— */
+.kb-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+}
+.kb-kpi {
+  background: var(--gray-50);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.kb-kpi-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.kb-kpi-icon.b { background: var(--brand-50); color: var(--brand-600); }
+.kb-kpi-icon.o { background: var(--accent-orange-bg); color: var(--accent-orange); }
+.kb-kpi-icon.g { background: var(--success-bg); color: var(--success); }
+.kb-kpi-icon.r { background: var(--danger-bg); color: var(--danger); }
+.kb-kpi .label { font-size: 11px; color: var(--gray-500); }
+.kb-kpi .val { font-size: 20px; font-weight: 700; color: var(--gray-900); line-height: 1.2; }
+.kb-kpi .trend { font-size: 11px; color: var(--success); margin-left: 6px; }
+.kb-kpi .trend.warn { color: var(--warning); }
+
+/* —— 主体双栏 —— */
+.kb-body { flex: 1; display: grid; grid-template-columns: 240px 1fr; gap: 0; overflow: hidden; }
+
+/* —— 左侧分类导航 —— */
+.kb-side {
+  background: #fff;
+  border-right: 1px solid var(--border-base);
+  padding: 14px 8px;
+  overflow-y: auto;
+}
+.kb-side-section { margin-bottom: 14px; }
+.kb-side-title {
+  padding: 6px 12px 6px;
+  font-size: 11px;
+  color: var(--gray-400);
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+.kb-nav-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 12px;
+  font-size: 13px;
+  color: var(--gray-700);
+  border-radius: 7px;
+  margin-bottom: 1px;
+  cursor: pointer;
+  transition: background 0.12s;
+  position: relative;
+}
+.kb-nav-item:hover { background: var(--gray-50); }
+.kb-nav-item.active { background: var(--brand-50); color: var(--brand-700); font-weight: 600; }
+.kb-nav-item.active::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 6px; bottom: 6px;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: var(--brand-600);
+}
+.kb-nav-item .lbl { flex: 1; }
+.kb-nav-item .cnt { font-size: 11px; color: var(--gray-400); }
+.kb-nav-item.active .cnt { color: var(--brand-600); }
+
+/* 顶级（全部） */
+.kb-nav-root {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-900);
+  border-radius: 7px;
+  cursor: pointer;
+  margin-bottom: 4px;
+}
+.kb-nav-root.active { background: var(--brand-50); color: var(--brand-700); }
+.kb-nav-root .cnt { margin-left: auto; font-size: 12px; font-weight: 600; color: var(--gray-500); }
+.kb-nav-root.active .cnt { color: var(--brand-600); }
+
+/* 公域/私域分组头 */
+.kb-group {
+  display: flex; align-items: center; gap: 6px;
+  padding: 9px 12px 6px;
+  font-size: 12px;
+  color: var(--gray-800);
+  font-weight: 600;
+}
+.kb-group .badge-source {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.kb-group .badge-pub { background: #DBEAFE; color: #1D4ED8; }
+.kb-group .badge-prv { background: #FED7AA; color: #9A3412; }
+.kb-group .cnt { margin-left: auto; font-size: 11px; color: var(--gray-400); font-weight: 500; }
+
+.kb-nav-sub { padding-left: 14px; }
+.kb-nav-sub .kb-nav-item { font-size: 12.5px; padding: 6px 10px 6px 14px; }
+.kb-nav-sub .kb-nav-item .lvl {
+  font-size: 9.5px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-weight: 700;
+  margin-right: 2px;
+}
+.kb-nav-sub .kb-nav-item .lvl.l1 { background: #DBEAFE; color: #1D4ED8; }
+.kb-nav-sub .kb-nav-item .lvl.l2 { background: #FED7AA; color: #9A3412; }
+.kb-nav-sub .kb-nav-item .lvl.l3 { background: #EFF6FF; color: #2563EB; }
+
+/* 智能筛选 */
+.kb-smart-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 12px;
+  font-size: 13px;
+  color: var(--gray-700);
+  border-radius: 7px;
+  margin-bottom: 1px;
+  cursor: pointer;
+}
+.kb-smart-item:hover { background: var(--gray-50); }
+.kb-smart-item .dot-warn { color: var(--warning); }
+.kb-smart-item .dot-danger { color: var(--danger); }
+.kb-smart-item .cnt {
+  margin-left: auto;
+  font-size: 11px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+.kb-smart-item .cnt.warn { background: var(--warning-bg); color: var(--warning); }
+.kb-smart-item .cnt.danger { background: var(--danger-bg); color: var(--danger); }
+.kb-smart-item .cnt.info { background: var(--info-bg); color: var(--info); }
+
+/* —— 中间主区 —— */
+.kb-main {
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  background: var(--bg-page);
+}
+
+/* 筛选条 */
+.kb-filterbar {
+  padding: 12px 20px;
+  background: #fff;
+  border-bottom: 1px solid var(--border-base);
+  display: flex; align-items: center; gap: 10px;
+  flex-wrap: wrap;
+}
+.kb-search {
+  flex: 1; min-width: 240px;
+  height: 32px;
+  background: var(--gray-50);
+  border: 1px solid var(--border-base);
+  border-radius: 7px;
+  padding: 0 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.kb-search input { flex: 1; border: none; outline: none; background: transparent; font-size: 13px; color: var(--gray-800); }
+.kb-search input::placeholder { color: var(--gray-400); }
+.kb-search .kbd { font-size: 10px; color: var(--gray-400); padding: 1px 5px; border: 1px solid var(--border-base); border-radius: 4px; background: #fff; }
+
+.kb-filter-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 5px 10px;
+  font-size: 12px;
+  color: var(--gray-700);
+  background: #fff;
+  border: 1px solid var(--border-base);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.kb-filter-chip:hover { border-color: var(--brand-300); color: var(--brand-700); }
+.kb-filter-chip.has-value { background: var(--brand-50); color: var(--brand-700); border-color: var(--brand-300); font-weight: 600; }
+.kb-filter-chip .arr { color: var(--gray-400); font-size: 9px; }
+.kb-filter-chip { position: relative; }
+.kb-filter-chip.dd-open { border-color: var(--brand-300); color: var(--brand-700); background: var(--brand-50); }
+.kb-dd { position: absolute; top: calc(100% + 6px); left: 0; min-width: 170px; background: #fff; border: 1px solid var(--border-base); border-radius: 10px; box-shadow: 0 8px 24px rgba(15,23,42,.12); padding: 6px; z-index: 60; cursor: default; }
+.kb-dd-item { padding: 8px 12px; border-radius: 7px; font-size: 13px; font-weight: 400; color: var(--gray-700); cursor: pointer; white-space: nowrap; }
+.kb-dd-item:hover { background: var(--gray-50); }
+.kb-dd-item.sel { background: var(--brand-50); color: var(--brand-700); font-weight: 600; }
+
+.kb-view-toggle {
+  display: flex;
+  background: var(--gray-100);
+  border-radius: 6px;
+  padding: 2px;
+}
+.kb-view-toggle button {
+  width: 28px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 4px;
+  color: var(--gray-500);
+}
+.kb-view-toggle button.active { background: #fff; color: var(--brand-700); box-shadow: var(--shadow-xs); }
+
+/* 列表区 */
+.kb-list-wrap { flex: 1; overflow-y: auto; padding: 16px 20px; }
+.kb-list-meta { font-size: 12px; color: var(--gray-500); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.kb-list-meta .selected { color: var(--brand-700); font-weight: 600; }
+
+.kb-list { display: flex; flex-direction: column; gap: 10px; }
+
+/* 知识卡片 */
+.kbc {
+  background: #fff;
+  border: 1px solid var(--border-base);
+  border-radius: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.kbc:hover { border-color: var(--brand-300); box-shadow: var(--shadow-md); }
+.kbc.selected { border-color: var(--brand-500); background: #FAFCFF; box-shadow: 0 0 0 3px rgba(59, 106, 238, 0.08); }
+
+.kbc-row1 { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+.kbc-row1 .check {
+  width: 16px; height: 16px;
+  border: 1.5px solid var(--gray-300);
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.kbc-type-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.kbc-t-doc { background: #EFF6FF; color: #2563EB; }
+.kbc-t-rule { background: #FEF3C7; color: #B45309; }
+.kbc-t-case { background: #ECFDF5; color: #16A34A; }
+.kbc-t-qa { background: #EFF6FF; color: #2563EB; }
+.kbc-t-tpl { background: #FFE4E6; color: #BE123C; }
+
+.kbc-main { flex: 1; min-width: 0; }
+.kbc-title-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.kbc-title { font-size: 14px; font-weight: 600; color: var(--gray-900); }
+
+/* 来源徽章 */
+.kbc-source {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10.5px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+.kbc-source.pub { background: #DBEAFE; color: #1D4ED8; }
+.kbc-source.prv-up { background: #FED7AA; color: #9A3412; }
+.kbc-source.prv-ai { background: #EFF6FF; color: #2563EB; }
+.kbc-source.lock { background: var(--gray-100); color: var(--gray-600); }
+
+/* L 层徽章 */
+.kbc-lvl {
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 700;
+}
+.kbc-lvl.l1 { background: var(--info-bg); color: var(--info); }
+.kbc-lvl.l2 { background: var(--accent-orange-bg); color: var(--accent-orange); }
+.kbc-lvl.l3 { background: #EFF6FF; color: #2563EB; }
+
+/* 状态 */
+.kbc-status {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px;
+  color: var(--gray-500);
+  padding: 1px 7px;
+  border-radius: 4px;
+  background: var(--gray-50);
+}
+.kbc-status.processing { background: var(--info-bg); color: var(--info); }
+.kbc-status.processing .spin {
+  width: 8px; height: 8px;
+  border-radius: 999px;
+  background: var(--info);
+  animation: pulse-anim 1.4s infinite;
+}
+@keyframes pulse-anim { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.3); } }
+
+.kbc-summary { font-size: 13px; color: var(--gray-600); line-height: 1.55; margin: 8px 0; }
+.kbc-snippet {
+  background: var(--gray-50);
+  border-left: 3px solid var(--brand-300);
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--gray-600);
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.kbc-footer {
+  display: flex; align-items: center; gap: 14px;
+  font-size: 11.5px;
+  color: var(--gray-500);
+  flex-wrap: wrap;
+}
+.kbc-footer .stat { display: inline-flex; align-items: center; gap: 4px; }
+.kbc-footer .stat.hot { color: var(--brand-700); font-weight: 600; }
+.kbc-footer .stat.warn { color: var(--warning); font-weight: 600; }
+.kbc-footer .stat.zero { color: var(--gray-400); }
+.kbc-footer .stat svg { opacity: 0.8; }
+.kbc-footer .dot { color: var(--gray-300); }
+.kbc-footer .tags { display: inline-flex; gap: 4px; flex-wrap: wrap; }
+.kbc-tag {
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 10.5px;
+  background: var(--gray-100);
+  color: var(--gray-600);
+}
+
+/* —— 右侧抽屉 —— */
+.kb-drawer {
+  position: fixed;
+  top: var(--topbar-h);
+  right: 0;
+  bottom: 0;
+  width: 460px;
+  background: #fff;
+  border-left: 1px solid var(--border-base);
+  box-shadow: -8px 0 24px rgba(15, 23, 42, 0.06);
+  display: flex; flex-direction: column;
+  z-index: 100;
+  transition: transform 0.25s ease;
+}
+.kb-drawer.hidden { transform: translateX(100%); display: none; }
+
+.drawer-head {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-base);
+}
+.drawer-head-row1 { display: flex; align-items: center; gap: 8px; }
+.drawer-close {
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gray-500);
+  cursor: pointer;
+}
+.drawer-close:hover { background: var(--gray-100); color: var(--gray-800); }
+.drawer-title { font-size: 15px; font-weight: 600; color: var(--gray-900); flex: 1; }
+.drawer-actions { display: flex; gap: 6px; }
+.icon-btn {
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gray-500);
+  cursor: pointer;
+}
+.icon-btn:hover { background: var(--gray-100); color: var(--gray-800); }
+
+.drawer-meta-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+
+.drawer-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-base);
+  padding: 0 18px;
+  gap: 4px;
+}
+.drawer-tab {
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--gray-500);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  font-weight: 500;
+}
+.drawer-tab:hover { color: var(--gray-800); }
+.drawer-tab.active { color: var(--brand-700); border-bottom-color: var(--brand-600); font-weight: 600; }
+.drawer-tab .cnt { font-size: 11px; margin-left: 4px; color: var(--gray-400); }
+.drawer-tab.active .cnt { color: var(--brand-600); }
+
+.drawer-body { flex: 1; overflow-y: auto; padding: 16px 18px; }
+.drawer-section { margin-bottom: 18px; }
+.drawer-section-title {
+  font-size: 11px;
+  color: var(--gray-500);
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+/* 切片预览 */
+.chunk {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-left: 3px solid var(--brand-300);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--gray-700);
+  position: relative;
+}
+.chunk-head { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; font-size: 11px; }
+.chunk-id {
+  font-family: 'SF Mono', Menlo, Consolas, monospace;
+  background: var(--gray-100);
+  color: var(--gray-700);
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 10.5px;
+}
+.chunk-tokens { color: var(--gray-400); }
+.chunk-vec { color: var(--success); }
+.chunk-vec::before { content: "●"; margin-right: 3px; }
+
+.chunk.highlight {
+  background: linear-gradient(90deg, #FFFBEB, #fff);
+  border-left-color: var(--warning);
+}
+.chunk-tag {
+  display: inline-block;
+  background: var(--brand-50);
+  color: var(--brand-700);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 10px;
+  margin-left: 4px;
+}
+
+/* 元数据 */
+.meta-grid { display: grid; grid-template-columns: 96px 1fr; gap: 8px 12px; font-size: 12.5px; }
+.meta-grid dt { color: var(--gray-500); }
+.meta-grid dd { color: var(--gray-800); font-weight: 500; }
+.meta-grid dd code { background: var(--gray-100); padding: 1px 5px; border-radius: 3px; font-size: 11px; }
+
+/* 引用记录 */
+.cite-item {
+  padding: 10px 12px;
+  background: var(--gray-50);
+  border-radius: 8px;
+  margin-bottom: 6px;
+  font-size: 12.5px;
+}
+.cite-row1 { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.cite-scene {
+  font-size: 10.5px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.cite-scene.qa { background: var(--brand-50); color: var(--brand-700); }
+.cite-scene.diag { background: var(--danger-bg); color: var(--danger); }
+.cite-scene.review { background: var(--success-bg); color: var(--success); }
+.cite-time { font-size: 11px; color: var(--gray-400); margin-left: auto; }
+.cite-q { color: var(--gray-700); line-height: 1.5; }
+.cite-feedback { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 11px; color: var(--gray-500); }
+.cite-feedback .like { color: var(--success); }
+.cite-feedback .dislike { color: var(--danger); }
+
+/* 反馈数据 */
+.feedback-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.feedback-mini {
+  padding: 10px 12px;
+  background: var(--gray-50);
+  border-radius: 8px;
+  text-align: center;
+}
+.feedback-mini .ml { font-size: 11px; color: var(--gray-500); }
+.feedback-mini .mv { font-size: 18px; font-weight: 700; color: var(--gray-900); margin-top: 2px; }
+.feedback-mini .mt { font-size: 11px; margin-top: 2px; }
+.feedback-mini .mt.up { color: var(--success); }
+.feedback-mini .mt.down { color: var(--danger); }
+
+.feedback-bar { background: var(--gray-100); height: 8px; border-radius: 999px; overflow: hidden; display: flex; margin-top: 10px; }
+.feedback-bar .seg { height: 100%; }
+.feedback-bar .seg-up { background: var(--success); }
+.feedback-bar .seg-down { background: var(--danger); }
+
+/* 操作按钮区 */
+.drawer-foot {
+  padding: 12px 18px;
+  border-top: 1px solid var(--border-base);
+  display: flex;
+  gap: 8px;
+  background: #fff;
+}
+.drawer-foot button { flex: 1; }
+
+/* 选中卡片时主区右边空出抽屉宽度 */
+.kb-page.drawer-open .kb-main { padding-right: 0; }
+
+/* 响应：抽屉打开时左树可隐藏 */
+@media (max-width: 1400px) {
+  .kb-drawer { width: 420px; }
+}
+
+/* 工具样式 */
+.tag-mini {
+  font-size: 10.5px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+.tag-mini.b { background: var(--brand-50); color: var(--brand-700); }
+.tag-mini.o { background: var(--accent-orange-bg); color: var(--accent-orange); }
+.tag-mini.g { background: var(--success-bg); color: var(--success); }
+.tag-mini.gray { background: var(--gray-100); color: var(--gray-700); }
+
+/* —— Toast —— */
+.kb-toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gray-900);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  z-index: 1000;
+  animation: toast-in 0.25s ease;
+}
+.kb-toast.hidden { display: none; }
+@keyframes toast-in {
+  from { opacity: 0; transform: translate(-50%, -10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* —— 下拉菜单 (沉淀知识) —— */
+.kb-popmenu {
+  position: fixed;
+  background: #fff;
+  border: 1px solid var(--border-base);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  width: 320px;
+  padding: 6px;
+  z-index: 200;
+  animation: pop-in 0.12s ease;
+}
+.kb-popmenu.hidden { display: none; }
+@keyframes pop-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.popmenu-item {
+  display: flex;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  align-items: flex-start;
+}
+.popmenu-item:hover { background: var(--brand-50); }
+.popmenu-icon {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.popmenu-title { font-size: 13px; font-weight: 600; color: var(--gray-900); }
+.popmenu-desc { font-size: 11.5px; color: var(--gray-500); margin-top: 2px; line-height: 1.4; }
+
+/* —— Modal Mask (数据源 / 飞轮 / 处理中) —— */
+.kb-modal-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: mask-in 0.18s ease;
+}
+.kb-modal-mask.hidden { display: none; }
+@keyframes mask-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.kb-modal-panel {
+  width: 80vw;
+  max-width: 1100px;
+  height: 80vh;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: panel-in 0.22s ease;
+}
+@keyframes panel-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+.kb-modal-head {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-base);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.kb-modal-title { font-size: 16px; font-weight: 700; color: var(--gray-900); }
+.kb-modal-body { flex: 1; overflow-y: auto; }
+
+/* —— tab-pane —— */
+.tab-pane { display: block; }
+.tab-pane[style*="display:none"] { display: none !important; }
+
+/* ===== 沉淀知识·真实弹窗 ===== */
+.kb-dialog-mask { position: fixed; inset: 0; background: rgba(15,23,42,0.45); z-index: 650; display: flex; align-items: center; justify-content: center; animation: kbdlg-in 0.18s ease; }
+.kb-dialog-mask.hidden { display: none; }
+@keyframes kbdlg-in { from{opacity:0;} to{opacity:1;} }
+.kb-dialog { width: 540px; max-width: 92vw; max-height: 88vh; background: #fff; border-radius: 14px; box-shadow: var(--shadow-lg); overflow: hidden; display: flex; flex-direction: column; animation: kbdlg-pop 0.22s ease; }
+@keyframes kbdlg-pop { from{opacity:0;transform:scale(0.96);} to{opacity:1;transform:scale(1);} }
+.kb-dialog-head { padding: 16px 20px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; }
+.kb-dialog-title { font-size: 16px; font-weight: 700; color: var(--gray-900); }
+.kb-dialog-close { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--gray-500); cursor: pointer; }
+.kb-dialog-close:hover { background: var(--gray-100); }
+.kb-dialog-body { padding: 20px; overflow-y: auto; }
+.kb-dialog-foot { padding: 14px 20px; border-top: 1px solid var(--border-light); display: flex; gap: 8px; justify-content: flex-end; }
+.kb-drop { border: 2px dashed var(--border-strong); border-radius: 12px; padding: 30px 20px; text-align: center; cursor: pointer; transition: all 0.15s; }
+.kb-drop:hover { border-color: var(--brand-400); background: var(--brand-50); }
+.kb-drop-icon { width: 44px; height: 44px; border-radius: 50%; background: var(--brand-50); color: var(--brand-600); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; }
+.kb-drop-main { font-size: 14px; font-weight: 600; color: var(--gray-800); }
+.kb-drop-main span { color: var(--brand-700); }
+.kb-drop-sub { font-size: 12px; color: var(--gray-500); margin-top: 5px; }
+.kb-field { margin-top: 16px; }
+.kb-field-label { font-size: 12px; font-weight: 600; color: var(--gray-700); margin-bottom: 6px; }
+.kb-field-row { display: flex; gap: 10px; }
+.kb-select { flex: 1; height: 34px; border: 1px solid var(--border-base); border-radius: 8px; padding: 0 10px; font-size: 13px; background: #fff; color: var(--gray-800); }
+.kb-input { width: 100%; height: 34px; border: 1px solid var(--border-base); border-radius: 8px; padding: 0 12px; font-size: 13px; color: var(--gray-800); }
+.kb-input:focus, .kb-select:focus, .kb-textarea:focus { outline: none; border-color: var(--brand-400); }
+.kb-textarea { width: 100%; min-height: 120px; border: 1px solid var(--border-base); border-radius: 8px; padding: 10px 12px; font-size: 13px; color: var(--gray-800); resize: vertical; font-family: inherit; line-height: 1.6; }
+.kb-tag-edit { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.kb-proc-opts { display: flex; flex-direction: column; gap: 8px; }
+.kb-proc-opt { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--gray-700); cursor: pointer; }
+.kb-proc-opt input { width: 15px; height: 15px; accent-color: var(--brand-600); }
+.kb-type-tabs { display: flex; gap: 6px; background: var(--gray-100); border-radius: 8px; padding: 3px; }
+.kb-type-tab { flex: 1; text-align: center; padding: 7px; font-size: 13px; color: var(--gray-600); border-radius: 6px; cursor: pointer; }
+.kb-type-tab.active { background: #fff; color: var(--brand-700); font-weight: 600; box-shadow: var(--shadow-xs); }
+</style>
+</head>
+<body>
+<div class="app">
+  <div id="__sidebar"></div>
+
+  <div class="main">
+    <div id="__topbar"></div>
+
+    <div class="kb-page drawer-open">
+
+      <!-- ============ 顶部 Header ============ -->
+      <div class="kb-header">
+        <div class="kb-header-row1">
+          <div class="kb-title">
+            私域 + 公域知识库管理
+            <span class="kb-title-sub">私域沉淀 + 公域同步，持续供 AI 召回</span>
+          </div>
+          <div class="kb-actions">
+            <button class="btn btn-outline btn-sm">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33"/></svg>
+              数据源
+            </button>
+            <button class="btn btn-outline btn-sm" style="position: relative;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              处理中
+              <span style="display:inline-flex; align-items:center; justify-content:center; min-width: 16px; height: 16px; padding: 0 5px; background: var(--info); color: #fff; font-size: 10px; font-weight: 700; border-radius: 999px; margin-left: 4px;">3</span>
+            </button>
+            <div class="divider"></div>
+            <button class="btn btn-primary btn-sm">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              沉淀知识 ▾
+            </button>
+          </div>
+        </div>
+
+        <!-- KPI 行 -->
+        <div class="kb-kpi-row">
+          <div class="kb-kpi">
+            <div class="kb-kpi-icon b">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 012-2h13v18H6a2 2 0 01-2-2z"/><path d="M4 19a2 2 0 012-2h13"/></svg>
+            </div>
+            <div>
+              <div class="label">知识总数</div>
+              <div class="val">675 <span class="trend">+12 今日</span></div>
+            </div>
+          </div>
+          <div class="kb-kpi">
+            <div class="kb-kpi-icon o">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>
+            </div>
+            <div>
+              <div class="label">本月被引用</div>
+              <div class="val">8,432 <span class="trend">+18%</span></div>
+            </div>
+          </div>
+          <div class="kb-kpi">
+            <div class="kb-kpi-icon g">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+            </div>
+            <div>
+              <div class="label">平均命中率</div>
+              <div class="val">86% <span class="trend">+2.1%</span></div>
+            </div>
+          </div>
+          <div class="kb-kpi">
+            <div class="kb-kpi-icon r">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>
+            </div>
+            <div>
+              <div class="label">零引用 / 待处理</div>
+              <div class="val">12 / 3 <span class="trend warn">需关注</span></div>
+            </div>
+          </div>
+          <div style="text-align: right; font-size: 11px; color: var(--gray-500);">
+            最近一次公域同步<br>
+            <span style="color: var(--gray-700); font-weight: 600;">10 分钟前 · 巨量引擎</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ 主体：双栏 ============ -->
+      <div class="kb-body">
+
+        <!-- 左：分类导航 -->
+        <aside class="kb-side">
+          <div class="kb-side-section">
+            <div class="kb-nav-root active">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-8 9 8M5 10v10h14V10"/></svg>
+              全部知识
+              <span class="cnt">675</span>
+            </div>
+          </div>
+
+          <div class="kb-side-section">
+            <div class="kb-group">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+              公域知识
+              <span class="badge-source badge-pub">API</span>
+              <span class="cnt">482</span>
+            </div>
+            <div class="kb-nav-sub">
+              <div class="kb-nav-item">
+                <span class="lvl l1">L1</span>
+                <span class="lbl">巨量引擎规则</span>
+                <span class="cnt">280</span>
+              </div>
+              <div class="kb-nav-item">
+                <span class="lvl l1">L1</span>
+                <span class="lbl">磁力金牛规则</span>
+                <span class="cnt">124</span>
+              </div>
+              <div class="kb-nav-item">
+                <span class="lvl l1">L1</span>
+                <span class="lbl">腾讯广告规则</span>
+                <span class="cnt">78</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="kb-side-section">
+            <div class="kb-group">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 11H5a2 2 0 00-2 2v7a2 2 0 002 2h14a2 2 0 002-2v-7a2 2 0 00-2-2z"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+              私域知识
+              <span class="badge-source badge-prv">上传</span>
+              <span class="cnt">193</span>
+            </div>
+            <div class="kb-nav-sub">
+              <div class="kb-nav-item active">
+                <span class="lvl l2">L2</span>
+                <span class="lbl">题材打法</span>
+                <span class="cnt">45</span>
+              </div>
+              <div class="kb-nav-item">
+                <span class="lvl l2">L2</span>
+                <span class="lbl">出价策略</span>
+                <span class="cnt">38</span>
+              </div>
+              <div class="kb-nav-item">
+                <span class="lvl l2">L2</span>
+                <span class="lbl">素材模板</span>
+                <span class="cnt">73</span>
+              </div>
+              <div class="kb-nav-item">
+                <span class="lvl l3">L3</span>
+                <span class="lbl">我的偏好</span>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="margin-left: -3px; color: var(--gray-400);"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                <span class="cnt">37</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="kb-side-section">
+            <div class="kb-side-title">智能筛选</div>
+            <div class="kb-smart-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>
+              高频引用
+              <span class="cnt info">TOP 50</span>
+            </div>
+            <div class="kb-smart-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="dot-warn"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+              命中率偏低
+              <span class="cnt warn">8</span>
+            </div>
+            <div class="kb-smart-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="dot-danger"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+              零引用 (3 月+)
+              <span class="cnt danger">12</span>
+            </div>
+            <div class="kb-smart-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/><path d="M12 6v6l4 2"/></svg>
+              处理中
+              <span class="cnt info">3</span>
+            </div>
+          </div>
+
+          <div class="kb-side-section">
+            <div class="kb-side-title">热门标签</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 4px; padding: 4px 10px;">
+              <span class="tag-mini b">#短剧</span>
+              <span class="tag-mini o">#出价</span>
+              <span class="tag-mini gray">#审核</span>
+              <span class="tag-mini g">#爆款案例</span>
+              <span class="tag-mini gray">#都市悬疑</span>
+              <span class="tag-mini gray">#男频爽文</span>
+              <span class="tag-mini gray">+ 14</span>
+            </div>
+          </div>
+        </aside>
+
+        <!-- 中：知识列表 -->
+        <section class="kb-main">
+
+          <!-- 筛选条 -->
+          <div class="kb-filterbar">
+            <div class="kb-search">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--gray-400);"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+              <input placeholder="搜索知识、规则、案例 …" />
+              <span class="kbd">⌘K</span>
+            </div>
+            <div class="kb-filter-chip has-value" data-filter="source"><span class="kb-chip-label">来源：私域 L2 题材打法</span> <span class="arr">▾</span></div>
+            <div class="kb-filter-chip" data-filter="type"><span class="kb-chip-label">类型</span> <span class="arr">▾</span></div>
+            <div class="kb-filter-chip" data-filter="tag"><span class="kb-chip-label">标签</span> <span class="arr">▾</span></div>
+            <div class="kb-filter-chip" data-filter="hitrate"><span class="kb-chip-label">命中率档</span> <span class="arr">▾</span></div>
+            <div class="kb-filter-chip" data-filter="sort"><span class="kb-chip-label">排序：被引用</span> <span class="arr">▾</span></div>
+            <div class="kb-view-toggle">
+              <button class="active" title="列表视图">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- 列表 -->
+          <div class="kb-list-wrap">
+            <div class="kb-list-meta">
+              <span>共 <span class="selected">45 条</span></span>
+              <span class="dot">·</span>
+              <span>共 12 条命中率 &gt;80% · 8 条命中率偏低</span>
+            </div>
+
+            <div class="kb-list">
+
+              <!-- 卡片 1：高频公域规则 -->
+              <div class="kbc">
+                <div class="kbc-row1">
+                  <div class="check"></div>
+                  <div class="kbc-type-icon kbc-t-rule">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-3 8-10V5l-8-3-8 3v7c0 7 8 10 8 10z"/></svg>
+                  </div>
+                  <div class="kbc-main">
+                    <div class="kbc-title-row">
+                      <span class="kbc-source pub">🌐 公域 · API</span>
+                      <span class="kbc-lvl l1">L1</span>
+                      <span class="kbc-title">巨量引擎 · 短剧广告审核新规 v3.2</span>
+                      <span class="kbc-status">已向量化</span>
+                    </div>
+                    <div class="kbc-summary">
+                      规定短剧广告中暴力血腥、低俗暗示、夸大情节等场景的具体审核标准。共 14 条细则，覆盖文案、口播、视觉、转场等维度。
+                    </div>
+                    <div class="kbc-snippet">
+                      "禁止出现明显暗示性肢体动作、过度血腥场面（包括卡通化呈现）；男女对峙类场景须避免直接喊话挑衅形式 …"
+                    </div>
+                    <div class="kbc-footer">
+                      <span class="stat hot">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        引用 <strong style="margin: 0 2px;">412</strong> 次
+                      </span>
+                      <span class="stat hot">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                        命中率 <strong style="margin: 0 2px;">94%</strong>
+                      </span>
+                      <span class="dot">·</span>
+                      <span>API 同步 · 2 小时前更新</span>
+                      <span class="dot">·</span>
+                      <span class="tags">
+                        <span class="kbc-tag">#审核</span>
+                        <span class="kbc-tag">#短剧</span>
+                        <span class="kbc-tag">#巨量引擎</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 卡片 2：被选中的私域 L2 题材打法 -->
+              <div class="kbc selected">
+                <div class="kbc-row1">
+                  <div class="check" style="background: var(--brand-600); border-color: var(--brand-600);">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" style="margin: 1px;"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <div class="kbc-type-icon kbc-t-case">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3zM7 17V9m5 8V5m5 12v-6"/></svg>
+                  </div>
+                  <div class="kbc-main">
+                    <div class="kbc-title-row">
+                      <span class="kbc-source prv-up">🔒 私域 · 上传</span>
+                      <span class="kbc-lvl l2">L2</span>
+                      <span class="kbc-title">都市悬疑题材 · 5 秒钩子方法论 v2.1</span>
+                      <span class="kbc-status">已向量化</span>
+                    </div>
+                    <div class="kbc-summary">
+                      团队在男频都市悬疑题材中积累的 5 秒前钩子组合公式：悬念抛出 → 反转预告 → 留白引诱。覆盖文案、口播、运镜 3 个维度共 12 种模板。
+                    </div>
+                    <div class="kbc-snippet">
+                      "钩子位前 3 秒须出现至少 1 个反差画面（如：朴素装扮 → 凶相）；4-5 秒须出现可触发好奇的关键道具或对白片段 …"
+                    </div>
+                    <div class="kbc-footer">
+                      <span class="stat hot">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        引用 <strong style="margin: 0 2px;">142</strong> 次
+                      </span>
+                      <span class="stat hot">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                        命中率 <strong style="margin: 0 2px;">86%</strong>
+                      </span>
+                      <span class="dot">·</span>
+                      <span>钱晓彤 · 7 天前更新</span>
+                      <span class="dot">·</span>
+                      <span class="tags">
+                        <span class="kbc-tag">#都市悬疑</span>
+                        <span class="kbc-tag">#钩子</span>
+                        <span class="kbc-tag">#男频</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 卡片 3：AI 沉淀 -->
+              <div class="kbc">
+                <div class="kbc-row1">
+                  <div class="check"></div>
+                  <div class="kbc-type-icon kbc-t-qa">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 01-12 7l-5 2 2-5A8 8 0 1121 12z"/></svg>
+                  </div>
+                  <div class="kbc-main">
+                    <div class="kbc-title-row">
+                      <span class="kbc-source prv-ai">🤖 私域 · AI 沉淀</span>
+                      <span class="kbc-lvl l2">L2</span>
+                      <span class="kbc-title">智能放量阶段出价调整 SOP</span>
+                      <span class="kbc-status">已向量化</span>
+                    </div>
+                    <div class="kbc-summary">
+                      由 5 次复盘 Agent 自动总结产生的出价调整经验：放量第 1/3/7 天的出价阶梯、止损线、加价阈值。已被人工审核确认。
+                    </div>
+                    <div class="kbc-snippet">
+                      "放量首日：基础出价 × 1.1；ROI 低于 0.8 时立即降至 ×0.9，且暂停放量观察 4 小时再决定是否复投 …"
+                    </div>
+                    <div class="kbc-footer">
+                      <span class="stat hot">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        引用 <strong style="margin: 0 2px;">78</strong> 次
+                      </span>
+                      <span class="stat">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                        命中率 <strong style="margin: 0 2px;">81%</strong>
+                      </span>
+                      <span class="dot">·</span>
+                      <span>AI 自动沉淀 · 3 天前 · 钱晓彤已审核</span>
+                      <span class="dot">·</span>
+                      <span class="tags">
+                        <span class="kbc-tag">#出价</span>
+                        <span class="kbc-tag">#放量</span>
+                        <span class="kbc-tag">#SOP</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 卡片 4：命中率偏低需优化 -->
+              <div class="kbc">
+                <div class="kbc-row1">
+                  <div class="check"></div>
+                  <div class="kbc-type-icon kbc-t-tpl">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+                  </div>
+                  <div class="kbc-main">
+                    <div class="kbc-title-row">
+                      <span class="kbc-source prv-up">🔒 私域 · 上传</span>
+                      <span class="kbc-lvl l2">L2</span>
+                      <span class="kbc-title">男频爽文 ROI 公式手册（旧版）</span>
+                      <span class="kbc-status" style="background: var(--warning-bg); color: var(--warning);">⚠ 待优化</span>
+                    </div>
+                    <div class="kbc-summary">
+                      2024 年 Q3 沉淀的男频爽文 ROI 模型。近期被 AI 召回但命中率持续走低，疑似平台政策变化后已失效。建议复审或归档。
+                    </div>
+                    <div class="kbc-footer">
+                      <span class="stat">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        引用 <strong style="margin: 0 2px;">34</strong> 次
+                      </span>
+                      <span class="stat warn">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                        命中率 <strong style="margin: 0 2px;">42%</strong> ↓
+                      </span>
+                      <span class="dot">·</span>
+                      <span>李响 · 6 个月前更新</span>
+                      <span class="dot">·</span>
+                      <span class="tags">
+                        <span class="kbc-tag">#男频</span>
+                        <span class="kbc-tag">#爽文</span>
+                        <span class="kbc-tag">#ROI</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 卡片 5：处理中 -->
+              <div class="kbc">
+                <div class="kbc-row1">
+                  <div class="check"></div>
+                  <div class="kbc-type-icon kbc-t-doc">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  </div>
+                  <div class="kbc-main">
+                    <div class="kbc-title-row">
+                      <span class="kbc-source prv-up">🔒 私域 · 上传</span>
+                      <span class="kbc-lvl l2">L2</span>
+                      <span class="kbc-title">女频虐恋 · 高 ROI 素材结构拆解（5月）</span>
+                      <span class="kbc-status processing"><span class="spin"></span> 分块中 3/5</span>
+                    </div>
+                    <div class="kbc-summary">
+                      30 条高 ROI 素材的逐帧拆解 + 节奏曲线分析。当前正在执行：清洗 ✓ → 分块 ⏳ → 元数据 → 标签 → 向量化
+                    </div>
+                    <div style="height: 4px; background: var(--gray-100); border-radius: 999px; overflow: hidden; margin: 8px 0;">
+                      <div style="height: 100%; width: 60%; background: var(--info); border-radius: 999px;"></div>
+                    </div>
+                    <div class="kbc-footer">
+                      <span style="color: var(--info);">⏳ 预计 2 分钟后完成 · 由"知识沉淀流水线"自动处理</span>
+                      <span class="dot">·</span>
+                      <span>李响 · 5 分钟前上传</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 卡片 6：腾讯公域 -->
+              <div class="kbc">
+                <div class="kbc-row1">
+                  <div class="check"></div>
+                  <div class="kbc-type-icon kbc-t-rule">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-3 8-10V5l-8-3-8 3v7c0 7 8 10 8 10z"/></svg>
+                  </div>
+                  <div class="kbc-main">
+                    <div class="kbc-title-row">
+                      <span class="kbc-source pub">🌐 公域 · API</span>
+                      <span class="kbc-lvl l1">L1</span>
+                      <span class="kbc-title">磁力金牛 · 行业 CPM 基准 2025 Q1</span>
+                      <span class="kbc-status">已向量化</span>
+                    </div>
+                    <div class="kbc-summary">
+                      短剧、电商、游戏等 12 个一级行业的 CPM / oCPM 基准线 + 月度浮动区间。用于诊断 CPM 偏离时提供横向参考。
+                    </div>
+                    <div class="kbc-footer">
+                      <span class="stat">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        引用 <strong style="margin: 0 2px;">94</strong> 次
+                      </span>
+                      <span class="stat hot">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                        命中率 <strong style="margin: 0 2px;">89%</strong>
+                      </span>
+                      <span class="dot">·</span>
+                      <span>API 同步 · 1 天前更新</span>
+                      <span class="dot">·</span>
+                      <span class="tags">
+                        <span class="kbc-tag">#磁力</span>
+                        <span class="kbc-tag">#CPM</span>
+                        <span class="kbc-tag">#基准</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 分页 -->
+              <div style="text-align: center; padding: 16px; font-size: 12px; color: var(--gray-500);">
+                显示 <span id="kb-shown">1-6</span> 共 45 条 · <a style="color: var(--brand-700); cursor: pointer;" data-action="more-kb">加载更多 ↓</a>
+              </div>
+
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ============ 右侧详情抽屉 ============ -->
+      <aside class="kb-drawer">
+
+        <div class="drawer-head">
+          <div class="drawer-head-row1">
+            <div class="drawer-close">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <div class="drawer-title">都市悬疑题材 · 5 秒钩子方法论 v2.1</div>
+            <div class="drawer-actions">
+              <div class="icon-btn" title="更多">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="drawer-meta-row">
+            <span class="kbc-source prv-up">🔒 私域 · 上传</span>
+            <span class="kbc-lvl l2">L2 · 题材打法</span>
+            <span class="kbc-status">已向量化</span>
+            <span style="font-size: 11.5px; color: var(--gray-500); margin-left: auto;">钱晓彤 · 7 天前更新</span>
+          </div>
+        </div>
+
+        <!-- 标签页 -->
+        <div class="drawer-tabs">
+          <div class="drawer-tab active" data-tab="chunks">切片预览 <span class="cnt">12</span></div>
+          <div class="drawer-tab" data-tab="meta">元数据</div>
+          <div class="drawer-tab" data-tab="cites">引用记录 <span class="cnt">142</span></div>
+          <div class="drawer-tab" data-tab="feedback">反馈数据</div>
+        </div>
+
+        <!-- 抽屉正文 -->
+        <div class="drawer-body">
+
+          <!-- TAB 1：切片预览 -->
+          <div class="tab-pane active" data-pane="chunks">
+            <div class="drawer-section">
+              <div class="drawer-section-title">已切分 12 块 · 平均 380 tokens / 块</div>
+              <div class="chunk">
+                <div class="chunk-head">
+                  <span class="chunk-id">CHUNK_001</span>
+                  <span class="chunk-tokens">412 tokens</span>
+                  <span class="chunk-vec">向量化完成</span>
+                  <span class="chunk-tag">钩子总论</span>
+                </div>
+                一条优质的都市悬疑钩子，应在 5 秒内完成以下三步：① 视觉反差锚定（朴素外貌 → 异常表情/动作）；② 关键悬念信息抛出（一句留白对白）；③ 隐性预告（暗示后文存在反转/真相）。
+              </div>
+              <div class="chunk highlight">
+                <div class="chunk-head">
+                  <span class="chunk-id">CHUNK_002</span>
+                  <span class="chunk-tokens">386 tokens</span>
+                  <span class="chunk-vec">向量化完成</span>
+                  <span class="chunk-tag">前 3 秒标准</span>
+                  <span class="tag-mini g" style="margin-left: 4px;">高引用 · 38 次</span>
+                </div>
+                前 3 秒须出现至少 1 个反差画面（例：朴素装扮 → 凶相 / 病弱 → 突然起身）。镜头切换不超过 2 次。第 1 秒为定场镜头，第 2-3 秒为视觉反差爆点 …
+              </div>
+              <div class="chunk">
+                <div class="chunk-head">
+                  <span class="chunk-id">CHUNK_003</span>
+                  <span class="chunk-tokens">364 tokens</span>
+                  <span class="chunk-vec">向量化完成</span>
+                  <span class="chunk-tag">4-5 秒钩子位</span>
+                </div>
+                4-5 秒须出现可触发好奇的关键道具（信封/血迹/钥匙等）或对白片段。对白应满足"信息缺失"原则：让观众想知道下一句 …
+              </div>
+              <div style="text-align: center; padding: 8px; color: var(--brand-700); font-size: 12px; cursor: pointer;" data-action="expand-chunks">
+                展开剩余 9 个切片 ↓
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2：元数据 -->
+          <div class="tab-pane" data-pane="meta" style="display:none;">
+            <div class="drawer-section">
+              <div class="drawer-section-title">基本信息</div>
+              <dl class="meta-grid">
+                <dt>知识 ID</dt><dd><code>KB-L2-T-0142</code></dd>
+                <dt>来源类型</dt><dd>团队上传（PDF · 32 页）</dd>
+                <dt>原始文件</dt><dd><a data-action="open-source" style="color: var(--brand-700); cursor: pointer;">都市悬疑钩子方法论_v2.1.pdf · 2.4 MB</a></dd>
+                <dt>上传人</dt><dd>钱晓彤 · 投放主管</dd>
+                <dt>上传时间</dt><dd>2026-05-21 14:32</dd>
+                <dt>最后更新</dt><dd>2026-05-21 14:38（自动处理完成）</dd>
+              </dl>
+            </div>
+            <div class="drawer-section">
+              <div class="drawer-section-title">离线处理配置</div>
+              <dl class="meta-grid">
+                <dt>清洗策略</dt><dd>标准 PDF 清洗 · 去除目录/页眉页脚</dd>
+                <dt>分块大小</dt><dd>400 tokens · overlap 50</dd>
+                <dt>分块数量</dt><dd>12 块 · 平均 380 tokens</dd>
+                <dt>向量化模型</dt><dd><code>bge-large-zh-v1.5</code> · 1024 维</dd>
+                <dt>索引</dt><dd>Milvus · cluster-prod-01</dd>
+              </dl>
+            </div>
+            <div class="drawer-section">
+              <div class="drawer-section-title">标签 <span data-action="add-tag" style="color: var(--brand-700); cursor: pointer; font-size: 11px;">+ 添加</span></div>
+              <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                <span class="tag-mini b">#都市悬疑</span>
+                <span class="tag-mini b">#钩子</span>
+                <span class="tag-mini b">#男频</span>
+                <span class="tag-mini gray">#方法论</span>
+                <span class="tag-mini g" style="border: 1px dashed; padding: 0 6px;">AI 推荐 +3</span>
+              </div>
+            </div>
+            <div class="drawer-section">
+              <div class="drawer-section-title">引用范围</div>
+              <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12.5px;">
+                <div style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--gray-700); background:var(--brand-50); border:1px solid var(--brand-100); border-radius:8px; padding:8px 10px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="2" style="flex-shrink:0;"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+                  已自动路由到 <b style="color:var(--gray-900);">智能问答</b> · <b style="color:var(--gray-900);">素材诊断</b>
+                </div>
+                <div style="font-size:11px; color:var(--gray-400);">系统按知识类型「方法论」自动匹配可引用的 AI 能力，无需手动配置</div>
+                <label style="display:flex; align-items:center; gap: 8px; cursor: pointer; margin-top:2px;"><input type="checkbox" /> 跨团队共享（需主管审批）</label>
+              </div>
+            </div>
+            <div class="drawer-section">
+              <div class="drawer-section-title">版本历史</div>
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <div style="display:flex; align-items:center; gap: 8px; padding: 8px 10px; background: var(--brand-50); border-radius: 6px; font-size: 12px;">
+                  <span style="font-weight:600; color: var(--brand-700);">v2.1</span>
+                  <span style="color: var(--gray-600);">钱晓彤 · 7 天前</span>
+                  <span style="color: var(--gray-400); margin-left: auto;">当前版本</span>
+                </div>
+                <div data-action="diff-version" style="display:flex; align-items:center; gap: 8px; padding: 8px 10px; background: var(--gray-50); border-radius: 6px; font-size: 12px; cursor: pointer;">
+                  <span style="font-weight:600; color: var(--gray-700);">v2.0</span>
+                  <span style="color: var(--gray-600);">钱晓彤 · 28 天前</span>
+                  <span style="color: var(--brand-700); margin-left: auto;">对比 →</span>
+                </div>
+                <div data-action="diff-version" style="display:flex; align-items:center; gap: 8px; padding: 8px 10px; background: var(--gray-50); border-radius: 6px; font-size: 12px; cursor: pointer;">
+                  <span style="font-weight:600; color: var(--gray-700);">v1.0</span>
+                  <span style="color: var(--gray-600);">李响 · 4 个月前</span>
+                  <span style="color: var(--brand-700); margin-left: auto;">对比 →</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 3：引用记录 -->
+          <div class="tab-pane" data-pane="cites" style="display:none;">
+            <div class="drawer-section">
+              <div class="drawer-section-title">最近 142 次引用 · 按时间倒序</div>
+              <div style="display: flex; gap: 6px; margin-bottom: 12px;">
+                <span class="kb-filter-chip has-value">全部场景 ▾</span>
+                <span class="kb-filter-chip">仅赞 / 踩 ▾</span>
+              </div>
+
+              <div class="cite-item">
+                <div class="cite-row1">
+                  <span class="cite-scene qa">智能问答</span>
+                  <span style="font-size: 11px; color: var(--gray-500);">钱晓彤</span>
+                  <span class="cite-time">12 分钟前</span>
+                </div>
+                <div class="cite-q">用户问："新做都市悬疑短剧前几秒怎么抓住用户？" — 召回此条知识第 2 切片 + 第 3 切片，权重 0.92</div>
+                <div class="cite-feedback">
+                  <span class="like">👍 用户点赞</span> · 后续转化：复制为新素材模板
+                </div>
+              </div>
+
+              <div class="cite-item">
+                <div class="cite-row1">
+                  <span class="cite-scene diag">素材诊断</span>
+                  <span style="font-size: 11px; color: var(--gray-500);">李响</span>
+                  <span class="cite-time">1 小时前</span>
+                </div>
+                <div class="cite-q">诊断"都市悬疑_5月_v4.mp4"：识别前 3 秒缺反差画面 — 调用本条第 2 切片作为合规建议依据</div>
+                <div class="cite-feedback">
+                  <span class="like">👍 投手采纳</span> · 已生成修改方案
+                </div>
+              </div>
+
+              <div class="cite-item">
+                <div class="cite-row1">
+                  <span class="cite-scene review">投放复盘</span>
+                  <span style="font-size: 11px; color: var(--gray-500);">Agent 自动</span>
+                  <span class="cite-time">3 小时前</span>
+                </div>
+                <div class="cite-q">归因"计划 1738652087 完读率偏低"时，引用本条解释钩子位时长偏长导致流失</div>
+                <div class="cite-feedback">
+                  <span class="like">👍 主管确认</span>
+                </div>
+              </div>
+
+              <div class="cite-item">
+                <div class="cite-row1">
+                  <span class="cite-scene qa">智能问答</span>
+                  <span style="font-size: 11px; color: var(--gray-500);">王宇</span>
+                  <span class="cite-time">昨天 18:20</span>
+                </div>
+                <div class="cite-q">用户问："女频虐恋的钩子和悬疑通用吗？" — 召回本条，AI 回答"不通用，提示参考 L2 女频虐恋素材模板"</div>
+                <div class="cite-feedback">
+                  <span class="dislike">👎 用户标记"不够具体"</span> · 待优化
+                </div>
+              </div>
+
+              <div class="cite-item">
+                <div class="cite-row1">
+                  <span class="cite-scene diag">素材诊断</span>
+                  <span style="font-size: 11px; color: var(--gray-500);">李响</span>
+                  <span class="cite-time">昨天 14:05</span>
+                </div>
+                <div class="cite-q">诊断"都市悬疑_5月_v2.mp4"前 5 秒结构合规性</div>
+                <div class="cite-feedback">
+                  <span class="like">👍 投手采纳</span>
+                </div>
+              </div>
+
+              <div style="text-align: center; padding: 8px; color: var(--brand-700); font-size: 12px; cursor: pointer;" data-action="more-cites">
+                加载更多 137 条 ↓
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 4：反馈数据 -->
+          <div class="tab-pane" data-pane="feedback" style="display:none;">
+            <div class="drawer-section">
+              <div class="drawer-section-title">总体表现</div>
+              <div class="feedback-grid">
+                <div class="feedback-mini">
+                  <div class="ml">被引用次数</div>
+                  <div class="mv">142</div>
+                  <div class="mt up">↑ 本月 +38</div>
+                </div>
+                <div class="feedback-mini">
+                  <div class="ml">命中率</div>
+                  <div class="mv">86%</div>
+                  <div class="mt up">↑ +2.1% (vs 30天前)</div>
+                </div>
+                <div class="feedback-mini">
+                  <div class="ml">用户点赞</div>
+                  <div class="mv" style="color: var(--success);">98</div>
+                  <div class="mt up">采纳率 69%</div>
+                </div>
+                <div class="feedback-mini">
+                  <div class="ml">用户踩 / 修正</div>
+                  <div class="mv" style="color: var(--danger);">14</div>
+                  <div class="mt down">需关注</div>
+                </div>
+              </div>
+              <div style="font-size: 11px; color: var(--gray-500); margin-top: 8px;">赞 / 踩比例</div>
+              <div class="feedback-bar">
+                <div class="seg seg-up" style="width: 87.5%;"></div>
+                <div class="seg seg-down" style="width: 12.5%;"></div>
+              </div>
+            </div>
+
+            <div class="drawer-section">
+              <div class="drawer-section-title">场景调用分布</div>
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div>
+                  <div style="display:flex; justify-content:space-between; font-size: 12px; color: var(--gray-700); margin-bottom:4px;">
+                    <span>智能问答 (QA)</span><span style="font-weight:600;">62% · 88 次</span>
+                  </div>
+                  <div style="height: 6px; background: var(--gray-100); border-radius: 999px; overflow:hidden;"><div style="height:100%; width: 62%; background: var(--brand-500); border-radius: 999px;"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex; justify-content:space-between; font-size: 12px; color: var(--gray-700); margin-bottom:4px;">
+                    <span>素材诊断</span><span style="font-weight:600;">23% · 33 次</span>
+                  </div>
+                  <div style="height: 6px; background: var(--gray-100); border-radius: 999px; overflow:hidden;"><div style="height:100%; width: 23%; background: var(--danger); border-radius: 999px;"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex; justify-content:space-between; font-size: 12px; color: var(--gray-700); margin-bottom:4px;">
+                    <span>投放复盘 Agent</span><span style="font-weight:600;">15% · 21 次</span>
+                  </div>
+                  <div style="height: 6px; background: var(--gray-100); border-radius: 999px; overflow:hidden;"><div style="height:100%; width: 15%; background: var(--success); border-radius: 999px;"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="drawer-section">
+              <div class="drawer-section-title">命中率趋势（30 天）</div>
+              <svg viewBox="0 0 280 80" style="width: 100%; height: 80px;">
+                <polyline points="0,55 25,52 50,48 75,42 100,38 125,35 150,32 175,28 200,22 225,18 250,15 280,12" fill="none" stroke="var(--success)" stroke-width="2" />
+                <polyline points="0,60 25,60 50,60 75,60 100,60 125,60 150,60 175,60 200,60 225,60 250,60 280,60" fill="none" stroke="var(--gray-300)" stroke-width="1" stroke-dasharray="3,3" />
+                <text x="0" y="75" font-size="9" fill="var(--gray-400)">30 天前 (84%)</text>
+                <text x="200" y="75" font-size="9" fill="var(--gray-400)">今天 (86%)</text>
+              </svg>
+            </div>
+
+            <div class="drawer-section" style="background: var(--brand-50); padding: 12px; border-radius: 8px; border: 1px dashed var(--brand-300);">
+              <div style="font-size: 12px; font-weight: 600; color: var(--brand-700); margin-bottom: 6px;">💡 AI 给的优化建议</div>
+              <div style="font-size: 12.5px; color: var(--gray-700); line-height: 1.6;">
+                此条知识在「女频题材问题」中召回成功但命中率较低（57%）。建议：拆分出一条针对女频的衍生条目，或在内容中显式标注"仅适用于男频都市悬疑"。
+              </div>
+              <button class="btn btn-primary btn-sm" style="margin-top: 10px;">采纳建议</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 底部操作 -->
+        <div class="drawer-foot">
+          <button class="btn btn-outline btn-sm">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 0118 0M21 12a9 9 0 01-18 0"/><polyline points="21 12 21 5 14 5"/></svg>
+            重新处理
+          </button>
+          <button class="btn btn-outline btn-sm">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            编辑
+          </button>
+          <button class="btn btn-primary btn-sm">查看完整原文</button>
+        </div>
+
+      </aside>
+
+      <!-- ============ Toast 容器 ============ -->
+      <div id="kb-toast" class="kb-toast hidden">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+        <span class="kb-toast-text">操作成功</span>
+      </div>
+
+      <!-- ============ + 沉淀知识 下拉菜单 ============ -->
+      <div id="kb-add-menu" class="kb-popmenu hidden">
+        <div class="popmenu-item" data-action="upload-doc">
+          <div class="popmenu-icon" style="background: var(--brand-50); color: var(--brand-700);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+          </div>
+          <div>
+            <div class="popmenu-title">上传文档（私域）</div>
+            <div class="popmenu-desc">PDF / Word / Markdown / 图片 OCR · 单文件 50MB 内</div>
+          </div>
+        </div>
+        <div class="popmenu-item" data-action="add-api">
+          <div class="popmenu-icon" style="background: #DBEAFE; color: #1D4ED8;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          </div>
+          <div>
+            <div class="popmenu-title">配置 API 源（公域）</div>
+            <div class="popmenu-desc">巨量 / 磁力 / 腾讯等平台官方规则文档自动同步</div>
+          </div>
+        </div>
+        <div class="popmenu-item" data-action="add-manual">
+          <div class="popmenu-icon" style="background: #EFF6FF; color: #2563EB;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </div>
+          <div>
+            <div class="popmenu-title">手动建条目</div>
+            <div class="popmenu-desc">规则 / Q&A / 案例 / 模板 — 适合即时沉淀团队共识</div>
+          </div>
+        </div>
+        <div class="popmenu-item" data-action="from-qa">
+          <div class="popmenu-icon" style="background: var(--accent-orange-bg); color: var(--accent-orange);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 01-12 7l-5 2 2-5A8 8 0 1121 12z"/></svg>
+          </div>
+          <div>
+            <div class="popmenu-title">从问答 / 复盘沉淀</div>
+            <div class="popmenu-desc">把对话或复盘报告片段一键收纳入库</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ 占位全屏抽屉（数据源 / 飞轮分析 / 处理中）============ -->
+      <div id="kb-modal-mask" class="kb-modal-mask hidden">
+        <div class="kb-modal-panel">
+          <div class="kb-modal-head">
+            <div class="kb-modal-title" id="kb-modal-title">数据源接入</div>
+            <div class="drawer-close" data-action="close-modal">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </div>
+          </div>
+          <div class="kb-modal-body" id="kb-modal-body">
+            <div style="text-align: center; padding: 80px 20px; color: var(--gray-500);">
+              <div style="font-size: 16px; color: var(--gray-700); margin-bottom: 8px;">数据源接入配置即将上线</div>
+              <div style="font-size: 13px;">敬请关注</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="kb-upload-dialog" class="kb-dialog-mask hidden">
+        <div class="kb-dialog">
+          <div class="kb-dialog-head">
+            <div class="kb-dialog-title">上传文档到知识库</div>
+            <div class="kb-dialog-close" data-action="dialog-close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+          </div>
+          <div class="kb-dialog-body">
+            <div class="kb-drop" data-action="pick-file">
+              <div class="kb-drop-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg></div>
+              <div class="kb-drop-main">拖拽文档到这里，或<span>点击选择</span></div>
+              <div class="kb-drop-sub">PDF / Word / Markdown / 图片 OCR · 单文件 50MB 内 · 可批量</div>
+            </div>
+            <div class="kb-field">
+              <div class="kb-field-label">归入知识层级</div>
+              <div class="kb-field-row">
+                <select class="kb-select"><option>L2 · 私域团队经验</option><option>L1 · 公域平台规则</option><option>L3 · 个人偏好</option></select>
+                <select class="kb-select"><option>题材打法</option><option>出价策略</option><option>素材模板</option></select>
+              </div>
+            </div>
+            <div class="kb-field">
+              <div class="kb-field-label">标签</div>
+              <div class="kb-tag-edit"><span class="tag-mini b">#短剧</span><span class="tag-mini o">#出价</span><span class="tag-mini g" style="border:1px dashed;padding:0 6px;cursor:pointer;">AI 自动推荐</span></div>
+            </div>
+            <div class="kb-field">
+              <div class="kb-field-label">离线处理</div>
+              <div class="kb-proc-opts">
+                <label class="kb-proc-opt"><input type="checkbox" checked> 自动清洗 + 分块（400 tokens / 块）</label>
+                <label class="kb-proc-opt"><input type="checkbox" checked> 自动向量化（bge-large-zh-v1.5）</label>
+                <label class="kb-proc-opt"><input type="checkbox" checked> 自动提取元数据与标签</label>
+              </div>
+            </div>
+          </div>
+          <div class="kb-dialog-foot">
+            <button class="btn btn-outline btn-sm" data-action="dialog-close">取消</button>
+            <button class="btn btn-primary btn-sm" data-action="submit-upload">上传并处理</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="kb-create-dialog" class="kb-dialog-mask hidden">
+        <div class="kb-dialog">
+          <div class="kb-dialog-head">
+            <div class="kb-dialog-title">手动建知识条目</div>
+            <div class="kb-dialog-close" data-action="dialog-close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+          </div>
+          <div class="kb-dialog-body">
+            <div class="kb-field" style="margin-top:0;">
+              <div class="kb-field-label">条目类型</div>
+              <div class="kb-type-tabs">
+                <div class="kb-type-tab active">规则</div>
+                <div class="kb-type-tab">Q&amp;A</div>
+                <div class="kb-type-tab">案例</div>
+                <div class="kb-type-tab">模板</div>
+              </div>
+            </div>
+            <div class="kb-field">
+              <div class="kb-field-label">标题</div>
+              <input class="kb-input" placeholder="例如：都市悬疑题材 5 秒钩子标准">
+            </div>
+            <div class="kb-field">
+              <div class="kb-field-label">内容</div>
+              <textarea class="kb-textarea" placeholder="填写规则 / 经验 / 案例正文，松鼠会自动向量化后供 AI 召回…"></textarea>
+            </div>
+            <div class="kb-field">
+              <div class="kb-field-label">归入层级</div>
+              <div class="kb-field-row">
+                <select class="kb-select"><option>L2 · 私域团队经验</option><option>L3 · 个人偏好</option></select>
+                <select class="kb-select"><option>题材打法</option><option>出价策略</option><option>素材模板</option></select>
+              </div>
+            </div>
+          </div>
+          <div class="kb-dialog-foot">
+            <button class="btn btn-outline btn-sm" data-action="dialog-close">取消</button>
+            <button class="btn btn-primary btn-sm" data-action="submit-create">保存入库</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* 松鼠投放 · 共享导航 / 顶栏 / 高亮逻辑 */
+
+function renderShell({ active, title, crumb }) {
+  const navItems = [
+    { group: '智能助手', items: [
+      { key: 'qa',        label: '智能问答', href: 'qa.html',         icon: 'chat' },
+      { key: 'diagnose',  label: '素材诊断', href: 'diagnose.html',   icon: 'shield' },
+      { key: 'review',    label: '投放复盘', href: 'review.html',     icon: 'report' },
+    ]},
+    { group: '工作', items: [
+      { key: 'monitor',   label: '数据监控', href: 'monitor.html',  icon: 'pulse' },
+    ]},
+    { group: '资源管理', items: [
+      { key: 'knowledge', label: '知识库管理', href: 'knowledge.html', icon: 'book' },
+      { key: 'accounts',  label: '账户中心',   href: 'accounts.html',  icon: 'wallet' },
+    ]},
+    { group: '系统', items: [
+      { key: 'team',      label: '团队管理', href: 'team.html',     icon: 'users' },
+      { key: 'settings',  label: '系统设置', href: 'settings.html', icon: 'cog' },
+    ]},
+  ];
+
+  const ICONS = {
+    home:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-8 9 8M5 10v10h14V10"/></svg>',
+    pulse: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>',
+    bell:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9M10 21a2 2 0 004 0"/></svg>',
+    chat:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 01-12 7l-5 2 2-5A8 8 0 1121 12z"/></svg>',
+    shield:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-3 8-10V5l-8-3-8 3v7c0 7 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>',
+    report:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3zM7 17V9m5 8V5m5 12v-6"/></svg>',
+    book:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 012-2h13v18H6a2 2 0 01-2-2zM4 19a2 2 0 012-2h13"/></svg>',
+    image: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>',
+    wallet:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20M16 15h2"/></svg>',
+    users: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>',
+    cog:   '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.6 15a1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09A1.65 1.65 0 0015 4.6a1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>',
+  };
+
+  var __role = (typeof localStorage !== 'undefined' && localStorage.getItem('squirrel_role')) || 'admin';
+  var __roleNav = { admin:['qa','diagnose','review','monitor','knowledge','accounts','team','settings'], toushou:['qa','diagnose','review','monitor','knowledge','settings'], audit:['qa','diagnose','knowledge','settings'], ops:['qa','review','monitor','knowledge','settings'] };
+  var __allowed = __roleNav[__role] || __roleNav.admin;
+  const navHtml = navItems.map(sec => {
+    var __it = sec.items.filter(function(it){ return __allowed.indexOf(it.key) >= 0; });
+    if (!__it.length) return '';
+    return `
+    <div class="nav-section">
+      <div class="nav-title">${sec.group}</div>
+      ${__it.map(it => `
+        <a class="nav-item ${it.key === active ? 'active' : ''}" href="${it.href}">
+          <span class="icon">${ICONS[it.icon] || ''}</span>
+          <span>${it.label}</span>
+          ${it.badge ? `<span class="badge">${it.badge}</span>` : ''}
+        </a>
+      `).join('')}
+    </div>
+  `; }).join('');
+
+  const sidebar = `
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-logo">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l3 6 6 1-4.5 4 1 6L12 16l-5.5 3 1-6L3 9l6-1z"/>
+          </svg>
+        </div>
+        <div class="brand-name">松鼠投放</div>
+      </div>
+      <div class="tenant-switcher">
+        <div class="tenant-avatar">悦</div>
+        <div class="tenant-meta">
+          <div class="tenant-name">悦动短剧科技</div>
+          <div class="tenant-role">投放主管 · 32人团队</div>
+        </div>
+        <span class="tenant-arrow">▾</span>
+      </div>
+      <div style="flex:1; overflow-y:auto;">${navHtml}</div>
+      <div class="nav-footer">
+        <div class="usage-box">
+          <div class="usage-label">本月调用</div>
+          <div class="usage-value">8,432 / 20,000 次</div>
+          <div class="usage-bar"><div class="usage-bar-inner" style="width:42%"></div></div>
+        </div>
+      </div>
+    </aside>
+  `;
+
+  const crumbHtml = (crumb || []).map((c, i, a) => {
+    if (i === a.length - 1) return `<span class="current">${c}</span>`;
+    return `<span>${c}</span><span class="sep">/</span>`;
+  }).join('');
+
+  const topbar = `
+    <header class="topbar">
+      <div class="crumb">${crumbHtml}</div>
+      <div class="topbar-plat" id="__plat">
+        <span class="plat-dot" id="__plat-dot"></span>
+        <span class="plat-name" id="__plat-name">巨量引擎</span>
+        <svg class="plat-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        <div class="plat-menu" id="__plat-menu">
+          <div class="plat-mi" data-plat="juliang"><span class="plat-dot" style="background:#FF4D4F;"></span>巨量引擎</div>
+          <div class="plat-mi" data-plat="kuaishou"><span class="plat-dot" style="background:#FF6A00;"></span>磁力引擎</div>
+          <div class="plat-mi" data-plat="tencent"><span class="plat-dot" style="background:#0052D9;"></span>腾讯广告</div>
+          <div class="plat-msep"></div>
+          <div class="plat-mi" data-plat="all"><span class="plat-dot plat-dot-all"></span>全平台汇总<span class="plat-mgr">管理视角</span></div>
+        </div>
+      </div>
+      <div class="topbar-spacer"></div>
+      <div class="topbar-search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input placeholder="问问松鼠：例如 '巨量短剧 ROI 怎么提升'" />
+        <span class="kbd">⌘K</span>
+      </div>
+      <button class="topbar-icon" title="通知">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9M10 21a2 2 0 004 0"/></svg>
+        <span class="dot"></span>
+      </button>
+      <button class="topbar-icon" title="帮助">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 015.8 1c0 2-3 3-3 3M12 17h.01"/></svg>
+      </button>
+      <div style="width:1px;height:24px;background:var(--border-base);"></div>
+      <div class="topbar-role" id="__role">
+        <span class="role-vp-label">视角</span>
+        <span class="role-vp-name" id="__role-name">投放主管</span>
+        <svg class="role-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        <div class="role-menu" id="__role-menu">
+          <div class="role-mi" data-role="admin">投放主管</div>
+          <div class="role-mi" data-role="toushou">投手</div>
+          <div class="role-mi" data-role="audit">素材审核</div>
+          <div class="role-mi" data-role="ops">数据运营</div>
+        </div>
+      </div>
+      <div class="topbar-user">
+        <div class="user-avatar">Q</div>
+        <span class="user-name">钱晓彤</span>
+      </div>
+    </header>
+  `;
+
+  // 注入页面
+  document.getElementById('__sidebar').innerHTML = sidebar;
+  document.getElementById('__topbar').innerHTML = topbar;
+  if (!document.getElementById('__role-style')) { var __rs=document.createElement('style'); __rs.id='__role-style'; __rs.textContent=".topbar-role{position:relative;display:flex;align-items:center;gap:5px;padding:5px 10px;margin-right:10px;border-radius:8px;border:1px solid var(--border-base);background:#fff;cursor:pointer;font-size:13px;color:var(--gray-800);user-select:none}.topbar-role:hover{border-color:var(--brand-300);background:var(--brand-50)}.role-vp-label{font-size:11px;color:var(--gray-400)}.role-vp-name{font-weight:600}.role-caret{color:var(--gray-400)}.role-menu{position:absolute;top:calc(100% + 6px);right:0;min-width:152px;background:#fff;border:1px solid var(--border-base);border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,.12);padding:6px;display:none;z-index:50;cursor:default}.role-menu.open{display:block}.role-mi{padding:8px 10px;border-radius:7px;font-size:13px;color:var(--gray-700);font-weight:500;cursor:pointer}.role-mi:hover{background:var(--gray-50)}.role-mi.active{background:var(--brand-50);color:var(--brand-700);font-weight:600}"; document.head.appendChild(__rs); }
+  (function(){
+    var R = { admin:'\u6295\u653e\u4e3b\u7ba1', toushou:'\u6295\u624b', audit:'\u7d20\u6750\u5ba1\u6838', ops:'\u6570\u636e\u8fd0\u8425' };
+    var cur = localStorage.getItem('squirrel_role') || 'admin';
+    if (!R[cur]) cur = 'admin';
+    var wrap = document.getElementById('__role'); if(!wrap) return;
+    var nameEl = document.getElementById('__role-name'), menu = document.getElementById('__role-menu');
+    nameEl.textContent = R[cur];
+    var mis = menu.querySelectorAll('.role-mi');
+    for(var i=0;i<mis.length;i++){ mis[i].classList.toggle('active', mis[i].getAttribute('data-role')===cur); }
+    wrap.addEventListener('click', function(e){
+      var mi = e.target.closest ? e.target.closest('.role-mi') : null;
+      if (mi){ localStorage.setItem('squirrel_role', mi.getAttribute('data-role')); menu.classList.remove('open'); location.reload(); return; }
+      menu.classList.toggle('open'); e.stopPropagation();
+    });
+    document.addEventListener('click', function(){ menu.classList.remove('open'); });
+  })();
+  if (!document.getElementById('__plat-style')) {
+    var __ps = document.createElement('style');
+    __ps.id = '__plat-style';
+    __ps.textContent = ".topbar-plat{position:relative;display:flex;align-items:center;gap:6px;padding:5px 10px;margin-left:14px;border-radius:8px;border:1px solid var(--border-base);background:#fff;cursor:pointer;font-size:13px;color:var(--gray-800);font-weight:600;user-select:none}.topbar-plat:hover{border-color:var(--brand-300);background:var(--brand-50)}.plat-dot{width:7px;height:7px;border-radius:999px;background:#FF4D4F;flex:none}.plat-dot-all{background:linear-gradient(135deg,#FF4D4F,#FF6A00,#0052D9)}.plat-caret{color:var(--gray-400)}.plat-menu{position:absolute;top:calc(100% + 6px);left:0;min-width:190px;background:#fff;border:1px solid var(--border-base);border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,.12);padding:6px;display:none;z-index:50;cursor:default}.plat-menu.open{display:block}.plat-mi{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;font-size:13px;color:var(--gray-700);font-weight:500;cursor:pointer}.plat-mi:hover{background:var(--gray-50)}.plat-mi.active{background:var(--brand-50);color:var(--brand-700);font-weight:600}.plat-msep{height:1px;background:var(--border-base);margin:5px 0}.plat-mgr{margin-left:auto;font-size:10px;color:var(--gray-400);background:var(--gray-100);padding:1px 6px;border-radius:999px;font-weight:500}";
+    document.head.appendChild(__ps);
+  }
+  (function(){
+    var P = { juliang:{n:'\u5de8\u91cf\u5f15\u64ce',c:'#FF4D4F'}, kuaishou:{n:'\u78c1\u529b\u5f15\u64ce',c:'#FF6A00'}, tencent:{n:'\u817e\u8baf\u5e7f\u544a',c:'#0052D9'}, all:{n:'\u5168\u5e73\u53f0\u6c47\u603b',c:''} };
+    var cur = localStorage.getItem('squirrel_platform') || 'juliang';
+    if (!P[cur]) cur = 'juliang';
+    var wrap = document.getElementById('__plat');
+    if (!wrap) return;
+    var nameEl = document.getElementById('__plat-name'), dotEl = document.getElementById('__plat-dot'), menu = document.getElementById('__plat-menu');
+    function paint(){
+      nameEl.textContent = P[cur].n;
+      if (cur === 'all') { dotEl.className = 'plat-dot plat-dot-all'; dotEl.style.background = ''; }
+      else { dotEl.className = 'plat-dot'; dotEl.style.background = P[cur].c; }
+      var mis = menu.querySelectorAll('.plat-mi');
+      for (var i=0;i<mis.length;i++){ mis[i].classList.toggle('active', mis[i].getAttribute('data-plat') === cur); }
+    }
+    paint();
+    wrap.addEventListener('click', function(e){
+      var mi = e.target.closest ? e.target.closest('.plat-mi') : null;
+      if (mi) { cur = mi.getAttribute('data-plat'); localStorage.setItem('squirrel_platform', cur); menu.classList.remove('open'); location.reload(); return; }
+      menu.classList.toggle('open'); e.stopPropagation();
+    });
+    document.addEventListener('click', function(){ menu.classList.remove('open'); });
+  })();
+  if (title) document.title = title + ' · 松鼠投放';
+}
+
+</script>
+<script>
+  renderShell({ active: 'knowledge', title: '知识库管理', crumb: ['资源管理', '知识库管理'] });
+
+  // ============ 知识库页·全局交互 ============
+  (function() {
+    const $ = (s, p = document) => p.querySelector(s);
+    const $$ = (s, p = document) => Array.from(p.querySelectorAll(s));
+
+    // —— Toast —— 
+    const toastEl = $('#kb-toast');
+    let toastTimer = null;
+    function toast(msg) {
+      $('.kb-toast-text', toastEl).textContent = msg;
+      toastEl.classList.remove('hidden');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.add('hidden'), 2200);
+    }
+
+    // —— 抽屉 显示/隐藏 ——
+    const drawer = $('.kb-drawer');
+    function closeDrawer() {
+      drawer.classList.add('hidden');
+      $$('.kbc.selected').forEach(c => c.classList.remove('selected'));
+    }
+    function openDrawer(title) {
+      drawer.classList.remove('hidden');
+      // 原型演示：详情为固定示例条目，不用卡片标题覆盖，避免「标题变、内容不变」的不一致
+    }
+
+    // —— 抽屉 4 个 Tab 切换 ——
+    function switchTab(tabKey) {
+      $$('.drawer-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tabKey));
+      $$('.tab-pane').forEach(p => {
+        if (p.dataset.pane === tabKey) {
+          p.style.display = 'block';
+          p.classList.add('active');
+        } else {
+          p.style.display = 'none';
+          p.classList.remove('active');
+        }
+      });
+    }
+
+    // —— 占位 Modal（数据源 / 飞轮 / 处理中）——
+    const modalMask = $('#kb-modal-mask');
+    function openModal(title) {
+      $('#kb-modal-title').textContent = title;
+      modalMask.classList.remove('hidden');
+    }
+    function closeModal() { modalMask.classList.add('hidden'); }
+
+    const uploadDlg = $('#kb-upload-dialog');
+    const createDlg = $('#kb-create-dialog');
+    function openUploadDialog() { uploadDlg.classList.remove('hidden'); }
+    function openCreateDialog() { createDlg.classList.remove('hidden'); }
+    function closeDialogs() { uploadDlg.classList.add('hidden'); createDlg.classList.add('hidden'); }
+
+    // —— 沉淀知识 下拉 ——
+    const addMenu = $('#kb-add-menu');
+    function toggleAddMenu(btn) {
+      if (!addMenu.classList.contains('hidden')) {
+        addMenu.classList.add('hidden');
+        return;
+      }
+      const r = btn.getBoundingClientRect();
+      addMenu.style.top = (r.bottom + 6) + 'px';
+      addMenu.style.right = (window.innerWidth - r.right) + 'px';
+      addMenu.classList.remove('hidden');
+    }
+
+    // —— 主事件委托 ——
+    var KB_FILTERS = {
+      source: { prefix: '来源', opts: ['私域 L2 题材打法','公域大盘打法','平台官方规则','历史复盘沉淀'] },
+      type: { prefix: '类型', opts: ['投放规则','实战案例','话术模板','数据基准'] },
+      tag: { prefix: '标签', opts: ['题材打法','出价策略','素材创意','审核合规','账户搭建'] },
+      hitrate: { prefix: '命中率', opts: ['高命中 \u226570%','中命中 40\u201370%','低命中 <40%'] },
+      sort: { prefix: '排序', opts: ['被引用','最新更新','命中率','收藏数'] }
+    };
+    function closeKbDD(){ document.querySelectorAll('.kb-dd').forEach(function(d){ d.remove(); }); document.querySelectorAll('.kb-filter-chip.dd-open').forEach(function(c){ c.classList.remove('dd-open'); }); }
+    function openKbDD(chip){ var f = KB_FILTERS[chip.dataset.filter]; if(!f) return; var lab = chip.querySelector('.kb-chip-label'); var cur = lab.textContent.split('\uFF1A').pop().trim(); var dd = document.createElement('div'); dd.className = 'kb-dd'; dd.__chip = chip; f.opts.forEach(function(o){ var it = document.createElement('div'); it.className = 'kb-dd-item' + (o===cur ? ' sel' : ''); it.textContent = o; it.dataset.val = o; it.dataset.prefix = f.prefix; dd.appendChild(it); }); chip.appendChild(dd); chip.classList.add('dd-open'); }
+    document.addEventListener('click', (e) => {
+      const t = e.target;
+      if (!t.closest('.kb-filter-chip')) closeKbDD();
+
+      // 1. 关闭浮层（点空白）
+      if (!addMenu.classList.contains('hidden') && !t.closest('#kb-add-menu') && !t.closest('[data-toggle="add-menu"]')) {
+        addMenu.classList.add('hidden');
+      }
+
+      // 2. 顶部 4 个按钮
+      const btn = t.closest('button.btn');
+      if (btn) {
+        const label = btn.textContent.replace(/\s/g, '');
+        if (label.includes('数据源')) { openModal('数据源管理 · 公域 API 接入'); return; }
+        if (label.includes('处理中')) { openModal('离线处理流水线 · 当前 3 个任务'); return; }
+        if (label.includes('沉淀知识')) { btn.dataset.toggle = 'add-menu'; toggleAddMenu(btn); return; }
+        if (label.includes('查看完整原文')) { toast('正在打开原文'); return; }
+        if (label.includes('重新处理')) { toast('已重新提交处理任务'); return; }
+        if (label.includes('编辑')) { toast('正在打开编辑面板'); return; }
+        if (label.includes('采纳建议')) { toast('已采纳，开始拆分衍生条目'); return; }
+      }
+
+      // 3. 下拉菜单项 → 真实界面
+      const popItem = t.closest('.popmenu-item');
+      if (popItem) {
+        addMenu.classList.add('hidden');
+        const act = popItem.dataset.action;
+        if (act === 'upload-doc') openUploadDialog();
+        else if (act === 'add-api') openModal('数据源管理 · 公域 API 接入');
+        else if (act === 'add-manual') openCreateDialog();
+        else if (act === 'from-qa') { location.href = 'qa.html'; }
+        return;
+      }
+      if (t.closest('[data-action="dialog-close"]')) { closeDialogs(); return; }
+      if (t.classList.contains('kb-dialog-mask')) { closeDialogs(); return; }
+      if (t.closest('[data-action="submit-upload"]')) { closeDialogs(); toast('已上传，开始清洗 → 分块 → 向量化'); return; }
+      if (t.closest('[data-action="submit-create"]')) { closeDialogs(); toast('条目已保存入库'); return; }
+      if (t.closest('[data-action="pick-file"]')) { toast('请选择文件'); return; }
+      const typeTab = t.closest('.kb-type-tab');
+      if (typeTab) { document.querySelectorAll('.kb-type-tab').forEach(x=>x.classList.remove('active')); typeTab.classList.add('active'); return; }
+
+      // 4. 关闭按钮
+      if (t.closest('.drawer-close')) {
+        const action = t.closest('.drawer-close').dataset.action;
+        if (action === 'close-modal') { closeModal(); return; }
+        closeDrawer();
+        return;
+      }
+      if (t.closest('#kb-modal-mask') === modalMask && t.classList.contains('kb-modal-mask')) {
+        closeModal(); return;
+      }
+
+      // 5. 抽屉 tab 切换
+      const tab = t.closest('.drawer-tab');
+      if (tab && tab.dataset.tab) { switchTab(tab.dataset.tab); return; }
+
+      // 6. 知识卡片选中（含 checkbox）
+      const card = t.closest('.kbc');
+      if (card) {
+        $$('.kbc.selected').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        // 把卡片标题同步到抽屉
+        const cardTitle = card.querySelector('.kbc-title');
+        if (cardTitle) openDrawer(cardTitle.textContent);
+        return;
+      }
+
+      // 7. 左栏 nav-item / nav-root
+      const navItem = t.closest('.kb-nav-item, .kb-nav-root');
+      if (navItem) {
+        $$('.kb-nav-item.active, .kb-nav-root.active').forEach(n => n.classList.remove('active'));
+        navItem.classList.add('active');
+        const lbl = navItem.querySelector('.lbl')?.textContent || navItem.textContent.trim().split(/\s/)[0];
+        toast(`已切换分类：${lbl}`);
+        return;
+      }
+
+      // 8. 智能筛选
+      const smart = t.closest('.kb-smart-item');
+      if (smart) {
+        $$('.kb-smart-item.active').forEach(n => n.classList.remove('active'));
+        smart.classList.add('active');
+        toast(`已应用筛选：${smart.textContent.trim().split(/\s+/)[0]}`);
+        return;
+      }
+
+      // 9a. 下拉选项点击
+      const ddItem = t.closest('.kb-dd-item');
+      if (ddItem) {
+        const dd = ddItem.closest('.kb-dd');
+        const ch = dd.__chip;
+        ch.querySelector('.kb-chip-label').textContent = ddItem.dataset.prefix + '\uFF1A' + ddItem.dataset.val;
+        ch.classList.add('has-value');
+        dd.querySelectorAll('.kb-dd-item').forEach(function(x){ x.classList.toggle('sel', x === ddItem); });
+        closeKbDD();
+        return;
+      }
+      // 9b. 筛选 chip → 下拉
+      const chip = t.closest('.kb-filter-chip');
+      if (chip) {
+        if (chip.dataset.filter) {
+          const wasOpen = chip.classList.contains('dd-open');
+          closeKbDD();
+          if (!wasOpen) openKbDD(chip);
+          e.stopPropagation();
+        } else {
+          chip.classList.toggle('has-value');
+        }
+        return;
+      }
+
+      // 10. 视图切换
+      const viewBtn = t.closest('.kb-view-toggle button');
+      if (viewBtn) {
+        $$('.kb-view-toggle button').forEach(b => b.classList.remove('active'));
+        viewBtn.classList.add('active');
+        return;
+      }
+
+      // 11. 标签云 / 卡片内 tag
+      const tagEl = t.closest('.tag-mini, .kbc-tag');
+      if (tagEl) {
+        const txt = tagEl.textContent.trim();
+        toast(`按标签筛选 ${txt}`);
+        return;
+      }
+
+      // 12. 抽屉头部 icon-btn
+      const iconBtn = t.closest('.icon-btn');
+      if (iconBtn) {
+        toast(iconBtn.title || '已记录');
+        return;
+      }
+
+      // 13. 加载更多 / 展开 → 真实追加内容
+      const moreEl = t.closest('[data-action]');
+      const action = moreEl?.dataset?.action;
+      if (action === 'expand-chunks') {
+        const titles = ['钩子节奏校准','情绪曲线递进','留白与悬念','反转铺垫密度','音效与卡点','字幕安全规范','封面文字策略','黄金时长控制','结尾引导转化'];
+        let h = '';
+        for (let i = 0; i < 9; i++) {
+          h += '<div class=\"chunk\"><div class=\"chunk-head\"><span class=\"chunk-id\">CHUNK_0' + (i+4) + '</span><span class=\"chunk-tokens\">' + (340+i*7) + ' tokens</span><span class=\"chunk-vec\">向量化完成</span><span class=\"chunk-tag\">' + titles[i] + '</span></div>都市悬疑题材「' + titles[i] + '」的执行标准：结合团队近 6 个月高 ROI 素材拆解得出的可复用要点 …</div>';
+        }
+        moreEl.insertAdjacentHTML('beforebegin', h);
+        moreEl.remove();
+        return;
+      }
+      if (action === 'more-cites') {
+        const sc = [['qa','智能问答','王宇'],['diag','素材诊断','李响'],['review','投放复盘','Agent 自动'],['qa','智能问答','钱晓彤'],['diag','素材诊断','李响']];
+        let h = '';
+        for (let i = 0; i < 5; i++) {
+          h += '<div class=\"cite-item\"><div class=\"cite-row1\"><span class=\"cite-scene ' + sc[i][0] + '\">' + sc[i][1] + '</span><span style=\"font-size:11px;color:var(--gray-500);\">' + sc[i][2] + '</span><span class=\"cite-time\">' + (i+2) + ' 天前</span></div><div class=\"cite-q\">召回本条用于「都市悬疑钩子」相关问题的回答与依据</div><div class=\"cite-feedback\"><span class=\"like\">👍 已采纳</span></div></div>';
+        }
+        moreEl.insertAdjacentHTML('beforebegin', h);
+        moreEl.textContent = '已加载全部 142 条引用';
+        moreEl.removeAttribute('data-action');
+        moreEl.style.color = 'var(--gray-400)'; moreEl.style.cursor = 'default';
+        return;
+      }
+      if (action === 'more-kb') {
+        const items = [['现言','现言短剧黄金 3 秒开篇库','142'],['古言','古言虐恋情绪钩子合集','98'],['男频','男频爽文打脸节奏模板','76'],['女频','女频甜宠高完播结构','64']];
+        let h = '';
+        for (const it of items) {
+          h += '<div class=\"kbc\"><div class=\"kbc-row1\"><div class=\"check\"></div><div class=\"kbc-type-icon kbc-t-case\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M3 3h18v18H3zM7 17V9m5 8V5m5 12v-6\"/></svg></div><div class=\"kbc-main\"><div class=\"kbc-title-row\"><span class=\"kbc-source prv-up\">🔒 私域 · 上传</span><span class=\"kbc-lvl l2\">L2</span><span class=\"kbc-title\">' + it[1] + '</span></div><div class=\"kbc-summary\">' + it[0] + '题材的可复用结构，团队沉淀。</div><div class=\"kbc-footer\"><span class=\"stat hot\">引用 ' + it[2] + ' 次</span><span class=\"dot\">·</span><span>钱晓彤 · 近期更新</span></div></div></div></div>';
+        }
+        moreEl.parentElement.insertAdjacentHTML('beforebegin', h);
+        const shown = document.getElementById('kb-shown'); if (shown) shown.textContent = '1-10';
+        moreEl.textContent = '已加载全部 45 条';
+        moreEl.removeAttribute('data-action');
+        moreEl.style.color = 'var(--gray-400)'; moreEl.style.cursor = 'default';
+        return;
+      }
+      if (action === 'open-source') { toast('正在打开原文'); return; }
+      if (action === 'add-tag') { toast('标签已添加'); return; }
+      if (action === 'diff-version') { toast('打开版本对比'); return; }
+
+      // 14. chunk 点击 → 高亮
+      const chunk = t.closest('.chunk');
+      if (chunk) {
+        $$('.chunk').forEach(c => c.classList.remove('highlight'));
+        chunk.classList.add('highlight');
+        return;
+      }
+    });
+
+    // —— ESC 关闭浮层 ——
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if ((uploadDlg && !uploadDlg.classList.contains('hidden')) || (createDlg && !createDlg.classList.contains('hidden'))) { closeDialogs(); return; }
+        if (!modalMask.classList.contains('hidden')) { closeModal(); return; }
+        if (!addMenu.classList.contains('hidden')) { addMenu.classList.add('hidden'); return; }
+        if (!drawer.classList.contains('hidden')) { closeDrawer(); return; }
+      }
+    });
+  })();
+</script>
+</body>
+</html>

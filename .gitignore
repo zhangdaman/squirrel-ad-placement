@@ -1,0 +1,29 @@
+# ===== 依赖与构建产物 =====
+node_modules/
+dist/
+dist-ssr/
+*.tsbuildinfo
+
+# ===== 环境（仅忽略本地覆盖，.env 含 VITE_USE_MOCK 等非敏感配置，保留提交）=====
+*.local
+.env.local
+.env.*.local
+
+# ===== 系统 / 编辑器 =====
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.sw?
+
+# ===== 日志 =====
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ===== 工具临时 =====
+.claude/
