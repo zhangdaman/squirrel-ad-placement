@@ -228,13 +228,13 @@ export function mockAttribution(account = 'A001'): ApiResponse<AttributionReport
     data: {
       account,
       title: `${M}A001 · 现言主投计划 · ROI 异常归因报告`,
-      subtitle: '由 AI 自主执行 5 步调研 · 综合实时数据 + 历史案例 + 行业大盘生成',
+      subtitle: '由 AI 自主执行多轮 ReAct 推导 · Verifier 二轮质检通过 · 综合实时数据 + 历史案例 + 行业大盘生成',
       roi: 0.84,
       duration_sec: 42,
       confidence: 0.88,
       stats: [
         { label: '分析耗时', value: '42 秒' },
-        { label: '执行任务', value: '5 个' },
+        { label: '推导步骤', value: '8 步' },
         { label: '综合置信度', value: '88%' },
         { label: '数据来源', value: '12 个' },
         {
@@ -315,9 +315,23 @@ export function mockAttribution(account = 'A001'): ApiResponse<AttributionReport
         },
       ],
       steps: [
+        /* ── Planner 规划 ── */
         {
           index: 1,
-          title: '拉取实时投放数据',
+          phase: 'plan',
+          title: 'Planner：拆解调研任务',
+          meta: '规划阶段 · 0.3 秒',
+          status: 'success',
+          thought: '接收到 ROI 异常预警，需要系统地分解调研目标，确保覆盖所有可能的归因路径。',
+          action: '将归因目标拆解为 5 个独立调研 Task，分配给 Executor 依次执行',
+          observation:
+            '已生成调研计划：Task-1 实时投放数据 → Task-2 素材衰退分析 → Task-3 账户变更核查 → Task-4 历史案例检索 → Task-5 行业大盘对照',
+        },
+        /* ── Executor ReAct Round 1 ── */
+        {
+          index: 2,
+          phase: 'execute',
+          title: 'Round 1：拉取实时投放数据',
           meta: '数据源：实时投放数据 · 1.2 秒',
           status: 'success',
           thought: '先确认 ROI 数据是否真的下跌，以及下跌的时间点和幅度。',
@@ -325,9 +339,11 @@ export function mockAttribution(account = 'A001'): ApiResponse<AttributionReport
           observation:
             'ROI 从 5 天前 1.5 阶梯式下跌至当前 0.84，下跌拐点出现在 5 天前 14:00',
         },
+        /* ── Executor ReAct Round 2 ── */
         {
-          index: 2,
-          title: '分析素材表现 Top 10',
+          index: 3,
+          phase: 'execute',
+          title: 'Round 2：分析素材表现 Top 10',
           meta: '数据源：素材衰退分析 · 2.4 秒',
           status: 'success',
           thought:
@@ -336,36 +352,70 @@ export function mockAttribution(account = 'A001'): ApiResponse<AttributionReport
           observation:
             '⚠️ M789 素材占消耗 78%，CTR 从 4.5% 跌至 1.8%（-60%），衰退时间点与 ROI 拐点完全吻合',
         },
+        /* ── Executor ReAct Round 3 ── */
         {
-          index: 3,
-          title: '对比账户设置变更',
+          index: 4,
+          phase: 'execute',
+          title: 'Round 3：对比账户设置变更',
           meta: '数据源：账户变更日志 · 0.9 秒',
           status: 'success',
           thought: '还需要确认是否有人为调整定向或出价导致 ROI 下降。',
           action: '查询近 7 天账户的定向、出价、预算变更记录',
           observation:
-            '5 天前账户设置无人为修改，但 6 天前 A001 核心人群定向从 1.2 亿收窄至 6,400 万（系统建议优化）',
+            '5 天前账户设置无人为修改，但 6 天前 A001 核心人群定向从 1.2 亿收窄至 6,400 万（系统建议优化，非人为大改）',
         },
+        /* ── Executor ReAct Round 4 ── */
         {
-          index: 4,
-          title: '检索历史相似案例',
+          index: 5,
+          phase: 'execute',
+          title: 'Round 4：检索历史相似案例',
           meta: '数据源：历史案例库 · 1.5 秒',
           status: 'success',
           thought: '查贵司历史是否处理过类似的素材衰退归因，参考已被验证的解决方案。',
           action: '检索贵司历史相似案例（素材衰退 → ROI 下降）',
           observation:
-            '命中 3 条相似案例，平均处置周期 3-5 天恢复至 ROI 1.3+，主要方法均为替换主素材',
+            '命中 3 条相似案例，平均处置周期 3-5 天恢复至 ROI 1.3+，主要方法均为替换主素材 → 草稿 v1 生成',
         },
+        /* ── Verifier 质检 #1（未通过，触发回退） ── */
         {
-          index: 5,
-          title: '对照行业大盘',
+          index: 6,
+          phase: 'verify',
+          title: 'Verifier 质检 #1',
+          meta: '质检阶段 · 0.6 秒',
+          status: 'warn',
+          confidence: 0.55,
+          rollback: true,
+          thought: '对草稿 v1 做四维质量检查：证据链完整性 / 时间点吻合度 / 排除项覆盖 / 置信度达标。',
+          action: 'Verifier 校验草稿 v1 证据链完整性',
+          observation:
+            '⚠️ 缺行业大盘对照，无法排除外部因素干扰，置信度 0.55 < 0.85 阈值 → 回退补充 Round 5',
+        },
+        /* ── Executor ReAct Round 5（回退补做） ── */
+        {
+          index: 7,
+          phase: 'execute',
+          title: '↩ 回退补做 Round 5：对照行业大盘',
           meta: '数据源：行业大盘 · 1.1 秒',
           status: 'success',
-          thought: '排除行业大盘波动的可能。',
+          thought: '质检指出缺行业大盘对照，需补充这一环节以排除外部因素干扰。',
           action: '调取近 14 天短剧行业大盘 ROI 走势做对照',
           observation: '行业大盘 ROI 稳定在 1.32 ± 0.05，无显著波动 → 排除外部因素',
+        },
+        /* ── Verifier 质检 #2（通过） ── */
+        {
+          index: 8,
+          phase: 'verify',
+          title: 'Verifier 质检 #2',
+          meta: '质检阶段 · 0.5 秒',
+          status: 'success',
+          confidence: 0.88,
+          rollback: false,
+          thought: '补充行业大盘数据后，再次对完整证据链做四维质量检查。',
+          action: 'Verifier 校验完整证据链（含补充大盘数据）',
+          observation:
+            '证据链完整（主因 M789 衰退 + 次因定向收窄 + 大盘排除），置信度 0.88 ≥ 0.85 → 通过，输出报告',
           reflection:
-            '证据链已完整：主因 M789 素材衰退（强相关 + 时间点吻合），次因定向收窄。二次校验置信度 88%，达标，输出最终报告。',
+            '二轮质检通过：主因 M789 素材衰退（强相关 + 时间点吻合），次因定向收窄，行业大盘已排除。综合置信度 88%，输出最终报告。',
         },
       ],
       riskNote:

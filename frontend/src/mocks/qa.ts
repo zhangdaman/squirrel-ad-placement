@@ -33,19 +33,41 @@ export function routeFlow(qRaw: string): QaFlow {
   // 边界：危险操作（全部暂停 / 删除 / 清空）
   if (/(全部|所有|批量).{0,4}(暂停|停投|关停|删除)|清空|一键停/.test(q)) return 'confirm'
   // 操作流程引导：怎么设置 / 怎么做 / 怎么配
-  if (/怎么设置|如何设置|怎么配|怎么做|定向怎么|版位怎么|步骤/.test(q)) return 'guide'
+  if (/怎么设置|如何设置|怎么配|怎么做|怎么新建|怎么建|新建.*计划|怎么上传|上传.*文档|怎么用|定向怎么|版位怎么|步骤/.test(q)) return 'guide'
   // 主场景：复盘归因（为什么掉 / 下降）
   if (/复盘|归因|为什么.*(掉|低|降)|怎么掉|下降|跌了|掉了|涨了/.test(q)) return 'review'
+  // CHK：跨平台规则对比（比 reject 更具体，先判）
+  if (/巨量.*广点通|广点通.*巨量|两.*平台.*(差异|过.*拒|不一样)|跨平台.*(规则|对比)|A.*过.*B.*拒/.test(q)) return 'cross_platform'
+  // CHK：拒审趋势
+  if (/最近.*(审核|拒审).*(严|多)|审核.*变严|老被拒|拒审.*(变多|趋势|高)/.test(q)) return 'reject_trend'
+  // CHK：账户诊断
+  if (/账户.*(限流|花不出去|跑不出|资质)|限流|消耗.*不出去|账户.*异常/.test(q)) return 'account_diag'
   // 主场景：素材审核 / 合规
-  if (/审核|拒审|过审|违规|合规|能不能投|敏感词|擦不擦边/.test(q)) return 'reject'
+  if (/审核|拒审|过审|违规|合规|被拒|拒了|没通过|审核失败|能不能投|能不能(出现|放|用|有)|敏感词|擦不擦边/.test(q)) return 'reject'
+  // 主场景：止损决策（含「亏/该不该关」，在起量/出价前判）
+  if (/止损|该不该关|亏.{0,4}(还跑|继续投|要不要)|亏损.{0,4}(多少|止损|该)|要不要.{0,4}(关|停).{0,4}计划/.test(q)) return 'shutdown'
+  // 主场景：定向策略（放宽/收紧 定向，人群包，兴趣定向；排在 guide 之后，避免「定向怎么设置」被抢走）
+  if (/定向|人群包?|地域定向|兴趣.*定向|(放宽|收紧).*定向|定向.*(宽|窄|放|收)/.test(q)) return 'targeting'
+  // 主场景：预算策略（日预算/时段分配；「日预算」不含「出价」，安全）
+  if (/预算.{0,4}(分配|怎么|多少|配|花)|日预算|什么时段投|时段.{0,4}(分配|预算)/.test(q)) return 'budget'
+  // 主场景：素材策略（问效果/起量，排在 reject 审核合规之后）
+  if (/什么.*素材.*(好|起量|类型)|素材.*类型.*(好|起量)|口播.*还是.*剪辑|封面.*优化|标题.*(优化|怎么写)/.test(q)) return 'creative'
+  // RPT：素材诊断（素材级，含「M789 跑不动」，必须在 growth「跑不动」之前判，否则被抢）
+  if (/M\d+.{0,6}(为什么|跑不|怎么|没量|效果)|素材.{0,4}(跑不动|效果差|没量|疲劳)/.test(q)) return 'material_diag'
+  // RPT：策略复盘（调整前后效果对比，含「调了出价之后效果」，必须在 bid「出价」之前判）
+  if (/调.{0,4}(之后|后).{0,4}效果|操作.*前后|调整.{0,4}(出价|预算|定向).{0,4}(效果|后)|改.{0,4}之后.*怎么样|调.{0,2}(出价|预算|定向).{0,4}(之后|后).{0,4}(效果|怎么样)/.test(q)) return 'strategy_review'
   // 主场景：起量提速
   if (/起量|跑不动|学不出|学习期|不消耗|提速|放量|拿量|投不出/.test(q)) return 'growth'
   // 主场景：出价策略
   if (/出价|ocpm|调价|roi ?目标|出多少|报价|cpa/i.test(q)) return 'bid'
   // 边界：实时数据查询
-  if (/消耗|花了多少|多少钱|实时|转化数|今天.*数据|roi.*怎么样|看.*数据/i.test(q)) return 'data'
+  if (/消耗|花了多少|多少钱|实时|转化数|今天.*数据|昨天.*(数据|情况|投放)|投放情况|整体.*(情况|怎么样)|roi.*怎么样|看.*数据/i.test(q)) return 'data'
   // 边界：知识库命中（问规则条款）
   if (/规则.*\d|第.*条|条款|规范.*说|什么意思|是什么/.test(q)) return 'knowledge'
+  // RPT：周报 / 月报生成
+  if (/生成.*(报告|周报|月报|日报)|要.*(周报|月报)|投放报告/.test(q)) return 'report_gen'
+  // RPT：素材排行（关键词不与 growth/bid 冲突，保留原位）
+  if (/哪.{0,4}素材.{0,4}(好|跑得|最)|素材排行|跑得最好|素材.*对比.*(好|排)|哪条.*跑得/.test(q)) return 'material_rank'
   // 边界：模糊提问
   if (q.length <= 6 && /帮我看|看看|怎么样|咋样|看下|分析下/.test(q)) return 'vague'
   return 'fallback'
@@ -399,6 +421,549 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
     ],
   }),
 
+  /* CHK：跨平台规则对比 —— 巨量过了广点通被拒 */
+  cross_platform: () => ({
+    intent: { intent: '跨平台规则对比', style: 'ASK-02', layer: 'L1' },
+    steps: ['命中跨平台审核差异知识库', '比对巨量 v3.2 与广点通审核规范 v2.1 对应条款'],
+    blocks: [
+      {
+        kind: 'toolCall',
+        head: '🔧 已调用「跨平台规则对比」能力…',
+        items: [
+          '✓ 拉取巨量审核规则 v3.2 与广点通审核规范 v2.1',
+          '✓ 命中资质要求差异（现言短剧·特定内容类目）',
+        ],
+      },
+      {
+        kind: 'ansCard',
+        variant: 'warn',
+        icon: 'alert',
+        head: '差异定位：**广点通对该类目有额外资质门槛**',
+        detail:
+          '巨量对现言短剧广告不强制要求平台方提供《网络视听节目许可证》副证或广告审查表；而广点通针对涉及网络视听节目内容的推广，**要求主体通过 SC 认证并提交广告审查表**（或备案截图），缺少该资质直接触发平台合规拦截，与创意内容无关。',
+      },
+      {
+        kind: 'steps',
+        title: '📋 建议处理路径',
+        items: [
+          { title: '路径 A：补资质（推荐）', desc: '联系广点通商务，提交 SC 认证材料 + 广告审查表，通过后原素材可直接重提审，无需改内容' },
+          { title: '路径 B：分平台版本', desc: '广点通素材回避触发资质校验的类目标签（如标签选「应用推广」而非「影视娱乐」），仅适合短期过渡，存在再次被拒风险' },
+        ],
+      },
+      {
+        kind: 'sources',
+        refs: [
+          SRC('audit-v3-2', '📘 巨量审核规则 v3.2'),
+          SRC('gdt-audit', '📘 广点通审核规范 v2.1'),
+        ],
+      },
+      metaBar('⏱ 3.8 秒 · 置信度 90%'),
+    ],
+    sources: [
+      SRC('audit-v3-2', '📘 巨量审核规则 v3.2'),
+      SRC('gdt-audit', '📘 广点通审核规范 v2.1'),
+    ],
+  }),
+
+  /* CHK：拒审趋势 —— 最近审核是不是变严了 */
+  reject_trend: () => ({
+    intent: { intent: '拒审趋势分析', style: 'ASK-02', layer: 'L1' },
+    steps: ['拉取团队近 7 天拒审数据', '对比平台近期规则更新记录', '归因拒审率上升结构'],
+    blocks: [
+      {
+        kind: 'toolCall',
+        head: '🔧 已调用「拒审趋势」能力…',
+        items: [
+          '✓ 拉取 A001 等 8 个账户近 7 天拒审记录',
+          '✓ 比对巨量审核规则近期变更日志（最近一次 2025-04-15）',
+        ],
+      },
+      {
+        kind: 'dataCard',
+        title: '近 7 天拒审率趋势 [Mock]',
+        source: '⚡ 历史拒审案例库 · 刚刚',
+        metrics: [
+          { label: '7 天前拒审率', value: '8%' },
+          { label: '今日拒审率', value: '15%', danger: true },
+          { label: '暴力暗示类占比', value: '41%', danger: true },
+        ],
+      },
+      {
+        kind: 'ansCard',
+        variant: 'warn',
+        icon: 'alert',
+        head: '结论：平台**近期确实收紧**，主要在 2 个方向',
+        detail:
+          '① **暴力暗示 / 凶杀叙事**：规则 v3.2（2025-04-15 生效）新增"凶器具象描述"等 3 个子条款，贵司该类拒审率从 8% 升至 15%；② **诱导点击文案**：平台 AI 审核模型升级，对"立即领取""点击解锁"等文案识别更严。建议本周优先审查在投素材中含上述关键词的计划，提前替换或申诉。',
+      },
+      {
+        kind: 'sources',
+        refs: [
+          SRC('reject-history', '📊 历史拒审案例库'),
+          SRC('audit-v3-2', '📘 巨量审核规则 v3.2'),
+        ],
+      },
+      metaBar('⏱ 4.5 秒 · 置信度 88%'),
+    ],
+    sources: [
+      SRC('reject-history', '📊 历史拒审案例库'),
+      SRC('audit-v3-2', '📘 巨量审核规则 v3.2'),
+    ],
+  }),
+
+  /* CHK：账户诊断 —— 我的账户为什么被限流了 */
+  account_diag: () => ({
+    intent: { intent: '账户限流诊断', style: 'ASK-02', layer: 'L2' },
+    steps: ['拉取 A001 账户近 7 天消耗 + 违规记录', '比对账户健康度阈值', '归因限流触发原因'],
+    blocks: [
+      {
+        kind: 'toolCall',
+        head: '🔧 已调用「账户诊断」能力…',
+        items: [
+          '✓ 拉取 A001 账户近 7 天消耗曲线与违规积累记录',
+          '✓ 检测资质有效期 + 账户健康度评分',
+          '✓ 比对平台限流触发条件（消耗异常波动 / 违规阈值）',
+        ],
+      },
+      {
+        kind: 'ansCard',
+        variant: 'warn',
+        icon: 'alert',
+        head: '诊断结论：命中 **3 项限流触发条件**',
+        detail:
+          '**① 资质待补**：营业执照副本已过期（2026-04-30），平台已发送提醒 2 次，账户进入观察期；**② 违规积累达阈值**：近 30 天拒审累计 9 次（巨量阈值 10 次触发限流），距限流仅剩 1 次缓冲；**③ 消耗异常波动**：昨日消耗较上周均值暴跌 62%（¥86,200 → ¥32,700），触发平台异常消耗检测模型。',
+      },
+      {
+        kind: 'steps',
+        title: '🔧 排查清单 & 建议',
+        items: [
+          { title: '立即更新营业执照副本', desc: '后台 > 账户资质 > 重新上传，通常 1 个工作日审核通过，账户恢复正常投放' },
+          { title: '申诉近期拒审中误判的计划', desc: '若有被误判的，在「审核中心 > 申诉」提交，减少违规计数' },
+          { title: '检查昨日计划是否被手动暂停', desc: '消耗暴跌可能是操作原因而非限流，确认后重启爆款计划' },
+        ],
+      },
+      {
+        kind: 'sources',
+        refs: [
+          SRC('rt-a001', '⚡ A001 实时数据'),
+          SRC('reject-history', '📊 历史拒审案例库'),
+        ],
+      },
+      metaBar('⏱ 5.1 秒 · 置信度 87%'),
+    ],
+    sources: [
+      SRC('rt-a001', '⚡ A001 实时数据'),
+      SRC('reject-history', '📊 历史拒审案例库'),
+    ],
+  }),
+
+  /* 策略咨询：定向策略 —— RAG 经验检索 + 建议卡 + 来源（ASK-01） */
+  targeting: () => ({
+    intent: { intent: '定向策略咨询', style: 'ASK-01', layer: 'L2' },
+    steps: [
+      '解析意图：现言短剧巨量 · 定向放宽 vs 收紧',
+      '召回：贵司 SOP v2.0 + Q1 复盘 + L2 公域经验',
+      '结合近 30 天 8 个账户定向效果数据测算',
+    ],
+    blocks: [
+      { kind: 'text', text: '基于贵司 8 个账户近 30 天定向数据 + L2 公域经验，建议如下：', tone: 'default' },
+      {
+        kind: 'ansCard',
+        icon: 'bid',
+        head: '定向策略建议 [Mock]',
+        detail:
+          '**起量期（前 3 天）放宽探量**：关闭性别/年龄硬限，兴趣标签保留「短剧 + 小说阅读」，人群包不超过 3 层，让模型自由探索受众池；**稳定期（ROI 连续 3 天 ≥ 1.2 后）收窄提效**：锁定高转化年龄段（通常 25–40 女性），叠加付费行为包，CPM 可降低 8–12%。',
+      },
+      {
+        kind: 'steps',
+        title: '📌 执行路径',
+        items: [
+          { title: '起量期：宽定向 + 兴趣词', desc: '「短剧兴趣 + 小说阅读」+ 全年龄，不加行为包；单计划候选人群 ≥ 5,000 万' },
+          { title: '稳定期：叠加付费行为包', desc: 'CPM 小幅上升但转化率可提升 15-20%，整体 ROI 预计改善 0.1-0.2' },
+          { title: '达人定向作为辅助', desc: '锁定同赛道 TOP 达人粉丝，用于跑量瓶颈期补量，不作为主力' },
+        ],
+      },
+      {
+        kind: 'ansCard',
+        variant: 'warn',
+        icon: 'alert',
+        head: '注意事项',
+        detail:
+          '不同题材受众差异较大：现言女频建议 18-35 岁女性优先，男频爽文可全人群探量。收窄定向前务必确认消耗已稳定（日消 ≥ 2,000 元），否则可能导致跑量停止。',
+      },
+      {
+        kind: 'sources',
+        refs: [
+          SRC('sop-v2', '📘 贵司投放SOP v2.0'),
+          SRC('q1-report', '📘 贵司Q1复盘报告'),
+          SRC('exp-targeting', '📊 L2 定向经验库'),
+        ],
+      },
+      metaBar('⏱ 2.8 秒 · 6 来源 · 置信度 91%'),
+    ],
+    sources: [
+      SRC('sop-v2', '📘 贵司投放SOP v2.0'),
+      SRC('q1-report', '📘 贵司Q1复盘报告'),
+      SRC('exp-targeting', '📊 L2 定向经验库'),
+    ],
+  }),
+
+  /* 策略咨询：素材策略 —— RAG 经验检索 + 建议卡 + 来源（ASK-01） */
+  creative: () => ({
+    intent: { intent: '素材策略咨询', style: 'ASK-01', layer: 'L2' },
+    steps: [
+      '解析意图：现言短剧 · 素材类型 / 起量',
+      '召回：L2 素材经验 + L3 个人爆款素材沉淀',
+      '结合贵司近 90 天爆款素材特征归纳',
+    ],
+    blocks: [
+      { kind: 'text', text: '基于贵司近 90 天爆款素材分析 + L2/L3 素材经验，建议如下：', tone: 'default' },
+      {
+        kind: 'ansCard',
+        icon: 'bid',
+        head: '起量素材策略 [Mock]',
+        detail:
+          '**前 3 秒钩子决定完读率**：悬念冲突型（"她以为他死了，却在三年后出现在她婚礼上"）平均完读率 **38%**，高于平淡叙事型 **22%**；**口播 vs 剪辑**：剪辑版起量更快（学习期平均缩短 1.2 天），但口播版 ROI 更稳（周 ROI 均值高 0.15）；建议 **2:1 比例**（2 条剪辑探量 + 1 条口播保稳）。',
+      },
+      {
+        kind: 'steps',
+        title: '📌 素材优化方向',
+        items: [
+          { title: '封面：大字幕 + 情绪脸部特写', desc: '封面 CTR 目标 ≥ 3.5%；避免风景/物件封面，人脸封面 CTR 均值高 40%' },
+          { title: '标题：悬念 + 身份冲突', desc: '「打工妹 vs 总裁」「前妻回来了」类标题 CTR 高出普通标题 28%' },
+          { title: '题材适配', desc: '现言女频：虐恋反转；男频爽文：升职/逆袭；古言：宫斗/穿越，不同题材素材钩子差异大' },
+        ],
+      },
+      {
+        kind: 'ansCard',
+        variant: 'warn',
+        icon: 'alert',
+        head: '注意事项',
+        detail:
+          '素材上新后建议 48 小时内不调价，给模型学习空间。每周保持上新 3-5 条新素材，防止老素材衰退导致 ROI 下滑。',
+      },
+      {
+        kind: 'sources',
+        refs: [
+          SRC('exp-creative', '📊 L2/L3 素材经验库'),
+          SRC('q1-report', '📘 贵司Q1复盘报告'),
+        ],
+      },
+      metaBar('⏱ 3.1 秒 · 5 来源 · 置信度 90%'),
+    ],
+    sources: [
+      SRC('exp-creative', '📊 L2/L3 素材经验库'),
+      SRC('q1-report', '📘 贵司Q1复盘报告'),
+    ],
+  }),
+
+  /* 策略咨询：预算策略 —— RAG 经验检索 + 建议卡 + 来源（ASK-01） */
+  budget: () => ({
+    intent: { intent: '预算策略咨询', style: 'ASK-01', layer: 'L2' },
+    steps: [
+      '解析意图：现言短剧 · 预算分配 / 时段',
+      '召回：贵司 SOP v2.0 + Q1 复盘 + L2 预算经验',
+      '结合 A001 近 30 天消耗曲线与时段 ROI 分布',
+    ],
+    blocks: [
+      { kind: 'text', text: '基于贵司近 30 天预算消耗节奏 + L2 公域经验，建议如下：', tone: 'default' },
+      {
+        kind: 'ansCard',
+        icon: 'bid',
+        head: '预算分配建议 [Mock]',
+        detail:
+          '**日预算阶梯**：单计划日预算建议 = 出价 × 20（最低保跑量线）；起量期可先设 500 元观察，连续 2 天日消 ≥ 400 元后放开至 2,000 元；**晚间倾斜**：18:00–23:00 是现言短剧消耗高峰，该时段 ROI 均值 **1.45**，高于白天 **0.92**，建议在此时段不限速，允许超出日预算 10%。',
+      },
+      {
+        kind: 'steps',
+        title: '📌 预算执行节奏',
+        items: [
+          { title: '起量期（前 3 天）', desc: '单计划 500–1,000 元/天，优先保学习期跑通，不压预算' },
+          { title: '稳定期（ROI 达标后）', desc: '逐步放量：每 2 天预算上浮 10-15%，不超过当前消耗的 1.5×' },
+          { title: '高价时段策略', desc: '晚 20:00–22:00 为 ROI 峰值段，可临时上调出价 5-8%，抢占优质曝光' },
+        ],
+      },
+      {
+        kind: 'ansCard',
+        variant: 'warn',
+        icon: 'alert',
+        head: '注意事项',
+        detail:
+          '避免在凌晨 0:00–6:00 大量消耗，该时段 CPM 虽低但转化率偏低，ROI 约 0.6–0.8。如预算有限，建议设置时段投放集中在 10:00–23:00。',
+      },
+      {
+        kind: 'sources',
+        refs: [
+          SRC('sop-v2', '📘 贵司投放SOP v2.0'),
+          SRC('a001-history', '📘 A001 户 · 历史复盘'),
+          SRC('exp-budget', '📊 L2 预算经验库'),
+        ],
+      },
+      metaBar('⏱ 2.5 秒 · 5 来源 · 置信度 92%'),
+    ],
+    sources: [
+      SRC('sop-v2', '📘 贵司投放SOP v2.0'),
+      SRC('a001-history', '📘 A001 户 · 历史复盘'),
+      SRC('exp-budget', '📊 L2 预算经验库'),
+    ],
+  }),
+
+  /* 决策类：止损决策 —— 拉数据 + 止损阈值判断 + gotoButtons（参考 review/error，ASK-03） */
+  shutdown: () => ({
+    intent: { intent: '止损决策', style: 'ASK-03', layer: 'L2' },
+    steps: [
+      '拉取 A001 户近 7 天消耗 + ROI 曲线',
+      '比对止损阈值（贵司 SOP：周亏损 ≥ ¥12 万触发预警，≥ ¥18 万强止）',
+      '综合判断：继续 / 止损 / 观察',
+    ],
+    blocks: [
+      {
+        kind: 'agentPlan',
+        head: '已调用止损评估 Agent · 3 步完成 [Mock]',
+        items: [
+          '✓ 拉取 A001 近 7 天消耗 + ROI 趋势',
+          '✓ 对比贵司止损阈值（SOP：¥12–18 万/周）',
+          '✓ 综合大盘波动给出决策建议',
+        ],
+      },
+      {
+        kind: 'dataCard',
+        title: '本周亏损预估 [Mock]',
+        source: '⚡ A001 实时数据 · 刚刚',
+        metrics: [
+          { label: '本周已亏损', value: '¥14.3 万', danger: true },
+          { label: '当前周 ROI', value: '0.79', danger: true },
+          { label: '止损阈值（SOP）', value: '¥12–18 万/周' },
+        ],
+      },
+      {
+        kind: 'ansCard',
+        variant: 'warn',
+        icon: 'alert',
+        head: '决策建议：**进入预警区间，建议观察 + 部分止损**',
+        detail:
+          '本周已亏损 **¥14.3 万**，已超「预警线 ¥12 万」，但尚未触达「强止线 ¥18 万」。主因：ROI **0.79**（目标 1.2），晚间高价时段消耗下降 -18%，3 条爆款计划被暂停。\n\n建议：**先暂停 ROI < 0.6 的 4 条低效计划**（预计本周止血 ¥4–5 万），重启 3 条已暂停爆款 + 回补晚间出价后，再观察 24 小时决定是否全停。若 24 小时后 ROI 仍 < 0.8，执行全面止损。',
+      },
+      {
+        kind: 'gotoButtons',
+        buttons: [
+          { label: '查看完整复盘报告 →', variant: 'primary', goto: '/review' },
+          { label: '去实时监控 →', variant: 'outline', goto: '/monitor' },
+          { label: '⚡ 暂停低效计划', variant: 'ghost', toast: '已加入执行队列：暂停 ROI < 0.6 的 4 条计划' },
+        ],
+        note: '完整 ROI 趋势图、计划级止损拆分、分优先级操作建议，已在「投放复盘」页生成。',
+      },
+      {
+        kind: 'sources',
+        refs: [
+          SRC('rt-a001', '⚡ A001 实时数据'),
+          SRC('sop-v2', '📘 贵司投放SOP v2.0'),
+          SRC('a001-history', '📘 A001 户 · 历史复盘'),
+        ],
+      },
+      metaBar('⏱ 5.6 秒 · 3 步 Agent · 置信度 88%'),
+    ],
+    sources: [
+      SRC('rt-a001', '⚡ A001 实时数据'),
+      SRC('sop-v2', '📘 贵司投放SOP v2.0'),
+      SRC('a001-history', '📘 A001 户 · 历史复盘'),
+    ],
+  }),
+
+  /* RPT：周报生成 —— toolCall + dataCard + ansCard + gotoButtons + sources */
+  report_gen: () => ({
+    intent: { intent: '周报生成', style: 'ASK-05', layer: 'L2' },
+    steps: ['拉取本周全账户消耗 + ROI + 转化数据', '汇总亮点与问题方向', '生成投放周报摘要'],
+    blocks: [
+      {
+        kind: 'toolCall' as const,
+        head: '🔧 已调用「周报生成」能力… [Mock]',
+        items: [
+          '✓ 拉取 A001 等 8 个账户本周（5/26–6/1）消耗 / ROI / 转化数据',
+          '✓ 与上周均值对比，识别亮点账户与问题账户',
+          '✓ 自动归纳本周投放结论',
+        ],
+      },
+      {
+        kind: 'dataCard' as const,
+        title: '本周投放概览 [Mock]',
+        source: '⚡ 巨量 API · 刚刚',
+        metrics: [
+          { label: '本周消耗', value: '¥86,200' },
+          { label: '周 ROI', value: '0.84', danger: true },
+          { label: '总转化数', value: '212' },
+          { label: '粉价均值', value: '¥24 / 粉' },
+        ],
+      },
+      {
+        kind: 'ansCard' as const,
+        icon: 'bid' as const,
+        head: '📝 本周周报摘要 [Mock]',
+        detail:
+          '**亮点**：A003 都市悬疑账户 ROI **1.45**，晚间时段消耗持续高于上周 +22%，素材 M301「前妻回来了」完读率 **42%**，为本周最佳单条素材。\n\n**问题**：A001 现言旗舰户 ROI **0.84**（目标 1.2），主因 3 条爆款计划被误暂停导致晚间消耗缺口；A005 学习期超时（>72h），需干预出价。\n\n**建议**：重启 A001 三条爆款计划 + 调价 +15%；A005 提价突破学习期；本周预计止损 **¥12–18 万** 区间，需尽快执行。',
+      },
+      {
+        kind: 'gotoButtons' as const,
+        buttons: [
+          { label: '导出周报 PDF', variant: 'primary' as const, toast: '正在生成 PDF，预计 10 秒后下载' },
+          { label: '跳至投放复盘 →', variant: 'outline' as const, goto: '/review' },
+        ],
+        note: '完整周报含 ROI 趋势图、账户明细、计划级止损建议，已在「投放复盘」页生成。',
+      },
+      {
+        kind: 'sources' as const,
+        refs: [
+          SRC('rt-a001', '⚡ A001 实时数据'),
+          SRC('rt-8accounts', '⚡ 本周 8 账户数据'),
+          SRC('a001-history', '📘 A001 历史复盘'),
+        ],
+      },
+      metaBar('⏱ 4.8 秒 · 3 步 · 置信度 91%'),
+    ],
+    sources: [
+      SRC('rt-a001', '⚡ A001 实时数据'),
+      SRC('rt-8accounts', '⚡ 本周 8 账户数据'),
+      SRC('a001-history', '📘 A001 历史复盘'),
+    ],
+  }),
+
+  /* RPT：素材排行 —— rankList（Top5 按 ROI 倒序）+ ansCard + sources */
+  material_rank: () => ({
+    intent: { intent: '素材排行', style: 'ASK-05', layer: 'L2' },
+    steps: ['拉取近 14 天所有在投素材 CTR / ROI 数据', '按 ROI 倒序排列', '标记衰退素材'],
+    blocks: [
+      { kind: 'text' as const, text: 'A001 账户近 14 天在投素材 · Top 5（按 ROI 倒序）[Mock]：', tone: 'muted' as const },
+      {
+        kind: 'rankList' as const,
+        title: '素材 ROI 排行榜',
+        items: [
+          { rank: 1, name: 'M301 · 前妻回来了', roi: '1.72', ctr: '4.8%', tag: '爆款' },
+          { rank: 2, name: 'M215 · 总裁的秘密', roi: '1.45', ctr: '4.1%', tag: '稳定' },
+          { rank: 3, name: 'M198 · 消失的她', roi: '1.28', ctr: '3.9%', tag: '稳定' },
+          { rank: 4, name: 'M789 · 重生之路', roi: '0.61', ctr: '1.2%', tag: '衰退', declining: true },
+          { rank: 5, name: 'M402 · 都市赘婿', roi: '0.54', ctr: '1.0%', tag: '衰退', declining: true },
+        ],
+      },
+      {
+        kind: 'ansCard' as const,
+        variant: 'warn' as const,
+        icon: 'alert' as const,
+        head: '结论：M789 / M402 已进入衰退期，建议及时处理',
+        detail:
+          '**Top 3 素材（M301/M215/M198）** 表现健康，ROI 均超达标线 1.2，建议维持出价并持续放量。\n\n**M789 / M402** ROI 已跌至 0.54–0.61，CTR 下滑超 60%，素材衰退信号明确。建议：① 暂停这 2 条计划止血；② 参考 M301 前 3 秒悬念钩子结构，本周上新 2–3 条替代素材。',
+      },
+      {
+        kind: 'sources' as const,
+        refs: [
+          SRC('rt-a001', '⚡ A001 实时数据'),
+          SRC('exp-creative', '📊 L2/L3 素材经验库'),
+        ],
+      },
+      metaBar('⏱ 3.4 秒 · 5 素材 · 置信度 90%'),
+    ],
+    sources: [
+      SRC('rt-a001', '⚡ A001 实时数据'),
+      SRC('exp-creative', '📊 L2/L3 素材经验库'),
+    ],
+  }),
+
+  /* RPT：策略复盘 —— toolCall + dataCard（调整前 vs 后）+ ansCard + sources */
+  strategy_review: () => ({
+    intent: { intent: '策略复盘', style: 'ASK-05', layer: 'L2' },
+    steps: ['拉取出价调整前后 7 天消耗 + ROI 对比', '识别调整效果显著性', '给出策略结论'],
+    blocks: [
+      {
+        kind: 'toolCall' as const,
+        head: '🔧 已调用「策略复盘」能力… [Mock]',
+        items: [
+          '✓ 拉取 A001 出价调整前 7 天（5/19–5/25）与调整后 7 天（5/26–6/1）数据',
+          '✓ 对比消耗 / ROI / CPM / 转化数各维度变化',
+          '✓ 判断出价调整效果显著性',
+        ],
+      },
+      {
+        kind: 'dataCard' as const,
+        title: '出价调整前 → 后对比 [Mock]',
+        source: '⚡ A001 实时数据 · 刚刚',
+        metrics: [
+          { label: '调整前 ROI（均值）', value: '0.84', danger: true },
+          { label: '调整后 ROI（均值）', value: '1.05' },
+          { label: '消耗变化', value: '+18%' },
+          { label: '转化数变化', value: '+34%' },
+        ],
+      },
+      {
+        kind: 'ansCard' as const,
+        icon: 'bid' as const,
+        head: '结论：本次出价调整**有效**，ROI 由 0.84 → 1.05 [Mock]',
+        detail:
+          '调整出价（+15%）后，A001 ROI 从 **0.84 提升至 1.05**，转化数增加 34%，消耗扩大 18%，方向正确。\n\n但当前 ROI **1.05 仍低于目标 1.2**，建议：① 继续维持当前出价 3 天，让模型充分学习；② 晚间高价时段（20:00–23:00）可再上调 5%，抢占优质曝光；③ 同时重启被暂停的 3 条爆款计划，补足消耗缺口。',
+      },
+      {
+        kind: 'sources' as const,
+        refs: [
+          SRC('rt-a001', '⚡ A001 实时数据'),
+          SRC('sop-v2', '📘 贵司投放SOP v2.0'),
+          SRC('a001-history', '📘 A001 历史复盘'),
+        ],
+      },
+      metaBar('⏱ 4.1 秒 · 3 来源 · 置信度 88%'),
+    ],
+    sources: [
+      SRC('rt-a001', '⚡ A001 实时数据'),
+      SRC('sop-v2', '📘 贵司投放SOP v2.0'),
+      SRC('a001-history', '📘 A001 历史复盘'),
+    ],
+  }),
+
+  /* RPT：素材诊断（素材级）—— agentPlan + ansCard + gotoButtons */
+  material_diag: () => ({
+    intent: { intent: '素材级诊断', style: 'ASK-03', layer: 'L2' },
+    steps: ['拉取 M789 素材近 14 天 CTR / 完读率 / ROI 曲线', '对比同类爆款素材', '查合规风险', '归因跑不动原因'],
+    blocks: [
+      {
+        kind: 'agentPlan' as const,
+        head: '已调用素材诊断 Agent · 4 步完成 [Mock]',
+        items: [
+          '✓ 拉取 M789「重生之路」近 14 天 CTR / 完读率 / ROI 数据',
+          '✓ 对比同类爆款素材（M301 / M215）表现基准',
+          '✓ 查审核合规风险（无新增违规）',
+          '✓ 综合归因：素材疲劳 + CTR 衰退',
+        ],
+      },
+      {
+        kind: 'ansCard' as const,
+        variant: 'warn' as const,
+        icon: 'alert' as const,
+        head: 'M789「重生之路」跑不动原因：**素材疲劳 + CTR 衰退**',
+        detail:
+          '**主因 1 · CTR 衰退**：M789 入投第 10 天，CTR 从首日 **3.8% 跌至当前 1.2%**，素材衰退信号明确；同类素材（M301）在同阶段 CTR 仍维持 4.5%，说明是素材本身问题而非大盘波动。\n\n**主因 2 · 素材疲劳**：已曝光 **420 万次**，目标受众重叠率 62%，受众池基本触达，边际效果持续下降。\n\n**次因 · 开头钩子偏弱**：前 3 秒无明确冲突 / 悬念，相比 M301「前妻回来了」悬念开场，完读率低 18%。\n\n**建议**：立即暂停 M789，按 M301 结构（悬念冲突 + 大字幕封面）上新替代素材，预计 5 个工作日可完成新素材起量。',
+      },
+      {
+        kind: 'gotoButtons' as const,
+        buttons: [
+          { label: '查看素材诊断详情 →', variant: 'primary' as const, goto: '/diagnose' },
+          { label: '跳至投放复盘 →', variant: 'outline' as const, goto: '/review' },
+        ],
+        note: '素材衰退曲线、受众重叠率分析、替换素材建议，已在「素材诊断」页生成。',
+      },
+      {
+        kind: 'sources' as const,
+        refs: [
+          SRC('rt-a001', '⚡ A001 实时数据'),
+          SRC('exp-creative', '📊 L2/L3 素材经验库'),
+          SRC('reject-history', '📊 历史拒审案例库'),
+        ],
+      },
+      metaBar('⏱ 7.2 秒 · 4 步 Agent · 置信度 92%'),
+    ],
+    sources: [
+      SRC('rt-a001', '⚡ A001 实时数据'),
+      SRC('exp-creative', '📊 L2/L3 素材经验库'),
+      SRC('reject-history', '📊 历史拒审案例库'),
+    ],
+  }),
+
   /* 兜底（fallback）—— 对齐 replyFor 默认回复 */
   fallback: () => ({
     intent: { intent: '通用咨询', style: 'ASK-07' },
@@ -625,6 +1190,42 @@ const SOURCE_MAP: Record<string, SourceDetail> = {
     chunk: 'A001 户最近 30 天 ROI 在晚 21:00-23:00 时段最高（均值 1.45），其中"现言-都市悬疑"题材表现最佳。上月同期出现过类似下滑情况，3 条爆款计划被错误暂停，重启后 ROI 4 小时恢复至 1.2 以上。',
     meta: { 账户: 'A001', 复盘数量: '14 次（近 30 天）', 主要题材: '现言、都市悬疑', 所属投手: '钱晓彤' },
     stats: { 被引用: 12, 命中率: '90%', 点赞: 9 },
+  },
+  'exp-targeting': {
+    id: 'exp-targeting', icon: '📊', iconClass: 't-bench',
+    title: 'L2 定向经验库', subtitle: '公域 · L2 团队战术 · AI 沉淀',
+    tags: [{ cls: 'prv-ai', text: '🤖 AI 沉淀' }, { cls: 'gray', text: 'L2 团队' }, { cls: 'confidence', text: '命中度 89%' }],
+    chunkId: 'CHUNK_041', chunkTokens: 356, citedTimes: 29,
+    chunk: '起量期（前 3 天）建议宽定向：兴趣标签仅保留「短剧 + 小说阅读」，不叠加行为包，单计划候选人群 ≥ 5,000 万。稳定期（连续 3 天 ROI ≥ 1.2）收窄：锁定 25–40 岁女性 + 付费行为包，CPM 可降低 8–12%，整体 ROI 提升约 0.1–0.2。达人定向建议作为辅助补量，不作主力。',
+    meta: { 数据来源: '团队近 30 天 8 个账户定向实验', 题材覆盖: '现言/古言/都市', 更新方式: 'Agent 周期沉淀', 归档时间: '2026-05-20' },
+    stats: { 被引用: 29, 命中率: '89%', 点赞: 22 },
+  },
+  'exp-creative': {
+    id: 'exp-creative', icon: '📊', iconClass: 't-case',
+    title: 'L2/L3 素材经验库', subtitle: '私域 · L2/L3 · AI 沉淀',
+    tags: [{ cls: 'prv-ai', text: '🤖 AI 沉淀' }, { cls: 'gray', text: 'L2/L3' }, { cls: 'confidence', text: '命中度 87%' }],
+    chunkId: 'CHUNK_055', chunkTokens: 398, citedTimes: 44,
+    chunk: '贵司近 90 天爆款素材特征：① 前 3 秒悬念冲突型平均完读率 38%（vs 平淡叙事 22%）；② 剪辑版起量快（学习期平均缩短 1.2 天），口播版 ROI 更稳（周 ROI 高 0.15）；③ 封面：人脸特写 + 大字幕，CTR 比风景封面高 40%；④ 标题：身份冲突类（总裁/打工妹/前妻）CTR 高 28%。建议每周上新 3–5 条，防素材衰退。',
+    meta: { 数据来源: '团队近 90 天素材投放记录', 题材覆盖: '现言/男频/古言', 爆款定义: '单条素材消耗 ≥ ¥5,000 且 ROI ≥ 1.2', 归档时间: '2026-05-28' },
+    stats: { 被引用: 44, 命中率: '87%', 点赞: 36 },
+  },
+  'exp-budget': {
+    id: 'exp-budget', icon: '📊', iconClass: 't-bench',
+    title: 'L2 预算经验库', subtitle: '公域 · L2 团队战术 · AI 沉淀',
+    tags: [{ cls: 'prv-ai', text: '🤖 AI 沉淀' }, { cls: 'gray', text: 'L2 团队' }, { cls: 'confidence', text: '命中度 90%' }],
+    chunkId: 'CHUNK_033', chunkTokens: 312, citedTimes: 31,
+    chunk: '单计划日预算保底 = 出价 × 20；起量期 500–1,000 元/天，连续 2 天日消 ≥ 400 元后放量至 2,000 元；每 2 天预算上浮 10-15%。时段 ROI 分布：晚 18:00–23:00 均值 1.45（峰值段），白天 10:00–17:00 均值 0.92，凌晨 0:00–6:00 均值 0.68。建议集中投放 10:00–23:00，晚间高价时段允许超预算 10%。',
+    meta: { 数据来源: 'A001 近 30 天消耗曲线 + 团队 8 个账户', 题材: '现言短剧', 更新方式: 'Agent 月度沉淀', 归档时间: '2026-05-15' },
+    stats: { 被引用: 31, 命中率: '90%', 点赞: 25 },
+  },
+  'gdt-audit': {
+    id: 'gdt-audit', icon: '📘', iconClass: 't-rule',
+    title: '广点通审核规范 v2.1', subtitle: '公域 · L1 平台规则 · API 自动同步',
+    tags: [{ cls: 'pub', text: '🌐 公域' }, { cls: 'gray', text: 'L1 平台' }, { cls: 'confidence', text: '命中度 89%' }],
+    chunkId: 'CHUNK_031', chunkTokens: 298, citedTimes: 78,
+    chunk: '【第 3.2 条 · 网络视听内容资质要求】涉及网络视听节目内容（含短剧、微短剧、竖屏剧）的广告推广，广告主须完成 SC 认证并在投前提交《广告审查表》（由持证方出具）或相关备案截图。未满足资质要求的计划将触发合规拦截，与创意内容合规性无关。',
+    meta: { 数据来源: '广点通审核中心 API', 版本: 'v2.1（2025-03-20 更新）', 生效时间: '2025-04-01', 关联规则数: '6 / 317 条' },
+    stats: { 被引用: 78, 命中率: '89%', 点赞: 61 },
   },
 }
 

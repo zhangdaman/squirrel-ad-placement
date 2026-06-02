@@ -47,6 +47,17 @@ export type QaFlow =
   | 'guide'
   | 'video'
   | 'fallback'
+  | 'cross_platform'
+  | 'reject_trend'
+  | 'account_diag'
+  | 'targeting'
+  | 'creative'
+  | 'budget'
+  | 'shutdown'
+  | 'report_gen'
+  | 'material_rank'
+  | 'strategy_review'
+  | 'material_diag'
 
 /* ============================================================
  * 输出内容块（OutputCard 动态渲染单元）
@@ -135,6 +146,21 @@ export interface RecommendMultiBlock {
   }[]
   /** 底部执行按钮文案（可空） */
   execLabel?: string
+}
+
+/** 排行榜（rank-list：素材 ROI/CTR 排行，支持标签如「衰退」） */
+export interface RankListBlock {
+  kind: 'rankList'
+  title?: string
+  items: {
+    rank: number
+    name: string
+    roi: string
+    ctr: string
+    tag?: string
+    /** 衰退标记（橙色警示） */
+    declining?: boolean
+  }[]
 }
 
 /** 边界场景卡（edge-card：ASK-08/09/10/12/15） */
@@ -229,6 +255,7 @@ export type OutputBlock =
   | ToolCallBlock
   | AgentPlanBlock
   | RecommendMultiBlock
+  | RankListBlock
   | EdgeCardBlock
   | GotoButtonsBlock
   | FollowUpsBlock

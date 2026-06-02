@@ -99,14 +99,21 @@ export interface ReviewInboxData {
  * ============================================================ */
 
 /** Agent 单步调研状态（收敛枚举，对齐 dev-standards 8.2） */
-export type AttributionStepStatus = 'success' | 'running' | 'pending' | 'failed'
+export type AttributionStepStatus = 'success' | 'running' | 'pending' | 'failed' | 'warn'
 
 /**
- * Agent 5 步调研单步（默认折叠）。
+ * Agent 推导阶段：plan 规划 / execute 执行 / verify 质检
+ * 不填时按 execute 处理（兼容旧数据）
+ */
+export type AttributionPhase = 'plan' | 'execute' | 'verify'
+
+/**
+ * Agent 推导单步（对齐 PRD §7.5 Planner-Executor-Verifier 流程）。
  * 每步含「判断 → 查证 → 发现」，末步附「结论」。
+ * verify 步骤额外携带 confidence / rollback。
  */
 export interface AttributionStep {
-  /** 步序（1..5） */
+  /** 步序（1..N，含 Planner + Verifier 后顺延） */
   index: number
   /** 步骤标题，如「拉取实时投放数据」 */
   title: string
@@ -121,6 +128,20 @@ export interface AttributionStep {
   observation: string
   /** ✅ 结论（仅末步有；其余可空） */
   reflection?: string
+  /**
+   * 推导阶段（不填默认按 execute 处理）：
+   * plan 规划 / execute 执行 / verify 质检
+   */
+  phase?: AttributionPhase
+  /**
+   * 质检置信度（0–1），仅 verify 步骤填写。
+   * 如 0.55（未达标）/ 0.88（通过）
+   */
+  confidence?: number
+  /**
+   * 是否触发回退（仅 verify 步骤），true = 置信度未达阈值 → 回退补充。
+   */
+  rollback?: boolean
 }
 
 /** 归因因子级别：主因 / 次因 / 排除 */
@@ -232,7 +253,7 @@ export interface AttributionReportData {
   causes: CauseCard[]
   /** 修改建议（按优先级，含一键执行项） */
   suggestions: ReviewSuggestion[]
-  /** Agent 5 步调研（默认折叠） */
+  /** Agent 多阶段推导步骤（Planner + Executor ReAct + Verifier，含回退） */
   steps: AttributionStep[]
   /** 风险提示文案 */
   riskNote: string

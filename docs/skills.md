@@ -68,33 +68,33 @@
 | ASK.rule_query | RAG `l1_rule_rag` | 审核标准 / 违禁词 |
 | ASK.operation_guide | RAG（帮助/SOP） | 怎么操作 |
 | ASK.bid_strategy | RAG `l2/l3` | 出价咨询，命中公域 benchmark + 私域历史 |
-| ASK.targeting_strategy | RAG `l2/l3` | 定向策略 ⚠ |
-| ASK.creative_strategy | RAG `l2/l3` | 素材策略 ⚠ |
-| ASK.budget_strategy | RAG `l2` | 预算分配 ⚠ |
-| ASK.scaling_strategy | RAG `l2/l3` | 起量泛问 |
-| ASK.shutdown_decision | **Agent** | 止损决策（动态判断） |
+| ASK.targeting_strategy | RAG `l2/l3` | 定向策略（问答 `targeting` flow）✅ |
+| ASK.creative_strategy | RAG `l2/l3` | 素材策略（问答 `creative` flow）✅ |
+| ASK.budget_strategy | RAG `l2` | 预算分配（问答 `budget` flow）✅ |
+| ASK.scaling_strategy | RAG `l2/l3` | 起量泛问 ✅ |
+| ASK.shutdown_decision | **Agent** | 止损决策（问答 `shutdown` flow）✅ |
 | ASK.realtime_data | MCP `get_plan_data` | 查具体计划数据 |
 
 ### 审核 CHK（5）
 
 | 意图 | 主链路 | 说明 |
 |---|---|---|
-| CHK.rejection_diagnosis | Skill `rejection_check_skill` + RAG | 已拒诊断（前端诊断页 rejected）|
-| CHK.material_precheck | Skill `rejection_check_skill` | 提审预检（前端诊断页 precheck）|
-| CHK.cross_platform_compare | RAG `l1_rule_rag`（多平台） | 跨平台规则对比 ⚠ |
-| CHK.rejection_trend | MCP + Skill | 拒审趋势 ⚠ |
-| CHK.account_diagnosis | MCP + **Agent** | 账户限流诊断 ⚠ |
+| CHK.rejection_diagnosis | Skill `rejection_check_skill` + RAG | 已拒诊断（诊断页 rejected）✅ |
+| CHK.material_precheck | Skill `rejection_check_skill` | 提审预检（诊断页 precheck）✅ |
+| CHK.cross_platform_compare | RAG `l1_rule_rag`（多平台） | 跨平台规则对比（问答 `cross_platform` flow）✅ |
+| CHK.rejection_trend | MCP + Skill | 拒审趋势（问答 `reject_trend` flow）✅ |
+| CHK.account_diagnosis | MCP + **Agent** | 账户限流诊断（问答 `account_diag` flow）✅ |
 
 ### 复盘 RPT（6）
 
 | 意图 | 主链路 | 说明 |
 |---|---|---|
-| RPT.daily_monitor | Skill `daily_monitor_skill` | 日常盯盘 |
-| RPT.deep_attribution | **Agent** | 深度归因（前端复盘页 Agent）|
-| RPT.report_generation | Skill（报告模板） | 周报/月报 ⚠ |
-| RPT.material_ranking | Skill `material_ranking_skill` | 素材排行 ⚠ |
-| RPT.strategy_review | MCP + Skill | 调整前后对比 ⚠ |
-| RPT.material_diagnosis | **Agent** | 单素材跑不动归因 ⚠ |
+| RPT.daily_monitor | Skill `daily_monitor_skill` | 日常盯盘 ✅ |
+| RPT.deep_attribution | **Agent** | 深度归因（复盘页 + 问答 review）✅ |
+| RPT.report_generation | Skill（报告模板） | 周报/月报（问答 `report_gen` flow）✅ |
+| RPT.material_ranking | Skill `material_ranking_skill` | 素材排行（问答 `material_rank` flow + rankList 榜单）✅ |
+| RPT.strategy_review | MCP + Skill | 调整前后对比（问答 `strategy_review` flow）✅ |
+| RPT.material_diagnosis | **Agent** | 单素材归因（问答 `material_diag` flow）✅ |
 
 ### 通用 GEN（3）
 
@@ -110,11 +110,11 @@
 
 | 场景 | 已覆盖（V1） | 缺（⚠ 待补） |
 |---|---|---|
-| ASK 问答 | 5：rule / operation / bid / scaling / realtime | 4：targeting / creative / budget / shutdown |
-| CHK 审核 | 2：rejection_diagnosis / material_precheck | 3：cross_platform_compare / rejection_trend / account_diagnosis |
-| RPT 复盘 | 2：daily_monitor / deep_attribution | 4：report_generation / material_ranking / strategy_review / material_diagnosis |
+| ASK 问答 | **9：全部** | 0 ✅ |
+| CHK 审核 | **5：全部** | 0 ✅ |
+| RPT 复盘 | **6：全部** | 0 ✅ |
 | GEN 通用 | 3：全 | 0 |
-| **合计** | **12** | **11** |
+| **合计** | **23** | **0** 🎉 全覆盖 |
 
 > V1 落地的是高频核心意图；缺的 11 个多为低频，或需要新交互（跨平台规则对比 / 拒审趋势 / 账户诊断 / 素材排行 / 周报生成等）。建议 V2 补全，或在问答里按需触发对应 Skill / Agent。
 

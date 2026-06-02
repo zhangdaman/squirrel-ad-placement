@@ -21,6 +21,7 @@ import { useRouter } from 'vue-router'
 import { useReviewStore } from '@/stores/review'
 import type {
   AttributionStep,
+  AttributionPhase,
   CauseLevel,
   FactorShare,
   ReviewSuggestion,
@@ -33,11 +34,17 @@ const router = useRouter()
 /** toast（ReviewPage provide），缺省兜底为 no-op */
 const toast = inject<(msg: string) => void>('reviewToast', () => {})
 
-/* ---------- Agent 5 步折叠态 ---------- */
-/** 每步是否折叠（默认全折叠，对齐原型 round.collapsed） */
+/* ---------- Agent ReAct 多轮 + Verifier 质检 ---------- */
+/** 每步是否折叠（默认全展开，ReAct 推理过程直接可视化） */
 const collapsed = ref<Record<number, boolean>>(
-  Object.fromEntries(props.report.steps.map((s) => [s.index, true]))
+  Object.fromEntries(props.report.steps.map((s) => [s.index, false]))
 )
+/** 推导阶段徽章（规划 / 执行 / 校验） */
+function phaseMeta(phase?: AttributionPhase) {
+  if (phase === 'plan') return { icon: '🧭', label: '规划', cls: 'plan' }
+  if (phase === 'verify') return { icon: '✅', label: '校验', cls: 'verify' }
+  return { icon: '⚙', label: '执行', cls: 'execute' }
+}
 function toggleStep(index: number) {
   collapsed.value = { ...collapsed.value, [index]: !collapsed.value[index] }
 }
@@ -229,15 +236,15 @@ function hasReflection(step: AttributionStep): boolean {
           </div>
         </div>
 
-        <!-- Agent 执行过程：5 步推导（默认折叠） -->
+        <!-- Agent 执行过程：ReAct 多轮 + Verifier 质检（默认展开） -->
         <div class="agent-flow">
           <div class="flow-title">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="2">
               <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
             </svg>
-            AI 归因过程 · 5 步推导
+            AI 归因过程 · ReAct 多轮 + Verifier 质检
             <span class="tag tag-brand toggle-all" @click="toggleAll">
-              {{ anyOpen ? '收起全部' : '展开 5 步推导' }}
+              {{ anyOpen ? '收起全部' : '展开全部' }}
             </span>
           </div>
 
@@ -246,17 +253,38 @@ function hasReflection(step: AttributionStep): boolean {
               v-for="step in report.steps"
               :key="step.index"
               class="round"
-              :class="{ collapsed: collapsed[step.index] }"
+              :class="[
+                'round--' + phaseMeta(step.phase).cls,
+                { collapsed: collapsed[step.index], 'is-rollback': step.rollback },
+              ]"
             >
               <div class="round-head" @click="toggleStep(step.index)">
-                <span class="round-num">{{ step.index }}</span>
-                <div>
+                <span class="round-badge" :class="phaseMeta(step.phase).cls" :title="phaseMeta(step.phase).label">
+                  {{ phaseMeta(step.phase).icon }}
+                </span>
+                <div class="round-head-main">
                   <div class="round-title">{{ step.title }}</div>
-                  <div class="round-time">{{ step.meta }}</div>
+                  <div class="round-time">{{ step.meta }} · {{ phaseMeta(step.phase).label }}</div>
                 </div>
-                <span class="round-status tag tag-success">✓ 已完成</span>
+                <span
+                  v-if="step.phase === 'verify'"
+                  class="round-status tag"
+                  :class="step.rollback ? 'tag-warn' : 'tag-success'"
+                >{{ step.rollback ? '⚠ 未达标 · 回退' : '✓ 通过' }}</span>
+                <span v-else class="round-status tag tag-success">✓ 已完成</span>
               </div>
               <div class="round-body">
+                <!-- Verifier 置信度条 -->
+                <div v-if="step.confidence != null" class="conf-bar" :class="step.rollback ? 'low' : 'ok'">
+                  <div class="conf-track">
+                    <div class="conf-fill" :style="{ width: step.confidence * 100 + '%' }" />
+                    <div class="conf-line" title="阈值 0.85" />
+                  </div>
+                  <div class="conf-label">
+                    置信度 <strong>{{ Math.round(step.confidence * 100) }}%</strong>
+                    <span class="conf-th">· 阈值 85%</span>
+                  </div>
+                </div>
                 <div class="r-block thought">
                   <span class="r-label">🧠 判断</span>
                   <div class="r-content">{{ step.thought }}</div>
@@ -756,6 +784,37 @@ function hasReflection(step: AttributionStep): boolean {
 .round-status {
   margin-left: auto;
 }
+
+/* —— ReAct 阶段徽章 + Verifier 置信度（PRD §7.5 可视化）—— */
+.round-badge {
+  width: 28px; height: 28px; border-radius: 999px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+.round-badge.plan { background: var(--gray-100); }
+.round-badge.execute { background: var(--brand-50); }
+.round-badge.verify { background: var(--success-bg); }
+.round-head-main { flex: 1; min-width: 0; }
+.round--plan { border-left: 3px solid var(--gray-400); }
+.round--execute { border-left: 3px solid var(--brand-400); }
+.round--verify { border-left: 3px solid var(--success); }
+.round.is-rollback { border-left-color: var(--accent-orange); }
+.round.is-rollback .round-head { background: #FFF7ED; }
+/* Verifier 置信度条 */
+.conf-bar { margin-bottom: 12px; }
+.conf-track {
+  position: relative; height: 8px; border-radius: 999px; background: var(--gray-100);
+}
+.conf-fill { height: 100%; border-radius: 999px; transition: width 0.4s; }
+.conf-bar.ok .conf-fill { background: var(--success); }
+.conf-bar.low .conf-fill { background: var(--accent-orange); }
+.conf-line { position: absolute; top: 0; bottom: 0; left: 85%; width: 2px; background: var(--gray-500); }
+.conf-label { font-size: 11px; color: var(--gray-500); margin-top: 6px; }
+.conf-label strong { color: var(--gray-900); font-size: 12px; }
+.conf-bar.low .conf-label strong { color: var(--accent-orange); }
+.conf-bar.ok .conf-label strong { color: var(--success); }
+.conf-th { margin-left: 4px; color: var(--gray-400); }
+.tag-warn { background: var(--warning-bg); color: #b7791f; }
 .round-body {
   padding: 14px 14px 14px 50px;
   background: #fff;

@@ -162,6 +162,33 @@ function btnClass(v?: string): string {
       </div>
     </div>
 
+    <!-- 素材排行榜 rank-list（RPT material_rank） -->
+    <div v-else-if="block.kind === 'rankList'" class="rank-list">
+      <div v-if="block.title" class="rl-title">{{ block.title }}</div>
+      <div class="rl-header">
+        <span class="rl-col-rank">#</span>
+        <span class="rl-col-name">素材名称</span>
+        <span class="rl-col-metric">ROI</span>
+        <span class="rl-col-metric">CTR</span>
+        <span class="rl-col-tag">状态</span>
+      </div>
+      <div
+        v-for="item in block.items"
+        :key="item.rank"
+        :class="['rl-row', { 'rl-row-declining': item.declining }]"
+      >
+        <span class="rl-col-rank">
+          <span :class="['rl-badge', item.rank <= 3 ? 'rl-badge-top' : 'rl-badge-normal']">{{ item.rank }}</span>
+        </span>
+        <span class="rl-col-name">{{ item.name }}</span>
+        <span :class="['rl-col-metric', item.declining ? 'rl-val-danger' : 'rl-val-good']">{{ item.roi }}</span>
+        <span class="rl-col-metric rl-val-neutral">{{ item.ctr }}</span>
+        <span v-if="item.tag" class="rl-col-tag">
+          <span :class="['rl-tag', item.declining ? 'rl-tag-warn' : 'rl-tag-ok']">{{ item.tag }}</span>
+        </span>
+      </div>
+    </div>
+
     <!-- 边界卡 edge-card（ASK-08/09/10/12/15） -->
     <div v-else-if="block.kind === 'edgeCard'" :class="['edge-card', `edge-${block.variant}`]">
       <div class="edge-card-head">
@@ -304,4 +331,27 @@ function btnClass(v?: string): string {
 
 /* rm-item 内容容器（style.css 有 rm-item/rm-title/rm-desc，独缺 rm-body） */
 .rm-body { flex: 1; min-width: 0; }
+
+/* rank-list：素材排行榜（RPT material_rank，品牌蓝 #2563EB） */
+.rank-list { border: 1px solid var(--gray-200); border-radius: 8px; overflow: hidden; font-size: 12px; margin: 8px 0; }
+.rl-title { padding: 8px 12px 6px; font-size: 13px; font-weight: 600; color: var(--gray-900); background: var(--brand-50); border-bottom: 1px solid var(--gray-200); }
+.rl-header { display: grid; grid-template-columns: 32px 1fr 52px 52px 56px; align-items: center; padding: 5px 12px; background: var(--gray-50); border-bottom: 1px solid var(--gray-200); font-size: 11px; font-weight: 600; color: var(--gray-500); gap: 6px; }
+.rl-row { display: grid; grid-template-columns: 32px 1fr 52px 52px 56px; align-items: center; padding: 7px 12px; border-bottom: 1px solid var(--gray-100); gap: 6px; transition: background 0.15s; }
+.rl-row:last-child { border-bottom: none; }
+.rl-row:hover { background: var(--brand-50); }
+.rl-row-declining { background: #fff7ed; }
+.rl-row-declining:hover { background: #fff3e0; }
+.rl-col-rank { text-align: center; }
+.rl-col-name { color: var(--gray-800); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rl-col-metric { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+.rl-col-tag { text-align: right; }
+.rl-badge { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; font-size: 11px; font-weight: 700; }
+.rl-badge-top { background: #2563EB; color: #fff; }
+.rl-badge-normal { background: var(--gray-100); color: var(--gray-500); }
+.rl-val-good { color: #2563EB; }
+.rl-val-danger { color: var(--danger, #ef4444); }
+.rl-val-neutral { color: var(--gray-600); }
+.rl-tag { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.rl-tag-ok { background: var(--brand-50); color: #2563EB; }
+.rl-tag-warn { background: #fff3cd; color: #b45309; }
 </style>
