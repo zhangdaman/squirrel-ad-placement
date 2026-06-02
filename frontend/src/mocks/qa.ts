@@ -61,6 +61,8 @@ export function routeFlow(qRaw: string): QaFlow {
   // 主场景：出价策略
   if (/出价|ocpm|调价|roi ?目标|出多少|报价|cpa/i.test(q)) return 'bid'
   // 边界：实时数据查询
+  // 数据类宽泛词（只说「数据」没说账户/指标）→ 专属引导，必须在 data 之前判
+  if (/数据/.test(q) && q.length <= 6 && !/消耗|roi|转化|今天|昨天|账户|计划|a\d/i.test(q)) return 'data_pick'
   if (/消耗|花了多少|多少钱|实时|转化数|今天.*数据|昨天.*(数据|情况|投放)|投放情况|整体.*(情况|怎么样)|roi.*怎么样|看.*数据/i.test(q)) return 'data'
   // 边界：知识库命中（问规则条款）
   if (/规则.*\d|第.*条|条款|规范.*说|什么意思|是什么/.test(q)) return 'knowledge'
@@ -965,6 +967,26 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
   }),
 
   /* 兜底（fallback）—— 对齐 replyFor 默认回复 */
+  /* 数据类宽泛词（只说「数据」）→ 专属引导：选账户 + 指标，不瞎猜账户 */
+  data_pick: () => ({
+    intent: { intent: '数据查询引导', style: 'ASK-12', layer: 'L1' },
+    steps: [],
+    blocks: [
+      { kind: 'text', text: '想查**哪个账户**的**什么数据**？点一下就给你拉实时的 👇' },
+      {
+        kind: 'followUps',
+        prompt: '常用查询：',
+        options: [
+          { label: 'A001 今天消耗 / ROI', nextFlow: 'data' },
+          { label: '全平台今日汇总消耗', nextFlow: 'data' },
+          { label: 'A001 近 7 天 ROI 趋势', nextFlow: 'data' },
+          { label: '某计划转化数', nextFlow: 'data' },
+        ],
+      },
+    ],
+    sources: [],
+  }),
+
   fallback: () => ({
     intent: { intent: '通用咨询', style: 'ASK-07' },
     blocks: [

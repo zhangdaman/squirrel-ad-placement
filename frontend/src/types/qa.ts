@@ -47,6 +47,7 @@ export type QaFlow =
   | 'guide'
   | 'video'
   | 'fallback'
+  | 'data_pick'
   | 'cross_platform'
   | 'reject_trend'
   | 'account_diag'
