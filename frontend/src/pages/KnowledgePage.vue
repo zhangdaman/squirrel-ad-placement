@@ -95,14 +95,23 @@ interface NavNode {
 const navTree = computed<NavNode[]>(() => {
   const c = kb.navCounts.cats
   return [
-    { type: 'group', label: '公域知识', badge: 'API', badgeCls: 'badge-pub', count: kb.navCounts.pub },
+    /* L1 平台规则库 */
+    { type: 'group', label: 'L1 平台规则库', badge: 'API', badgeCls: 'badge-pub', count: kb.navCounts.l1 },
     { type: 'item', layer: 'L1', label: '巨量引擎规则', count: c.juliang, cat: 'juliang' as KnowledgeCat },
     { type: 'item', layer: 'L1', label: '磁力金牛规则', count: c.cili, cat: 'cili' as KnowledgeCat },
     { type: 'item', layer: 'L1', label: '腾讯广告规则', count: c.tencent, cat: 'tencent' as KnowledgeCat },
-    { type: 'group', label: '私域知识', badge: '上传', badgeCls: 'badge-prv', count: kb.navCounts.prv },
-    { type: 'item', layer: 'L2', label: '题材打法', count: c.ticai, cat: 'ticai' as KnowledgeCat },
-    { type: 'item', layer: 'L2', label: '出价策略', count: c.chujia, cat: 'chujia' as KnowledgeCat },
-    { type: 'item', layer: 'L2', label: '素材模板', count: c.sucai, cat: 'sucai' as KnowledgeCat },
+    /* L2 公域经验库 */
+    { type: 'group', label: 'L2 公域经验库', badge: '运营', badgeCls: 'badge-l2', count: kb.navCounts.l2 },
+    { type: 'item', layer: 'L2', label: '行业基准', count: c.benchmark, cat: 'benchmark' as KnowledgeCat },
+    { type: 'item', layer: 'L2', label: '拒审案例库', count: c.caselib, cat: 'caselib' as KnowledgeCat },
+    /* L3 私域经验库 */
+    { type: 'group', label: 'L3 私域经验库', badge: '上传', badgeCls: 'badge-prv', count: kb.navCounts.l3 },
+    { type: 'item', layer: 'L3', label: '题材打法', count: c.ticai, cat: 'ticai' as KnowledgeCat },
+    { type: 'item', layer: 'L3', label: '出价策略', count: c.chujia, cat: 'chujia' as KnowledgeCat },
+    { type: 'item', layer: 'L3', label: '素材模板', count: c.sucai, cat: 'sucai' as KnowledgeCat },
+    { type: 'item', layer: 'L3', label: '复盘报告', count: c.review, cat: 'review' as KnowledgeCat },
+    { type: 'item', layer: 'L3', label: '审核经验', count: c.auditexp, cat: 'auditexp' as KnowledgeCat },
+    { type: 'item', layer: 'L3', label: '群聊会议', count: c.meeting, cat: 'meeting' as KnowledgeCat },
     { type: 'item', layer: 'L3', label: '我的偏好', count: c.pianhao, cat: 'pianhao' as KnowledgeCat },
   ]
 })
@@ -362,6 +371,7 @@ function onNavAll() {
   border-radius: 4px;
   font-weight: 600; }
 .kb-group .badge-pub { background: #DBEAFE; color: #1D4ED8; }
+.kb-group .badge-l2  { background: #D1FAE5; color: #065F46; }
 .kb-group .badge-prv { background: #FED7AA; color: #9A3412; }
 .kb-group .cnt { margin-left: auto; font-size: 11px; color: var(--gray-400); font-weight: 500; }
 .kb-nav-sub .kb-nav-item { font-size: 12.5px; padding: 6px 10px 6px 14px; }
@@ -371,8 +381,8 @@ function onNavAll() {
   font-weight: 700;
   margin-right: 2px; }
 .kb-nav-sub .kb-nav-item .lvl.l1 { background: #DBEAFE; color: #1D4ED8; }
-.kb-nav-sub .kb-nav-item .lvl.l2 { background: #FED7AA; color: #9A3412; }
-.kb-nav-sub .kb-nav-item .lvl.l3 { background: #EFF6FF; color: #2563EB; }
+.kb-nav-sub .kb-nav-item .lvl.l2 { background: #D1FAE5; color: #065F46; }
+.kb-nav-sub .kb-nav-item .lvl.l3 { background: #FED7AA; color: #9A3412; }
 .kb-smart-item .cnt { margin-left: auto;
   font-size: 11px;
   padding: 1px 7px;

@@ -65,10 +65,10 @@ export function mockFilters(): FilterDef[] {
       key: 'source',
       prefix: '来源',
       options: [
-        { value: 'prv-up', label: '私域 L2 题材打法' },
-        { value: 'pub', label: '公域大盘' },
-        { value: 'platform', label: '平台官方规则' },
-        { value: 'history', label: '历史复盘' },
+        { value: 'platform', label: 'L1 平台官方规则' },
+        { value: 'pub', label: 'L2 公域经验库' },
+        { value: 'prv-up', label: 'L3 私域上传' },
+        { value: 'history', label: 'L3 历史复盘' },
       ],
     },
     {
@@ -79,6 +79,7 @@ export function mockFilters(): FilterDef[] {
         { value: 'case', label: '实战案例' },
         { value: 'template', label: '话术模板' },
         { value: 'benchmark', label: '数据基准' },
+        { value: 'qa', label: '问答对' },
       ],
     },
     {
@@ -176,7 +177,7 @@ const KB_ENTITIES: KnowledgeEntity[] = [
   {
     id: 'k2',
     title: '都市悬疑题材 · 5 秒钩子方法论 v2.1',
-    layer: 'L2',
+    layer: 'L3',
     source: 'prv-up',
     cat: 'ticai',
     type: 'case',
@@ -232,7 +233,7 @@ const KB_ENTITIES: KnowledgeEntity[] = [
   {
     id: 'k3',
     title: '智能放量阶段出价调整 SOP',
-    layer: 'L2',
+    layer: 'L3',
     source: 'history',
     cat: 'chujia',
     type: 'template',
@@ -279,7 +280,7 @@ const KB_ENTITIES: KnowledgeEntity[] = [
   {
     id: 'k4',
     title: '男频爽文 ROI 公式手册（旧版）',
-    layer: 'L2',
+    layer: 'L3',
     source: 'prv-up',
     cat: 'chujia',
     type: 'benchmark',
@@ -314,7 +315,7 @@ const KB_ENTITIES: KnowledgeEntity[] = [
   {
     id: 'k5',
     title: '女频虐恋 · 高 ROI 素材结构拆解（5月）',
-    layer: 'L2',
+    layer: 'L3',
     source: 'prv-up',
     cat: 'sucai',
     type: 'case',
@@ -341,9 +342,9 @@ const KB_ENTITIES: KnowledgeEntity[] = [
   {
     id: 'k6',
     title: '磁力金牛 · 行业 CPM 基准 2025 Q1',
-    layer: 'L1',
+    layer: 'L2',
     source: 'pub',
-    cat: 'cili',
+    cat: 'benchmark',
     type: 'benchmark',
     cited: 94,
     hit_rate: 0.89,
@@ -413,7 +414,7 @@ const KB_ENTITIES: KnowledgeEntity[] = [
 
   /* ---------- 公域 · 磁力金牛规则（cili）---------- */
   {
-    id: 'k9', title: '磁力金牛 · 短剧达人定向白名单规则', layer: 'L1', source: 'pub', cat: 'cili', type: 'rule',
+    id: 'k9', title: '磁力金牛 · 短剧达人定向白名单规则', layer: 'L1', source: 'platform', cat: 'cili', type: 'rule',
     cited: 88, hit_rate: 0.85, collected: 19,
     summary: '快手磁力金牛短剧达人投放的白名单准入与定向规则，含达人粉丝量级分层与内容垂直度要求。',
     chunk: '"达人相似定向需粉丝量 ≥ 10w 且短剧内容垂直度 ≥ 0.6；低于阈值的达人不进入相似扩量池 …"',
@@ -426,7 +427,7 @@ const KB_ENTITIES: KnowledgeEntity[] = [
     feedback: { up: 74, down: 6 },
   },
   {
-    id: 'k10', title: '磁力金牛 · 快手短剧分成与结算政策 2025', layer: 'L1', source: 'pub', cat: 'cili', type: 'benchmark',
+    id: 'k10', title: '磁力金牛 · 快手短剧分成与结算政策 2025', layer: 'L1', source: 'platform', cat: 'cili', type: 'benchmark',
     cited: 67, hit_rate: 0.82, collected: 15,
     summary: '2025 年快手短剧 IAA / IAP 双模式分成比例、结算周期与充值回传口径说明。',
     chunk: '"IAA 模式按有效播放分成，T+15 结算；IAP 模式按充值流水分成，需正确回传 ROI 事件 …"',
@@ -467,7 +468,7 @@ const KB_ENTITIES: KnowledgeEntity[] = [
     feedback: { up: 48, down: 9 },
   },
   {
-    id: 'k13', title: '腾讯广告 · 视频号短剧 ROI 基准 2025 Q1', layer: 'L1', source: 'pub', cat: 'tencent', type: 'benchmark',
+    id: 'k13', title: '腾讯广告 · 视频号短剧 ROI 基准 2025 Q1', layer: 'L2', source: 'pub', cat: 'benchmark', type: 'benchmark',
     cited: 51, hit_rate: 0.79, collected: 11,
     summary: '视频号短剧各题材 ROI / 首日回收基准线，用于诊断投放表现是否偏离大盘。',
     chunk: '"视频号都市题材首日回收基准 0.45，7 日 ROI 基准 0.95；低于基准 20% 建议核查素材与定向 …"',
@@ -482,7 +483,7 @@ const KB_ENTITIES: KnowledgeEntity[] = [
 
   /* ---------- 私域 · 题材打法（ticai）---------- */
   {
-    id: 'k14', title: '古风重生题材 · 开篇 3 秒留人模型', layer: 'L2', source: 'prv-up', cat: 'ticai', type: 'case',
+    id: 'k14', title: '古风重生题材 · 开篇 3 秒留人模型', layer: 'L3', source: 'prv-up', cat: 'ticai', type: 'case',
     cited: 96, hit_rate: 0.83, collected: 28,
     summary: '团队沉淀的古风重生题材开篇公式：身份反差 + 命运预告 + 名场面前置。含 6 条爆款拆解。',
     chunk: '"古风重生开篇 3 秒须给出「重生」信息锚点（如睁眼台词、熟悉场景），第 4-5 秒抛出复仇/逆袭预告 …"',
@@ -495,7 +496,7 @@ const KB_ENTITIES: KnowledgeEntity[] = [
     feedback: { up: 81, down: 10 },
   },
   {
-    id: 'k15', title: '现代复仇爽文 · 情绪爆点节奏曲线', layer: 'L2', source: 'prv-up', cat: 'ticai', type: 'case',
+    id: 'k15', title: '现代复仇爽文 · 情绪爆点节奏曲线', layer: 'L3', source: 'prv-up', cat: 'ticai', type: 'case',
     cited: 74, hit_rate: 0.78, collected: 21,
     summary: '现代复仇题材的情绪节奏设计：压抑铺垫 → 爆发反转 → 爽感释放的时间轴与转化关系。',
     chunk: '"压抑段不超过 8 秒，第一个爽点须在 12 秒内出现；爽点密度每 15 秒 1 个，维持完播 …"',
@@ -508,7 +509,7 @@ const KB_ENTITIES: KnowledgeEntity[] = [
     feedback: { up: 62, down: 8 },
   },
   {
-    id: 'k16', title: '年代虐恋题材 · 选角与画风避坑清单', layer: 'L2', source: 'prv-up', cat: 'ticai', type: 'template',
+    id: 'k16', title: '年代虐恋题材 · 选角与画风避坑清单', layer: 'L3', source: 'prv-up', cat: 'ticai', type: 'template',
     cited: 41, hit_rate: 0.72, collected: 13,
     summary: '年代虐恋题材投放中选角、服化道、画风调色的常见踩坑与正向参考，降低素材报废率。',
     chunk: '"年代感画风忌过曝高饱和；女主选角避免现代精致妆，朴素感更易共情触发完播 …"',
@@ -523,7 +524,7 @@ const KB_ENTITIES: KnowledgeEntity[] = [
 
   /* ---------- 私域 · 出价策略（chujia）---------- */
   {
-    id: 'k17', title: '智能放量 · 跑量计划阶梯加价表 v2', layer: 'L2', source: 'prv-up', cat: 'chujia', type: 'template',
+    id: 'k17', title: '智能放量 · 跑量计划阶梯加价表 v2', layer: 'L3', source: 'prv-up', cat: 'chujia', type: 'template',
     cited: 63, hit_rate: 0.8, collected: 18,
     summary: '已验证的放量阶梯加价表：按累计转化数分档的加价幅度与观察窗口，配合止损线使用。',
     chunk: '"累计 20 转化内不加价；20-50 转化每档 +5%；超 50 转化且 ROI 达标可 +8%，单日加价不超 2 次 …"',
@@ -538,7 +539,7 @@ const KB_ENTITIES: KnowledgeEntity[] = [
 
   /* ---------- 私域 · 素材模板（sucai）---------- */
   {
-    id: 'k18', title: '信息流竖版素材 · 黄金 5 秒分镜模板', layer: 'L2', source: 'prv-up', cat: 'sucai', type: 'template',
+    id: 'k18', title: '信息流竖版素材 · 黄金 5 秒分镜模板', layer: 'L3', source: 'prv-up', cat: 'sucai', type: 'template',
     cited: 112, hit_rate: 0.87, collected: 35,
     summary: '竖版短剧信息流素材的前 5 秒标准分镜模板库，含 9 套可复用脚本与运镜说明。',
     chunk: '"第 1 秒定场 + 字幕钩子，第 2-3 秒人物反差，第 4-5 秒冲突 / 悬念，转场不超过 2 次 …"',
@@ -551,7 +552,7 @@ const KB_ENTITIES: KnowledgeEntity[] = [
     feedback: { up: 98, down: 9 },
   },
   {
-    id: 'k19', title: '口播带货素材 · 高转化话术结构库', layer: 'L2', source: 'prv-up', cat: 'sucai', type: 'template',
+    id: 'k19', title: '口播带货素材 · 高转化话术结构库', layer: 'L3', source: 'prv-up', cat: 'sucai', type: 'template',
     cited: 57, hit_rate: 0.75, collected: 16,
     summary: '短剧引流口播的高转化话术结构：痛点共鸣 → 解决方案 → 紧迫感收口，含 12 条话术范例。',
     chunk: '"口播开场用「你是不是也…」痛点共鸣句；中段给剧情解决方案；结尾用限时 / 限量制造紧迫 …"',
@@ -603,6 +604,201 @@ const KB_ENTITIES: KnowledgeEntity[] = [
     meta: { 知识ID: 'KB-L3-P-0022', 来源类型: '个人收藏', 上传人: '李响 · 投手' },
     versions: [{ version: 'v1.0', by: '李响 · 7 天前', current: true }],
     feedback: { up: 12, down: 2 },
+  },
+
+  /* ---------- 私域 L3 · 复盘报告（review）---------- */
+  {
+    id: 'k25', title: 'A001 旗舰户 5 月 ROI 滑坡复盘', layer: 'L3', source: 'prv-up', cat: 'review', type: 'case',
+    cited: 48, hit_rate: 0.81, collected: 19,
+    summary: '5 月巨量 ROI 从 0.92 滑落至 0.61 的系统性复盘：定向漂移 + 素材疲软 + 出价未及时跟进三重原因拆解，含下月改善行动项。',
+    chunk: '"ROI 滑坡根因：4 月末扩量后莱卡包未同步更新，导致人群泛化；同期头部素材服役超 21 天出现疲软 …"',
+    tags: ['出价策略', '题材打法'],
+    updated: '钱晓彤 · 3 天前更新', updated_at: 1717000000000,
+    status: { kind: 'done', label: '已向量化' },
+    chunks: [
+      { id: 'CHUNK_001', tokens: 388, tag: '根因分析', highlight: true, hotLabel: '高引用 · 22 次', text: 'ROI 滑坡根因：扩量后莱卡人群包未同步更新，导致人群泛化；主力素材服役超 21 天，新鲜度衰减明显；出价跟进滞后约 3 天，错过最佳调整窗口。' },
+      { id: 'CHUNK_002', tokens: 362, tag: '改善行动', text: '6 月行动项：每 14 天强制轮换莱卡包；设立「素材服役预警」：累计跑量超 10 万曝光时 AI 自动提醒替换；出价调整权限下放至投手日常决策。' },
+    ],
+    meta: { 知识ID: 'KB-L3-RV-0025', 来源类型: '半结构化文档（复盘 Word · 8 页）', 上传人: '钱晓彤 · 投放主管', 上传时间: '2026-05-30 16:44', 分块大小: '400 tokens · overlap 50', 向量化模型: 'bge-large-zh-v1.5 · 1024 维' },
+    versions: [{ version: 'v1.0', by: '钱晓彤 · 3 天前', current: true }],
+    feedback: { up: 39, down: 3 },
+  },
+  {
+    id: 'k26', title: '双女主题材放量复盘（5 月）', layer: 'L3', source: 'prv-up', cat: 'review', type: 'case',
+    cited: 35, hit_rate: 0.77, collected: 14,
+    summary: '5 月双女主题材从 0 到日耗 8 万的放量过程复盘：起量节奏、素材轮换策略、人群收敛时机，含 4 条可复用结论。',
+    chunk: '"双女主起量关键：前 3 天不加莱卡包，纯用系统智能 + 行为兴趣，转化跑稳后第 4 天叠加相似人群 …"',
+    tags: ['题材打法', '出价策略'],
+    updated: '李响 · 6 天前更新', updated_at: 1716650000000,
+    status: { kind: 'done', label: '已向量化' },
+    chunks: [
+      { id: 'CHUNK_001', tokens: 376, tag: '起量节奏', highlight: true, hotLabel: '高引用 · 17 次', text: '双女主题材起量：前 3 天只用系统智能定向 + 单个行为兴趣包，不加莱卡。学习期跑稳（20 转化）后第 4 天叠加相似人群包，日耗从 ¥3k 放到 ¥8k 无波折。' },
+    ],
+    meta: { 知识ID: 'KB-L3-RV-0026', 来源类型: '半结构化文档（复盘 PDF · 12 页）', 上传人: '李响 · 投手', 上传时间: '2026-05-27 10:18', 分块大小: '400 tokens · overlap 50', 向量化模型: 'bge-large-zh-v1.5 · 1024 维' },
+    versions: [{ version: 'v1.0', by: '李响 · 6 天前', current: true }],
+    feedback: { up: 29, down: 4 },
+  },
+
+  /* ---------- 私域 L3 · 审核经验（auditexp）---------- */
+  {
+    id: 'k27', title: '客户内部素材审核红线 SOP', layer: 'L3', source: 'prv-up', cat: 'auditexp', type: 'template',
+    cited: 62, hit_rate: 0.85, collected: 24,
+    summary: '团队内部沉淀的素材提审前自检 SOP：覆盖巨量 / 磁力 / 腾讯三平台高频驳回项，共 18 条红线 + 5 条灰线（慎用）。',
+    chunk: '"红线①：首帧不得出现纯文字卡或纯黑屏；红线②：禁止绝对化用词（如「100% 回收」「必爆」）；红线③：对峙场景不得直接喊话挑衅 …"',
+    tags: ['审核合规'],
+    updated: '钱晓彤 · 5 天前更新', updated_at: 1716750000000,
+    status: { kind: 'done', label: '已向量化' },
+    chunks: [
+      { id: 'CHUNK_001', tokens: 394, tag: '红线清单', highlight: true, hotLabel: '高引用 · 31 次', text: '18 条红线中高频触发项：①首帧纯文字/黑屏；②绝对化用词（100%/必爆）；③对峙喊话挑衅；④未成年暗示；⑤吸烟正面大特写（腾讯全禁）。' },
+      { id: 'CHUNK_002', tokens: 368, tag: '灰线慎用', text: '5 条灰线（慎用）：①血腥卡通化呈现；②过度煽情旁白；③平台 logo 内嵌；④竞品 logo 出现；⑤强调价格对比（如「原价 XX / 现价 0.1 元」）。' },
+    ],
+    meta: { 知识ID: 'KB-L3-AE-0027', 来源类型: '半结构化文档（SOP Word · 14 页）', 上传人: '钱晓彤 · 投放主管', 上传时间: '2026-05-28 09:30', 分块大小: '400 tokens · overlap 50', 向量化模型: 'bge-large-zh-v1.5 · 1024 维' },
+    versions: [{ version: 'v1.1', by: '钱晓彤 · 5 天前', current: true }, { version: 'v1.0', by: '钱晓彤 · 30 天前' }],
+    feedback: { up: 52, down: 5 },
+  },
+  {
+    id: 'k28', title: '巨量拒审申诉话术库', layer: 'L3', source: 'prv-up', cat: 'auditexp', type: 'template',
+    cited: 44, hit_rate: 0.79, collected: 16,
+    summary: '团队整理的巨量引擎拒审申诉话术模板库：按驳回原因分 7 类，含 22 条可直接使用的申诉话术 + 附件建议。',
+    chunk: '"驳回原因「低俗暗示」申诉要点：说明画面为剧情冲突需要，非性暗示；附对应分级保护说明文件 …"',
+    tags: ['审核合规'],
+    updated: '李响 · 10 天前更新', updated_at: 1716300000000,
+    status: { kind: 'done', label: '已向量化' },
+    chunks: [
+      { id: 'CHUNK_001', tokens: 360, tag: '申诉模板', highlight: true, hotLabel: '高引用 · 19 次', text: '「低俗暗示」申诉模板：「本素材为短剧剧情冲突表达，画面属于故事叙述需要，无性暗示意图，请参考附件分级保护说明予以审核。」' },
+    ],
+    meta: { 知识ID: 'KB-L3-AE-0028', 来源类型: '半结构化文档（申诉模板 Word · 10 页）', 上传人: '李响 · 投手', 上传时间: '2026-05-23 14:55', 分块大小: '400 tokens · overlap 50', 向量化模型: 'bge-large-zh-v1.5 · 1024 维' },
+    versions: [{ version: 'v1.0', by: '李响 · 10 天前', current: true }],
+    feedback: { up: 36, down: 6 },
+  },
+
+  /* ---------- 私域 L3 · 群聊会议沉淀（meeting）---------- */
+  {
+    id: 'k29', title: '投放群 · 起量踩坑经验摘录', layer: 'L3', source: 'prv-up', cat: 'meeting', type: 'qa',
+    cited: 31, hit_rate: 0.74, collected: 12,
+    summary: '微信投放工作群 3 个月聊天记录的精华摘录：起量失败踩坑经验 12 条，由 AI 对话清洗 + 说话人对齐后提炼，人工审核确认。',
+    chunk: '"踩坑①（钱晓彤）：新计划刚上就加莱卡包，结果学习期拖了 5 天；正确做法：先跑系统智能再叠加 …"',
+    tags: ['题材打法', '出价策略'],
+    updated: '钱晓彤 · 8 天前更新', updated_at: 1716500000000,
+    status: { kind: 'done', label: '已向量化' },
+    chunks: [
+      { id: 'CHUNK_001', tokens: 342, tag: '踩坑摘录', highlight: true, hotLabel: '高引用 · 14 次', text: '踩坑①（钱晓彤）：新计划刚上就加莱卡包，学习期卡 5 天；正确做法先跑系统智能。踩坑②（李响）：日预算设太低（<¥1500），系统不敢花，卡量 3 天；建议起量期日预算 ≥¥3000。' },
+    ],
+    meta: { 知识ID: 'KB-L3-MT-0029', 来源类型: '非结构化（微信群聊导出 · 对话清洗 + 说话人对齐）', 上传人: '钱晓彤 · 投放主管', 上传时间: '2026-05-25 17:20', 处理说明: '对话清洗 ✓ → 说话人对齐 ✓ → 分块 ✓ → 向量化 ✓', 向量化模型: 'bge-large-zh-v1.5 · 1024 维' },
+    versions: [{ version: 'v1.0', by: '钱晓彤 · 8 天前', current: true }],
+    feedback: { up: 26, down: 3 },
+  },
+  {
+    id: 'k30', title: '周会 · 题材排期决议纪要（5 月第 4 周）', layer: 'L3', source: 'prv-up', cat: 'meeting', type: 'case',
+    cited: 22, hit_rate: 0.71, collected: 9,
+    summary: '5 月第 4 周题材排期周会会议纪要：确认 6 月前两周主推古风重生 + 双女主，备用都市悬疑，含资源分配与出价目标。',
+    chunk: '"决议：6 月 1-14 日主推古风重生题材（分配 60% 预算）+ 双女主（30%）；都市悬疑作为备用测试（10%）…"',
+    tags: ['题材打法'],
+    updated: '李响 · 14 天前更新', updated_at: 1716000000000,
+    status: { kind: 'done', label: '已向量化' },
+    chunks: [
+      { id: 'CHUNK_001', tokens: 328, tag: '排期决议', text: '6 月 1-14 日题材预算分配：古风重生 60%（日耗目标 ¥15 万）+ 双女主 30%（¥7.5 万）+ 都市悬疑测试 10%（¥2.5 万）。' },
+    ],
+    meta: { 知识ID: 'KB-L3-MT-0030', 来源类型: '非结构化（会议纪要 TXT · 对话清洗 + 角色对齐）', 上传人: '李响 · 投手', 上传时间: '2026-05-22 09:05', 处理说明: '对话清洗 ✓ → 说话人对齐 ✓ → 分块 ✓ → 向量化 ✓', 向量化模型: 'bge-large-zh-v1.5 · 1024 维' },
+    versions: [{ version: 'v1.0', by: '李响 · 14 天前', current: true }],
+    feedback: { up: 18, down: 2 },
+  },
+
+  /* ---------- L2 公域经验库 · 拒审案例库（caselib）---------- */
+  {
+    id: 'k23',
+    title: '常见问答：短剧素材能不能出现抽烟画面',
+    layer: 'L2',
+    source: 'pub',
+    cat: 'caselib',
+    type: 'qa',
+    cited: 53,
+    hit_rate: 0.91,
+    collected: 22,
+    summary:
+      '各平台对短剧素材中吸烟画面的审核口径汇总：巨量、磁力、腾讯三平台的允许条件与驳回边界，并附真实拒审截图说明。',
+    chunk:
+      '"巨量：成人主角、无诱导感、非正面特写可过审；磁力：须弱化烟雾镜头，不得超过 3 秒；腾讯：全面禁止正面吸烟镜头 …"',
+    tags: ['审核合规', '素材创意'],
+    updated: '运营整理 · 5 天前更新',
+    updated_at: 1716740000000,
+    status: { ...DONE },
+    chunks: [
+      {
+        id: 'CHUNK_001',
+        tokens: 358,
+        tag: '巨量口径',
+        text: '巨量引擎：成人角色、无诱导吸烟感、非正面大特写的吸烟画面可通过审核；若出现未成年暗示或刻意渲染吸烟行为则直接驳回。',
+      },
+      {
+        id: 'CHUNK_002',
+        tokens: 342,
+        tag: '磁力 / 腾讯口径',
+        highlight: true,
+        hotLabel: '高引用 · 29 次',
+        text: '磁力金牛：须弱化烟雾镜头，单次吸烟镜头不超过 3 秒，不得以吸烟行为作为情绪爆点。腾讯广告：全面禁止正面吸烟镜头，改用持烟道具或侧面虚焦处理。',
+      },
+    ],
+    meta: {
+      知识ID: 'KB-L2-Q-0023',
+      来源类型: '公域经验库（运营整理）',
+      覆盖平台: '巨量引擎 / 磁力金牛 / 腾讯广告',
+      整理人: '运营团队',
+      更新频率: '规则变更后同步更新',
+      向量化模型: 'bge-large-zh-v1.5 · 1024 维',
+    },
+    versions: [
+      { version: 'v1.1', by: '运营整理 · 5 天前', current: true },
+      { version: 'v1.0', by: '运营整理 · 30 天前' },
+    ],
+    feedback: { up: 47, down: 4 },
+  },
+  {
+    id: 'k24',
+    title: '常见问答：现言短剧 OCPM 起量出价多少合适',
+    layer: 'L2',
+    source: 'pub',
+    cat: 'caselib',
+    type: 'qa',
+    cited: 38,
+    hit_rate: 0.88,
+    collected: 17,
+    summary:
+      '基于行业大盘数据总结的现言（现代言情）短剧 OCPM 冷启动出价参考区间，覆盖巨量和磁力两平台，含不同预算规模下的推荐策略。',
+    chunk:
+      '"巨量现言题材冷启动 OCPM 参考区间 ¥75-95，预算 <5k/日用低区；磁力相似题材略低 ¥65-80，起量期建议上浮 10% …"',
+    tags: ['出价策略', '题材打法'],
+    updated: '运营整理 · 8 天前更新',
+    updated_at: 1716440000000,
+    status: { ...DONE },
+    chunks: [
+      {
+        id: 'CHUNK_001',
+        tokens: 364,
+        tag: '巨量出价参考',
+        text: '巨量引擎现言题材冷启动 OCPM 参考区间 ¥75-95；日预算 <5,000 建议取低区（¥75-80），避免拉高成本基线；日预算 ≥5,000 可取高区（¥85-95）加速起量。',
+      },
+      {
+        id: 'CHUNK_002',
+        tokens: 348,
+        tag: '磁力出价参考',
+        highlight: true,
+        hotLabel: '高引用 · 18 次',
+        text: '磁力金牛现言题材冷启动 OCPM 参考区间 ¥65-80，起量期（前 20 转化）建议在基础出价上上浮 10%，跑通后逐步回调至目标成本。',
+      },
+    ],
+    meta: {
+      知识ID: 'KB-L2-Q-0024',
+      来源类型: '公域经验库（行业大盘数据整理）',
+      覆盖平台: '巨量引擎 / 磁力金牛',
+      数据周期: '2025 Q1–Q2',
+      整理人: '运营团队',
+      向量化模型: 'bge-large-zh-v1.5 · 1024 维',
+    },
+    versions: [
+      { version: 'v1.0', by: '运营整理 · 8 天前', current: true },
+    ],
+    feedback: { up: 34, down: 3 },
   },
 ]
 
@@ -736,16 +932,23 @@ export function filterDefMap(): Record<FilterKey, FilterDef> {
 
 /* ============================================================
  * 左侧导航：真实计数（动态统计，替代写死数字）
+ * L1 平台规则库：juliang / cili / tencent
+ * L2 公域经验库：benchmark / caselib
+ * L3 私域经验库：ticai / chujia / sucai / pianhao
  * ============================================================ */
-const PUB_CATS: KnowledgeCat[] = ['juliang', 'cili', 'tencent']
-const ALL_CATS: KnowledgeCat[] = ['juliang', 'cili', 'tencent', 'ticai', 'chujia', 'sucai', 'pianhao']
+const L1_CATS: KnowledgeCat[] = ['juliang', 'cili', 'tencent']
+const L2_CATS: KnowledgeCat[] = ['benchmark', 'caselib']
+const L3_CATS: KnowledgeCat[] = ['ticai', 'chujia', 'sucai', 'review', 'auditexp', 'meeting', 'pianhao']
+const ALL_CATS: KnowledgeCat[] = [...L1_CATS, ...L2_CATS, ...L3_CATS]
 
 export function mockNavCounts(): KnowledgeNavCounts {
   const cats = {} as Record<KnowledgeCat, number>
   for (const k of ALL_CATS) cats[k] = 0
   for (const e of KB_ENTITIES) cats[e.cat] = (cats[e.cat] ?? 0) + 1
-  const pub = PUB_CATS.reduce((s, k) => s + cats[k], 0)
-  return { all: KB_ENTITIES.length, pub, prv: KB_ENTITIES.length - pub, cats }
+  const l1 = L1_CATS.reduce((s, k) => s + cats[k], 0)
+  const l2 = L2_CATS.reduce((s, k) => s + cats[k], 0)
+  const l3 = L3_CATS.reduce((s, k) => s + cats[k], 0)
+  return { all: KB_ENTITIES.length, l1, l2, l3, cats }
 }
 
 /* ============================================================
@@ -753,7 +956,8 @@ export function mockNavCounts(): KnowledgeNavCounts {
  * ============================================================ */
 const CAT_LAYER: Record<KnowledgeCat, KnowledgeLayer> = {
   juliang: 'L1', cili: 'L1', tencent: 'L1',
-  ticai: 'L2', chujia: 'L2', sucai: 'L2', pianhao: 'L3',
+  benchmark: 'L2', caselib: 'L2',
+  ticai: 'L3', chujia: 'L3', sucai: 'L3', review: 'L3', auditexp: 'L3', meeting: 'L3', pianhao: 'L3',
 }
 
 /** 上传后处理流水线步骤 */

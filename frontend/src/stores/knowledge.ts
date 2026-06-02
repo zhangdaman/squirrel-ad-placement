@@ -57,9 +57,10 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
   /* ---------- 左侧导航真实计数 + 当前分类 ---------- */
   const navCounts = ref<KnowledgeNavCounts>({
     all: 0,
-    pub: 0,
-    prv: 0,
-    cats: { juliang: 0, cili: 0, tencent: 0, ticai: 0, chujia: 0, sucai: 0, pianhao: 0 },
+    l1: 0,
+    l2: 0,
+    l3: 0,
+    cats: { juliang: 0, cili: 0, tencent: 0, benchmark: 0, caselib: 0, ticai: 0, chujia: 0, sucai: 0, review: 0, auditexp: 0, meeting: 0, pianhao: 0 },
   })
   /** 当前选中的导航分类（叶子），null = 全部 */
   const activeCat = ref<KnowledgeCat | null>(null)

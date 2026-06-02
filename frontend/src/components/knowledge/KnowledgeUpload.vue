@@ -1,7 +1,8 @@
 <script setup lang="ts">
 /**
  * KnowledgeUpload —— 私域文档上传对话框（补回原型 knowledge.html 的上传流程）
- * 选文件（PDF / Word / Excel / PPT / TXT，不支持视频）→ 选私域分类 + 标签 → 上传并处理。
+ * 顶部「来源类型」二选一（doc 半结构化文档 / chat 非结构化群聊会议）→
+ * 选文件 → 选私域分类 + 标签 → 上传并处理。
  * 上传后由 store 触发 RAG pipeline（清洗 → 分块 → 元数据 → 打标签 → 向量化）。
  * 纯受控：open / uploading 由父传入；确认 emit('submit', payload)，关闭 emit('close')。
  * 按钮复用全局 .btn 系列，不在 scoped 内重复定义。
@@ -19,11 +20,50 @@ const emit = defineEmits<{
 const auth = useAuthStore()
 const uploader = computed(() => (auth.user?.name || '我').replace(/^\[Mock\]\s*/, '').trim())
 
+/** 来源类型：doc 半结构化文档 / chat 非结构化群聊会议 */
+type SourceType = 'doc' | 'chat'
+const sourceType = ref<SourceType>('doc')
+
+const SOURCE_TYPES: { value: SourceType; icon: string; label: string; sub: string }[] = [
+  {
+    value: 'doc',
+    icon: '📄',
+    label: '半结构化文档',
+    sub: 'Word / PDF / PPT — 客户 SOP / 复盘报告 / 审核经验 / 培训资料',
+  },
+  {
+    value: 'chat',
+    icon: '💬',
+    label: '非结构化·群聊 / 会议',
+    sub: '微信群聊导出 / 会议纪要',
+  },
+]
+
+/** 根据来源类型动态切换 accept 与文件提示 */
+const acceptAttr = computed(() =>
+  sourceType.value === 'doc'
+    ? '.pdf,.doc,.docx,.ppt,.pptx,.txt'
+    : '.txt,.doc,.docx,.pdf',
+)
+const dropSubText = computed(() =>
+  sourceType.value === 'doc'
+    ? '支持 PDF / Word / PPT / TXT（不支持视频）'
+    : '支持微信群聊导出 TXT / Word / PDF（对话格式）',
+)
+const pipelineNote = computed(() =>
+  sourceType.value === 'doc'
+    ? '上传后将自动经过：清洗 → 层级感知分块 → 元数据 → 打标签 → 向量化，完成后即可供 AI 召回。'
+    : '非结构化内容将先做「对话清洗 + 说话人对齐」，再进行分块 → 元数据 → 打标签 → 向量化，处理时间略长。',
+)
+
 /** 私域分类（仅私域可上传，公域走平台 API 同步） */
 const CATS: { value: KnowledgeCat; label: string }[] = [
   { value: 'ticai', label: '题材打法' },
   { value: 'chujia', label: '出价策略' },
   { value: 'sucai', label: '素材模板' },
+  { value: 'review', label: '复盘报告' },
+  { value: 'auditexp', label: '审核经验' },
+  { value: 'meeting', label: '群聊会议' },
   { value: 'pianhao', label: '我的偏好' },
 ]
 const TAGS = ['题材打法', '出价策略', '素材创意', '审核合规', '账户搭建']
@@ -43,6 +83,7 @@ watch(
       cat.value = 'ticai'
       tags.value = []
       dragOver.value = false
+      sourceType.value = 'doc'
     }
   },
 )
@@ -81,6 +122,7 @@ function submit() {
     cat: cat.value,
     tags: tags.value,
     uploader: uploader.value,
+    sourceType: sourceType.value,
   })
 }
 
@@ -101,6 +143,26 @@ function fmtSize(b: number): string {
         </div>
 
         <div class="ku-body">
+          <!-- 来源类型 -->
+          <div class="ku-field">
+            <div class="ku-label">来源类型</div>
+            <div class="ku-source-types">
+              <button
+                v-for="st in SOURCE_TYPES"
+                :key="st.value"
+                class="ku-source-btn"
+                :class="{ on: sourceType === st.value }"
+                @click="sourceType = st.value; picked = null"
+              >
+                <span class="ku-source-icon">{{ st.icon }}</span>
+                <span class="ku-source-text">
+                  <span class="ku-source-main">{{ st.label }}</span>
+                  <span class="ku-source-sub">{{ st.sub }}</span>
+                </span>
+              </button>
+            </div>
+          </div>
+
           <!-- 选文件 -->
           <div
             class="ku-drop"
@@ -113,10 +175,10 @@ function fmtSize(b: number): string {
             <template v-if="!picked">
               <div class="ku-drop-ico">＋</div>
               <div class="ku-drop-main">点击或拖拽文件到此处</div>
-              <div class="ku-drop-sub">支持 PDF / Word / Excel / PPT / TXT（暂不支持视频）</div>
+              <div class="ku-drop-sub">{{ dropSubText }}</div>
             </template>
             <div v-else class="ku-file">
-              <span class="ku-file-ico">📄</span>
+              <span class="ku-file-ico">{{ sourceType === 'chat' ? '💬' : '📄' }}</span>
               <div class="ku-file-info">
                 <div class="ku-file-name">{{ picked.name }}</div>
                 <div class="ku-file-size">{{ fmtSize(picked.size) }}</div>
@@ -128,7 +190,7 @@ function fmtSize(b: number): string {
             ref="fileInput"
             type="file"
             hidden
-            accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt"
+            :accept="acceptAttr"
             @change="onFile"
           />
 
@@ -165,7 +227,7 @@ function fmtSize(b: number): string {
           </div>
 
           <div class="ku-note">
-            上传后将自动经过：清洗 → 分块 → 元数据 → 打标签 → 向量化，完成后即可供 AI 召回。
+            {{ pipelineNote }}
           </div>
         </div>
 
@@ -312,6 +374,57 @@ function fmtSize(b: number): string {
 }
 .ku-file-x:hover {
   color: var(--brand-700);
+}
+
+/* 来源类型二选一 */
+.ku-source-types {
+  display: flex;
+  gap: 10px;
+}
+.ku-source-btn {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border-base);
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.14s;
+}
+.ku-source-btn:hover {
+  border-color: var(--brand-300);
+  background: var(--brand-50);
+}
+.ku-source-btn.on {
+  border-color: #2563EB;
+  background: #EFF6FF;
+}
+.ku-source-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  line-height: 1.4;
+}
+.ku-source-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.ku-source-main {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-800);
+  line-height: 1.3;
+}
+.ku-source-btn.on .ku-source-main {
+  color: #2563EB;
+}
+.ku-source-sub {
+  font-size: 11px;
+  color: var(--gray-500);
+  line-height: 1.4;
 }
 
 /* 分类 / 标签 chips */
