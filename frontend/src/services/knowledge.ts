@@ -14,6 +14,7 @@ import {
   mockFeedback,
   mockNavCounts,
   mockUpload,
+  mockSediment,
   advanceUpload,
 } from '@/mocks/knowledge'
 import type { ApiResponse } from '@/types/auth'
@@ -24,6 +25,7 @@ import type {
   KnowledgeNavCounts,
   KnowledgeSearchData,
   KnowledgeUploadPayload,
+  SedimentPayload,
   FeedbackResult,
   FeedbackVote,
 } from '@/types/knowledge'
@@ -50,7 +52,7 @@ export async function searchKnowledge(
   cat?: KnowledgeCat | null
 ): Promise<KnowledgeSearchData> {
   if (USE_MOCK) {
-    const res = await delay(mockSearch(q, filters, page, 20, cat))
+    const res = await delay(mockSearch(q, filters, page, 50, cat))
     return res.data
   }
   const params = toParams(q, filters)
@@ -73,6 +75,13 @@ export async function uploadKnowledge(
 ): Promise<string> {
   if (USE_MOCK) return delay(mockUpload(payload, nowTs), 300)
   const { data } = await api.post<ApiResponse<{ id: string }>>('/knowledge/upload', payload)
+  return data.data.id
+}
+
+/** POST /api/knowledge/sediment —— 诊断 / 复盘结论一键沉淀进 L3 私域（直接完成向量化，返回新建 id） */
+export async function sedimentKnowledge(payload: SedimentPayload, nowTs: number): Promise<string> {
+  if (USE_MOCK) return delay(mockSediment(payload, nowTs), 280)
+  const { data } = await api.post<ApiResponse<{ id: string }>>('/knowledge/sediment', payload)
   return data.data.id
 }
 

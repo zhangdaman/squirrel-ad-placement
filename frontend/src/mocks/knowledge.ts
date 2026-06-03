@@ -21,11 +21,12 @@ import type {
   KnowledgeNavCounts,
   KnowledgeSearchData,
   KnowledgeUploadPayload,
+  SedimentPayload,
   FeedbackResult,
   FeedbackVote,
 } from '@/types/knowledge'
 
-const MOCK = '[Mock] '
+const MOCK = ''
 
 /* ============================================================
  * 顶部 KPI（对齐 knowledge.html kb-kpi-row）
@@ -1009,6 +1010,47 @@ export function mockUpload(payload: KnowledgeUploadPayload, nowTs: number): stri
       处理进度: '清洗 ⏳ → 分块 → 元数据 → 标签 → 向量化',
     },
     versions: [{ version: 'v0.1', by: `${payload.uploader} · 刚刚`, current: true }],
+    feedback: { up: 0, down: 0 },
+  }
+  KB_ENTITIES.unshift(entity)
+  return id
+}
+
+let sedimentSeq = 0
+/**
+ * 诊断 / 复盘结论「一键沉淀」：直接构造一条 L3 私域（AI 沉淀）知识，已完成向量化、可立即被召回。
+ * 与 mockUpload 不同——内容已由 Agent 结构化产出，无需走清洗 / 分块流水线。
+ */
+export function mockSediment(payload: SedimentPayload, nowTs: number): string {
+  sedimentSeq += 1
+  const id = 'sed' + sedimentSeq
+  const entity: KnowledgeEntity = {
+    id,
+    title: payload.title,
+    layer: 'L3',
+    source: 'history',
+    cat: 'auditexp',
+    type: 'case',
+    cited: 0,
+    hit_rate: 0,
+    collected: 0,
+    summary: payload.summary,
+    chunk: payload.chunkText.slice(0, 90),
+    tags: ['🤖 AI 沉淀', '审核经验', '拒审归因'],
+    updated: `${payload.uploader} · 刚刚由诊断沉淀`,
+    updated_at: nowTs,
+    status: { kind: 'done', label: '已向量化' },
+    chunks: [
+      { id: 'CHUNK_001', tokens: 320, tag: '诊断要点', text: payload.chunkText, highlight: true, hotLabel: '🆕 新沉淀' },
+    ],
+    meta: {
+      知识ID: `KB-L3-DIAG-${id}`,
+      生成方式: 'Agent 自动沉淀（来自素材诊断报告）',
+      沉淀人: payload.uploader,
+      归档时间: '刚刚',
+      处理进度: '清洗 ✓ → 分块 ✓ → 元数据 ✓ → 标签 ✓ → 向量化 ✓',
+    },
+    versions: [{ version: 'v1.0', by: `${payload.uploader} · 刚刚`, current: true }],
     feedback: { up: 0, down: 0 },
   }
   KB_ENTITIES.unshift(entity)

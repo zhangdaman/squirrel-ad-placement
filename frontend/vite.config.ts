@@ -9,6 +9,8 @@ export default defineConfig(({ mode }) => {
   const wsTarget = backendTarget.replace(/^http/, 'ws')
 
   return {
+    // 相对路径 base：部署到妙搭等子路径静态托管时资源不 404
+    base: './',
     plugins: [vue()],
     resolve: {
       alias: {

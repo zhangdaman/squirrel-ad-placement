@@ -117,7 +117,7 @@ function onSlots(summary: string) {
   qa.answerGrowthSlots(summary)
 }
 function onMeta(kind: 'adopt' | 'dislike' | 'retry') {
-  if (kind === 'adopt') showToast('已采纳，沉淀到团队知识库（L2）')
+  if (kind === 'adopt') showToast('已采纳，沉淀到团队知识库（L3）')
   else if (kind === 'dislike') showToast('感谢反馈，AI 将基于你的意见持续优化')
   else showToast('AI 正在重新理解')
 }

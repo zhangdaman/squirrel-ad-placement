@@ -39,7 +39,7 @@ const visibleSections = computed(() =>
 )
 
 /** 顶部租户卡的角色文案 */
-const tenantRole = computed(() => `${roleStore.currentOption.name} · 32人团队`)
+const tenantRole = computed(() => `${roleStore.currentOption.name} · 7人团队`)
 /** 登录用户名（去掉 [Mock] 前缀用于头像取字） */
 const userInitial = computed(() => {
   const n = authStore.user?.name?.replace('[Mock]', '').trim() || '松'
@@ -92,12 +92,5 @@ const userInitial = computed(() => {
       </div>
     </nav>
 
-    <div class="nav-footer">
-      <div class="usage-box">
-        <div class="usage-label">本月调用</div>
-        <div class="usage-value">8,432 / 20,000 次</div>
-        <div class="usage-bar"><div class="usage-bar-inner" style="width: 42%" /></div>
-      </div>
-    </div>
   </aside>
 </template>

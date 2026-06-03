@@ -482,7 +482,7 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
       },
       {
         kind: 'dataCard',
-        title: '近 7 天拒审率趋势 [Mock]',
+        title: '近 7 天拒审率趋势',
         source: '⚡ 历史拒审案例库 · 刚刚',
         metrics: [
           { label: '7 天前拒审率', value: '8%' },
@@ -572,7 +572,7 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
       {
         kind: 'ansCard',
         icon: 'bid',
-        head: '定向策略建议 [Mock]',
+        head: '定向策略建议',
         detail:
           '**起量期（前 3 天）放宽探量**：关闭性别/年龄硬限，兴趣标签保留「短剧 + 小说阅读」，人群包不超过 3 层，让模型自由探索受众池；**稳定期（ROI 连续 3 天 ≥ 1.2 后）收窄提效**：锁定高转化年龄段（通常 25–40 女性），叠加付费行为包，CPM 可降低 8–12%。',
       },
@@ -598,7 +598,7 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
         refs: [
           SRC('sop-v2', '📘 贵司投放SOP v2.0'),
           SRC('q1-report', '📘 贵司Q1复盘报告'),
-          SRC('exp-targeting', '📊 L2 定向经验库'),
+          SRC('exp-targeting', '📊 L3 定向经验库'),
         ],
       },
       metaBar('⏱ 2.8 秒 · 6 来源 · 置信度 91%'),
@@ -606,7 +606,7 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
     sources: [
       SRC('sop-v2', '📘 贵司投放SOP v2.0'),
       SRC('q1-report', '📘 贵司Q1复盘报告'),
-      SRC('exp-targeting', '📊 L2 定向经验库'),
+      SRC('exp-targeting', '📊 L3 定向经验库'),
     ],
   }),
 
@@ -615,15 +615,15 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
     intent: { intent: '素材策略咨询', style: 'ASK-01', layer: 'L2' },
     steps: [
       '解析意图：现言短剧 · 素材类型 / 起量',
-      '召回：L2 素材经验 + L3 个人爆款素材沉淀',
+      '召回：L3 素材经验 + L3 个人爆款素材沉淀',
       '结合贵司近 90 天爆款素材特征归纳',
     ],
     blocks: [
-      { kind: 'text', text: '基于贵司近 90 天爆款素材分析 + L2/L3 素材经验，建议如下：', tone: 'default' },
+      { kind: 'text', text: '基于贵司近 90 天爆款素材分析 + L3 素材经验，建议如下：', tone: 'default' },
       {
         kind: 'ansCard',
         icon: 'bid',
-        head: '起量素材策略 [Mock]',
+        head: '起量素材策略',
         detail:
           '**前 3 秒钩子决定完读率**：悬念冲突型（"她以为他死了，却在三年后出现在她婚礼上"）平均完读率 **38%**，高于平淡叙事型 **22%**；**口播 vs 剪辑**：剪辑版起量更快（学习期平均缩短 1.2 天），但口播版 ROI 更稳（周 ROI 均值高 0.15）；建议 **2:1 比例**（2 条剪辑探量 + 1 条口播保稳）。',
       },
@@ -647,14 +647,14 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
       {
         kind: 'sources',
         refs: [
-          SRC('exp-creative', '📊 L2/L3 素材经验库'),
+          SRC('exp-creative', '📊 L3 素材经验库'),
           SRC('q1-report', '📘 贵司Q1复盘报告'),
         ],
       },
       metaBar('⏱ 3.1 秒 · 5 来源 · 置信度 90%'),
     ],
     sources: [
-      SRC('exp-creative', '📊 L2/L3 素材经验库'),
+      SRC('exp-creative', '📊 L3 素材经验库'),
       SRC('q1-report', '📘 贵司Q1复盘报告'),
     ],
   }),
@@ -664,7 +664,7 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
     intent: { intent: '预算策略咨询', style: 'ASK-01', layer: 'L2' },
     steps: [
       '解析意图：现言短剧 · 预算分配 / 时段',
-      '召回：贵司 SOP v2.0 + Q1 复盘 + L2 预算经验',
+      '召回：贵司 SOP v2.0 + Q1 复盘 + L3 预算经验',
       '结合 A001 近 30 天消耗曲线与时段 ROI 分布',
     ],
     blocks: [
@@ -672,7 +672,7 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
       {
         kind: 'ansCard',
         icon: 'bid',
-        head: '预算分配建议 [Mock]',
+        head: '预算分配建议',
         detail:
           '**日预算阶梯**：单计划日预算建议 = 出价 × 20（最低保跑量线）；起量期可先设 500 元观察，连续 2 天日消 ≥ 400 元后放开至 2,000 元；**晚间倾斜**：18:00–23:00 是现言短剧消耗高峰，该时段 ROI 均值 **1.45**，高于白天 **0.92**，建议在此时段不限速，允许超出日预算 10%。',
       },
@@ -698,7 +698,7 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
         refs: [
           SRC('sop-v2', '📘 贵司投放SOP v2.0'),
           SRC('a001-history', '📘 A001 户 · 历史复盘'),
-          SRC('exp-budget', '📊 L2 预算经验库'),
+          SRC('exp-budget', '📊 L3 预算经验库'),
         ],
       },
       metaBar('⏱ 2.5 秒 · 5 来源 · 置信度 92%'),
@@ -706,7 +706,7 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
     sources: [
       SRC('sop-v2', '📘 贵司投放SOP v2.0'),
       SRC('a001-history', '📘 A001 户 · 历史复盘'),
-      SRC('exp-budget', '📊 L2 预算经验库'),
+      SRC('exp-budget', '📊 L3 预算经验库'),
     ],
   }),
 
@@ -721,7 +721,7 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
     blocks: [
       {
         kind: 'agentPlan',
-        head: '已调用止损评估 Agent · 3 步完成 [Mock]',
+        head: '已调用止损评估 Agent · 3 步完成',
         items: [
           '✓ 拉取 A001 近 7 天消耗 + ROI 趋势',
           '✓ 对比贵司止损阈值（SOP：¥12–18 万/周）',
@@ -730,7 +730,7 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
       },
       {
         kind: 'dataCard',
-        title: '本周亏损预估 [Mock]',
+        title: '本周亏损预估',
         source: '⚡ A001 实时数据 · 刚刚',
         metrics: [
           { label: '本周已亏损', value: '¥14.3 万', danger: true },
@@ -779,7 +779,7 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
     blocks: [
       {
         kind: 'toolCall' as const,
-        head: '🔧 已调用「周报生成」能力… [Mock]',
+        head: '🔧 已调用「周报生成」能力…',
         items: [
           '✓ 拉取 A001 等 8 个账户本周（5/26–6/1）消耗 / ROI / 转化数据',
           '✓ 与上周均值对比，识别亮点账户与问题账户',
@@ -788,7 +788,7 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
       },
       {
         kind: 'dataCard' as const,
-        title: '本周投放概览 [Mock]',
+        title: '本周投放概览',
         source: '⚡ 巨量 API · 刚刚',
         metrics: [
           { label: '本周消耗', value: '¥86,200' },
@@ -800,7 +800,7 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
       {
         kind: 'ansCard' as const,
         icon: 'bid' as const,
-        head: '📝 本周周报摘要 [Mock]',
+        head: '📝 本周周报摘要',
         detail:
           '**亮点**：A003 都市悬疑账户 ROI **1.45**，晚间时段消耗持续高于上周 +22%，素材 M301「前妻回来了」完读率 **42%**，为本周最佳单条素材。\n\n**问题**：A001 现言旗舰户 ROI **0.84**（目标 1.2），主因 3 条爆款计划被误暂停导致晚间消耗缺口；A005 学习期超时（>72h），需干预出价。\n\n**建议**：重启 A001 三条爆款计划 + 调价 +15%；A005 提价突破学习期；本周预计止损 **¥12–18 万** 区间，需尽快执行。',
       },
@@ -834,7 +834,7 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
     intent: { intent: '素材排行', style: 'ASK-05', layer: 'L2' },
     steps: ['拉取近 14 天所有在投素材 CTR / ROI 数据', '按 ROI 倒序排列', '标记衰退素材'],
     blocks: [
-      { kind: 'text' as const, text: 'A001 账户近 14 天在投素材 · Top 5（按 ROI 倒序）[Mock]：', tone: 'muted' as const },
+      { kind: 'text' as const, text: 'A001 账户近 14 天在投素材 · Top 5（按 ROI 倒序）：', tone: 'muted' as const },
       {
         kind: 'rankList' as const,
         title: '素材 ROI 排行榜',
@@ -858,14 +858,14 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
         kind: 'sources' as const,
         refs: [
           SRC('rt-a001', '⚡ A001 实时数据'),
-          SRC('exp-creative', '📊 L2/L3 素材经验库'),
+          SRC('exp-creative', '📊 L3 素材经验库'),
         ],
       },
       metaBar('⏱ 3.4 秒 · 5 素材 · 置信度 90%'),
     ],
     sources: [
       SRC('rt-a001', '⚡ A001 实时数据'),
-      SRC('exp-creative', '📊 L2/L3 素材经验库'),
+      SRC('exp-creative', '📊 L3 素材经验库'),
     ],
   }),
 
@@ -876,7 +876,7 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
     blocks: [
       {
         kind: 'toolCall' as const,
-        head: '🔧 已调用「策略复盘」能力… [Mock]',
+        head: '🔧 已调用「策略复盘」能力…',
         items: [
           '✓ 拉取 A001 出价调整前 7 天（5/19–5/25）与调整后 7 天（5/26–6/1）数据',
           '✓ 对比消耗 / ROI / CPM / 转化数各维度变化',
@@ -885,7 +885,7 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
       },
       {
         kind: 'dataCard' as const,
-        title: '出价调整前 → 后对比 [Mock]',
+        title: '出价调整前 → 后对比',
         source: '⚡ A001 实时数据 · 刚刚',
         metrics: [
           { label: '调整前 ROI（均值）', value: '0.84', danger: true },
@@ -897,7 +897,7 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
       {
         kind: 'ansCard' as const,
         icon: 'bid' as const,
-        head: '结论：本次出价调整**有效**，ROI 由 0.84 → 1.05 [Mock]',
+        head: '结论：本次出价调整**有效**，ROI 由 0.84 → 1.05',
         detail:
           '调整出价（+15%）后，A001 ROI 从 **0.84 提升至 1.05**，转化数增加 34%，消耗扩大 18%，方向正确。\n\n但当前 ROI **1.05 仍低于目标 1.2**，建议：① 继续维持当前出价 3 天，让模型充分学习；② 晚间高价时段（20:00–23:00）可再上调 5%，抢占优质曝光；③ 同时重启被暂停的 3 条爆款计划，补足消耗缺口。',
       },
@@ -925,7 +925,7 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
     blocks: [
       {
         kind: 'agentPlan' as const,
-        head: '已调用素材诊断 Agent · 4 步完成 [Mock]',
+        head: '已调用素材诊断 Agent · 4 步完成',
         items: [
           '✓ 拉取 M789「重生之路」近 14 天 CTR / 完读率 / ROI 数据',
           '✓ 对比同类爆款素材（M301 / M215）表现基准',
@@ -953,7 +953,7 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
         kind: 'sources' as const,
         refs: [
           SRC('rt-a001', '⚡ A001 实时数据'),
-          SRC('exp-creative', '📊 L2/L3 素材经验库'),
+          SRC('exp-creative', '📊 L3 素材经验库'),
           SRC('reject-history', '📊 历史拒审案例库'),
         ],
       },
@@ -961,7 +961,7 @@ const SCRIPTS: Record<QaFlow, () => QaAnswerScript> = {
     ],
     sources: [
       SRC('rt-a001', '⚡ A001 实时数据'),
-      SRC('exp-creative', '📊 L2/L3 素材经验库'),
+      SRC('exp-creative', '📊 L3 素材经验库'),
       SRC('reject-history', '📊 历史拒审案例库'),
     ],
   }),
@@ -1116,8 +1116,8 @@ export function mockSessions(): ApiResponse<QaSessionsData> {
 const SOURCE_MAP: Record<string, SourceDetail> = {
   'sop-v2': {
     id: 'sop-v2', icon: '📘', iconClass: 't-doc',
-    title: '贵司投放SOP v2.0', subtitle: '私域 · L2 团队战术 · 团队上传',
-    tags: [{ cls: 'prv-up', text: '🔒 私域' }, { cls: 'gray', text: 'L2 团队' }, { cls: 'confidence', text: '命中度 92%' }],
+    title: '贵司投放SOP v2.0', subtitle: '私域 · L3 团队战术 · 团队上传',
+    tags: [{ cls: 'prv-up', text: '🔒 私域' }, { cls: 'gray', text: 'L3 团队' }, { cls: 'confidence', text: '命中率 92%' }],
     chunkId: 'CHUNK_017', chunkTokens: 412, citedTimes: 38,
     chunk: '现言短剧 OCPM 起量阶段建议出价区间：22-35 元。首日以 1.1× 基础出价测水温，2 小时内消耗低于 200 元则提价至 25 元；日消 1000+ 且转化稳定后，调整至 22-35 元区间，ROI > 1.2 时加速放量。放量阶段缓步加价，每天调整不超过 2 元，每日预算同步放宽 10-15%。',
     meta: { 上传人: '钱晓彤', 上传时间: '2026-05-14（14 天前）', 版本: 'v2.0（v1.0 见历史版本）', 文档大小: '2.4 MB（PDF · 32 页）', 索引模型: 'bge-large-zh-v1.5' },
@@ -1125,8 +1125,8 @@ const SOURCE_MAP: Record<string, SourceDetail> = {
   },
   'q1-report': {
     id: 'q1-report', icon: '📘', iconClass: 't-doc',
-    title: '贵司 Q1 复盘报告', subtitle: '私域 · L2 团队战术 · 复盘自动归档',
-    tags: [{ cls: 'prv-ai', text: '🤖 AI 沉淀' }, { cls: 'gray', text: 'L2 团队' }, { cls: 'confidence', text: '命中度 88%' }],
+    title: '贵司 Q1 复盘报告', subtitle: '私域 · L3 团队战术 · 复盘自动归档',
+    tags: [{ cls: 'prv-ai', text: '🤖 AI 沉淀' }, { cls: 'gray', text: 'L3 团队' }, { cls: 'confidence', text: '命中率 88%' }],
     chunkId: 'CHUNK_006', chunkTokens: 388, citedTimes: 21,
     chunk: '2024Q1 共投放 23 个现言短剧账户，OCPM 起量阶段均价 22-30 元，单计划 ROI ≥ 1.2 占比 67%。首日 18 元起步策略在 A001/A003/A005 等账户表现最优，日均消耗稳定上升 25-40%。建议沿用首日低出价试水 + 2 小时观测调价 + 突破后阶梯加价的"三步法"。',
     meta: { 生成方式: 'Agent 自动沉淀（已主管审核）', 原始来源: '12 次复盘对话片段', 归档时间: '2024-04-08', 关联账户: 'A001 / A003 / A005 等 23 个' },
@@ -1134,8 +1134,8 @@ const SOURCE_MAP: Record<string, SourceDetail> = {
   },
   'bench-2024q4': {
     id: 'bench-2024q4', icon: '📊', iconClass: 't-bench',
-    title: '行业 benchmark · 短剧 2024 Q4', subtitle: '公域 · L1 平台数据 · API 自动同步',
-    tags: [{ cls: 'pub', text: '🌐 公域' }, { cls: 'gray', text: 'L1 平台' }, { cls: 'confidence', text: '命中度 78%' }],
+    title: '行业 benchmark · 短剧 2024 Q4', subtitle: '公域 · L2 行业基准 · API 自动同步',
+    tags: [{ cls: 'pub', text: '🌐 公域' }, { cls: 'gray', text: 'L2 公域' }, { cls: 'confidence', text: '命中率 78%' }],
     chunkId: 'CHUNK_002', chunkTokens: 256, citedTimes: 94,
     chunk: '2024 Q4 现言短剧大盘 OCPM 起量阶段平均出价 28 元（中位数 26 元），付费目标平均 ROI 1.15。Top10% 账户出价区间 22-33 元、ROI ≥ 1.4。男频题材出价平均高出 12%，女频虐恋题材高出 8%。冷启动阶段消耗破万天数中位数 3.2 天。',
     meta: { 数据来源: '巨量行业大盘 API', 数据周期: '2024-10-01 至 2024-12-31', 同步时间: '2025-01-08（30 天前）', 样本量: '全行业 12,400 账户' },
@@ -1163,8 +1163,8 @@ const SOURCE_MAP: Record<string, SourceDetail> = {
   },
   'audit-v3-2': {
     id: 'audit-v3-2', icon: '📘', iconClass: 't-rule',
-    title: '巨量审核规则 v3.2', subtitle: '公域 · L1 平台规则 · API 自动同步',
-    tags: [{ cls: 'pub', text: '🌐 公域' }, { cls: 'gray', text: 'L1 平台' }, { cls: 'confidence', text: '命中度 94%' }],
+    title: '巨量审核规则 v3.2', subtitle: '平台官方 · L1 平台规则 · API 自动同步',
+    tags: [{ cls: 'pub', text: '🛡️ 平台' }, { cls: 'gray', text: 'L1 平台' }, { cls: 'confidence', text: '命中率 94%' }],
     chunkId: 'CHUNK_014', chunkTokens: 320, citedTimes: 412,
     chunk: '【规则 #14】短剧广告中禁止出现明显暗示性肢体动作、过度血腥场面（含卡通化呈现）；男女对峙类场景须避免直接喊话挑衅形式。【规则 #08】凶杀类对白须以叙事化呈现，不得直接陈述凶器、行凶对象、伤口部位等具象细节。',
     meta: { 数据来源: '巨量审核中心 API', 版本: 'v3.2（2025-04-12 更新）', 生效时间: '2025-04-15', 关联规则数: '14 / 482 条' },
@@ -1172,8 +1172,8 @@ const SOURCE_MAP: Record<string, SourceDetail> = {
   },
   'reject-history': {
     id: 'reject-history', icon: '📊', iconClass: 't-case',
-    title: '历史拒审案例库', subtitle: '私域 · L2 团队战术 · 自动归档',
-    tags: [{ cls: 'prv-ai', text: '🤖 AI 沉淀' }, { cls: 'gray', text: 'L2 团队' }, { cls: 'confidence', text: '命中度 91%' }],
+    title: '历史拒审案例库', subtitle: '私域 · L3 团队战术 · 自动归档',
+    tags: [{ cls: 'prv-ai', text: '🤖 AI 沉淀' }, { cls: 'gray', text: 'L3 团队' }, { cls: 'confidence', text: '命中率 91%' }],
     chunkId: 'CHUNK_023', chunkTokens: 286, citedTimes: 67,
     chunk: '本团队累计 1,247 条拒审案例。其中"追凶/凶杀/暴力暗示"类拒审 487 次（39%）—— 该类案例改造后通过率 88%（基于 142 次相似改造）。典型改造路径：①替换敏感词；②叙事化转场；③弱化 BGM 压迫感。',
     meta: { 案例总数: '1,247 条', 时间范围: '近 12 个月', 更新方式: '每条拒审自动归档', 关联规则: '巨量 v3.2 #14, #08' },
@@ -1197,8 +1197,8 @@ const SOURCE_MAP: Record<string, SourceDetail> = {
   },
   'bench-industry': {
     id: 'bench-industry', icon: '📊', iconClass: 't-bench',
-    title: '行业 benchmark · 短剧大盘', subtitle: '公域 · L1 平台数据',
-    tags: [{ cls: 'pub', text: '🌐 公域' }, { cls: 'gray', text: 'L1 平台' }, { cls: 'confidence', text: '命中度 82%' }],
+    title: '行业 benchmark · 短剧大盘', subtitle: '公域 · L2 行业基准',
+    tags: [{ cls: 'pub', text: '🌐 公域' }, { cls: 'gray', text: 'L2 公域' }, { cls: 'confidence', text: '命中率 82%' }],
     chunkId: 'CHUNK_009', chunkTokens: 198, citedTimes: 56,
     chunk: '今日大盘短剧 CPM 较昨日上涨 6.8%。Q1 末-Q2 初为传统淡季尾声，行业 ROI 平均值小幅波动 ±5% 属正常区间。建议关注本周末后 3 天反弹趋势。',
     meta: { 数据来源: '巨量行业大盘', 同步时间: '今日 09:00', 题材覆盖: '现言/古言/玄幻/都市' },
@@ -1207,7 +1207,7 @@ const SOURCE_MAP: Record<string, SourceDetail> = {
   'a001-history': {
     id: 'a001-history', icon: '📘', iconClass: 't-doc',
     title: 'A001 户 · 历史复盘', subtitle: '私域 · L3 个人偏好',
-    tags: [{ cls: 'prv-up', text: '🔒 私域' }, { cls: 'gray', text: 'L3 个人' }, { cls: 'confidence', text: '命中度 90%' }],
+    tags: [{ cls: 'prv-up', text: '🔒 私域' }, { cls: 'gray', text: 'L3 个人' }, { cls: 'confidence', text: '命中率 90%' }],
     chunkId: 'CHUNK_004', chunkTokens: 364, citedTimes: 12,
     chunk: 'A001 户最近 30 天 ROI 在晚 21:00-23:00 时段最高（均值 1.45），其中"现言-都市悬疑"题材表现最佳。上月同期出现过类似下滑情况，3 条爆款计划被错误暂停，重启后 ROI 4 小时恢复至 1.2 以上。',
     meta: { 账户: 'A001', 复盘数量: '14 次（近 30 天）', 主要题材: '现言、都市悬疑', 所属投手: '钱晓彤' },
@@ -1215,8 +1215,8 @@ const SOURCE_MAP: Record<string, SourceDetail> = {
   },
   'exp-targeting': {
     id: 'exp-targeting', icon: '📊', iconClass: 't-bench',
-    title: 'L2 定向经验库', subtitle: '公域 · L2 团队战术 · AI 沉淀',
-    tags: [{ cls: 'prv-ai', text: '🤖 AI 沉淀' }, { cls: 'gray', text: 'L2 团队' }, { cls: 'confidence', text: '命中度 89%' }],
+    title: 'L3 定向经验库', subtitle: '私域 · L3 团队战术 · AI 沉淀',
+    tags: [{ cls: 'prv-ai', text: '🤖 AI 沉淀' }, { cls: 'gray', text: 'L3 团队' }, { cls: 'confidence', text: '命中率 89%' }],
     chunkId: 'CHUNK_041', chunkTokens: 356, citedTimes: 29,
     chunk: '起量期（前 3 天）建议宽定向：兴趣标签仅保留「短剧 + 小说阅读」，不叠加行为包，单计划候选人群 ≥ 5,000 万。稳定期（连续 3 天 ROI ≥ 1.2）收窄：锁定 25–40 岁女性 + 付费行为包，CPM 可降低 8–12%，整体 ROI 提升约 0.1–0.2。达人定向建议作为辅助补量，不作主力。',
     meta: { 数据来源: '团队近 30 天 8 个账户定向实验', 题材覆盖: '现言/古言/都市', 更新方式: 'Agent 周期沉淀', 归档时间: '2026-05-20' },
@@ -1224,8 +1224,8 @@ const SOURCE_MAP: Record<string, SourceDetail> = {
   },
   'exp-creative': {
     id: 'exp-creative', icon: '📊', iconClass: 't-case',
-    title: 'L2/L3 素材经验库', subtitle: '私域 · L2/L3 · AI 沉淀',
-    tags: [{ cls: 'prv-ai', text: '🤖 AI 沉淀' }, { cls: 'gray', text: 'L2/L3' }, { cls: 'confidence', text: '命中度 87%' }],
+    title: 'L3 素材经验库', subtitle: '私域 · L3 团队战术 · AI 沉淀',
+    tags: [{ cls: 'prv-ai', text: '🤖 AI 沉淀' }, { cls: 'gray', text: 'L3 团队' }, { cls: 'confidence', text: '命中率 87%' }],
     chunkId: 'CHUNK_055', chunkTokens: 398, citedTimes: 44,
     chunk: '贵司近 90 天爆款素材特征：① 前 3 秒悬念冲突型平均完读率 38%（vs 平淡叙事 22%）；② 剪辑版起量快（学习期平均缩短 1.2 天），口播版 ROI 更稳（周 ROI 高 0.15）；③ 封面：人脸特写 + 大字幕，CTR 比风景封面高 40%；④ 标题：身份冲突类（总裁/打工妹/前妻）CTR 高 28%。建议每周上新 3–5 条，防素材衰退。',
     meta: { 数据来源: '团队近 90 天素材投放记录', 题材覆盖: '现言/男频/古言', 爆款定义: '单条素材消耗 ≥ ¥5,000 且 ROI ≥ 1.2', 归档时间: '2026-05-28' },
@@ -1233,8 +1233,8 @@ const SOURCE_MAP: Record<string, SourceDetail> = {
   },
   'exp-budget': {
     id: 'exp-budget', icon: '📊', iconClass: 't-bench',
-    title: 'L2 预算经验库', subtitle: '公域 · L2 团队战术 · AI 沉淀',
-    tags: [{ cls: 'prv-ai', text: '🤖 AI 沉淀' }, { cls: 'gray', text: 'L2 团队' }, { cls: 'confidence', text: '命中度 90%' }],
+    title: 'L3 预算经验库', subtitle: '私域 · L3 团队战术 · AI 沉淀',
+    tags: [{ cls: 'prv-ai', text: '🤖 AI 沉淀' }, { cls: 'gray', text: 'L3 团队' }, { cls: 'confidence', text: '命中率 90%' }],
     chunkId: 'CHUNK_033', chunkTokens: 312, citedTimes: 31,
     chunk: '单计划日预算保底 = 出价 × 20；起量期 500–1,000 元/天，连续 2 天日消 ≥ 400 元后放量至 2,000 元；每 2 天预算上浮 10-15%。时段 ROI 分布：晚 18:00–23:00 均值 1.45（峰值段），白天 10:00–17:00 均值 0.92，凌晨 0:00–6:00 均值 0.68。建议集中投放 10:00–23:00，晚间高价时段允许超预算 10%。',
     meta: { 数据来源: 'A001 近 30 天消耗曲线 + 团队 8 个账户', 题材: '现言短剧', 更新方式: 'Agent 月度沉淀', 归档时间: '2026-05-15' },
@@ -1242,8 +1242,8 @@ const SOURCE_MAP: Record<string, SourceDetail> = {
   },
   'gdt-audit': {
     id: 'gdt-audit', icon: '📘', iconClass: 't-rule',
-    title: '广点通审核规范 v2.1', subtitle: '公域 · L1 平台规则 · API 自动同步',
-    tags: [{ cls: 'pub', text: '🌐 公域' }, { cls: 'gray', text: 'L1 平台' }, { cls: 'confidence', text: '命中度 89%' }],
+    title: '广点通审核规范 v2.1', subtitle: '平台官方 · L1 平台规则 · API 自动同步',
+    tags: [{ cls: 'pub', text: '🛡️ 平台' }, { cls: 'gray', text: 'L1 平台' }, { cls: 'confidence', text: '命中率 89%' }],
     chunkId: 'CHUNK_031', chunkTokens: 298, citedTimes: 78,
     chunk: '【第 3.2 条 · 网络视听内容资质要求】涉及网络视听节目内容（含短剧、微短剧、竖屏剧）的广告推广，广告主须完成 SC 认证并在投前提交《广告审查表》（由持证方出具）或相关备案截图。未满足资质要求的计划将触发合规拦截，与创意内容合规性无关。',
     meta: { 数据来源: '广点通审核中心 API', 版本: 'v2.1（2025-03-20 更新）', 生效时间: '2025-04-01', 关联规则数: '6 / 317 条' },

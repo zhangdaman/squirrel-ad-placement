@@ -1,9 +1,11 @@
 /**
  * 账户中心 Mock —— GET /api/accounts、DELETE /api/accounts/{id}
- * 数据严格对齐 docs/prototypes/accounts.html（3 平台 8 账户：巨量 5 / 磁力 2 / 腾讯 1，2 个需重新授权）
+ * 3 平台 8 账户：巨量 5 / 磁力 2 / 腾讯 1，2 个需重新授权（A005 expiring + K002 expired）。
  * 与 golden-data 平台分布一致：巨量 5 户 / 磁力 2 户 / 腾讯 1 户。
+ * 数据真相：账户主数据统一收敛到 mocks/accountsMaster.ts（SSOT），ACCOUNT_ENTITIES 由其派生，
+ *   保证账户名 / 负责人 / 今日消耗与监控页、团队页一致。详情类附属字段（sync_note / last_sync /
+ *   expire_at / avatar_grad）按状态在本文件合理生成。
  * DTO 收敛：内部实体 ACCOUNT_ENTITIES 为字段超集；list / detail 各按 endpoint 显式 map。
- * 所有展示型 Mock 数据带 [Mock] 标识（账户名前缀），接真实接口后移除。
  */
 import type { ApiResponse } from '@/types/auth'
 import type { RealPlatformKey } from '@/types/platform'
@@ -18,8 +20,7 @@ import type {
   UnlinkResult,
   AccountAuthStatus,
 } from '@/types/accounts'
-
-const MOCK = '[Mock] '
+import { ACCOUNTS_MASTER } from './accountsMaster'
 
 /** 平台分组徽标元信息（对齐原型 .pg-logo 配色与顺序） */
 export const PLATFORM_META: Record<RealPlatformKey, PlatformMeta> = {
@@ -40,77 +41,39 @@ const STATUS_CN: Record<AccountAuthStatus, string> = {
 }
 
 /* ============================================================
- * 内部实体（字段超集）—— 逐条对齐 accounts.html acc-card
+ * 内部实体（字段超集）—— 从 SSOT（ACCOUNTS_MASTER）派生
+ * 主数据字段（account_id / name / owner / today_spend / status / status_label /
+ *   masked_id / avatar）一律取自 master；详情类附属字段按状态合理生成。
  * ============================================================ */
-const ACCOUNT_ENTITIES: AccountEntity[] = [
-  // ---- 巨量引擎 ----
-  {
-    account_id: 'acc_jl_01', platform: 'juliang',
-    name: MOCK + '现言短剧旗舰户', masked_id: '1798****4521',
-    avatar: '现', avatar_grad: 'linear-gradient(135deg,#FF7A2F,#E25822)',
-    owner: '钱晓彤', status: 'ok', status_label: '授权正常',
-    sync_note: '最近同步 2 分钟前', today_spend: 18420,
-    last_sync: '今天 09:12', expire_at: '2026-09-01（90 天后）',
-  },
-  {
-    account_id: 'acc_jl_02', platform: 'juliang',
-    name: MOCK + '都市悬疑测试户', masked_id: '1802****7733',
-    avatar: '都', avatar_grad: 'linear-gradient(135deg,#FBBF6B,#F5A524)',
-    owner: '李响', status: 'ok', status_label: '授权正常',
-    sync_note: '最近同步 1 分钟前', today_spend: 6240,
-    last_sync: '今天 09:13', expire_at: '2026-08-21（80 天后）',
-  },
-  {
-    account_id: 'acc_jl_03', platform: 'juliang',
-    name: MOCK + '古言虐恋主投户', masked_id: '1815****0098',
-    avatar: '古', avatar_grad: 'linear-gradient(135deg,#FF6B9D,#C42667)',
-    owner: '王宇', status: 'expiring', status_label: '7 天后过期',
-    sync_note: '授权 7 天后过期', today_spend: 9870,
-    last_sync: '今天 09:05', expire_at: '2026-06-08（7 天后）',
-  },
-  {
-    account_id: 'acc_jl_04', platform: 'juliang',
-    name: MOCK + '男频爽文主户', masked_id: '1820****3344',
-    avatar: '男', avatar_grad: 'linear-gradient(135deg,#5E89F6,#2554DC)',
-    owner: '钱晓彤', status: 'ok', status_label: '授权正常',
-    sync_note: '最近同步 3 分钟前', today_spend: 14200,
-    last_sync: '今天 09:11', expire_at: '2026-08-15（74 天后）',
-  },
-  {
-    account_id: 'acc_jl_05', platform: 'juliang',
-    name: MOCK + '女频甜宠新户', masked_id: '1834****9911',
-    avatar: '女', avatar_grad: 'linear-gradient(135deg,#16A34A,#15803D)',
-    owner: '李响', status: 'syncing', status_label: '数据同步中',
-    sync_note: '首次接入 · 正在同步近 30 天数据…',
-    last_sync: '同步中', expire_at: '2026-09-01（90 天后）',
-  },
-  // ---- 磁力金牛 ----
-  {
-    account_id: 'acc_ks_01', platform: 'kuaishou',
-    name: MOCK + '快手短剧主户', masked_id: 'KS-88****21',
-    avatar: '快', avatar_grad: 'linear-gradient(135deg,#FF5C8A,#E0245E)',
-    owner: '王宇', status: 'ok', status_label: '授权正常',
-    sync_note: '最近同步 5 分钟前', today_spend: 7650,
-    last_sync: '今天 09:08', expire_at: '2026-08-10（70 天后）',
-  },
-  {
-    account_id: 'acc_ks_02', platform: 'kuaishou',
-    name: MOCK + '快手测试户', masked_id: 'KS-90****07',
-    avatar: '测', avatar_grad: 'linear-gradient(135deg,#94A3B8,#475569)',
-    owner: '李响', status: 'expired', status_label: '已失效',
-    sync_note: '授权已失效，数据已停止同步',
-    last_sync: '5 天前', expire_at: '2026-05-27（已过期）',
-  },
-  // ---- 腾讯广告 ----
-  {
-    account_id: 'acc_tx_01', platform: 'tencent',
-    name: MOCK + '腾讯系短剧户', masked_id: 'TX-1234****',
-    avatar: '腾', avatar_grad: 'linear-gradient(135deg,#4E8CFF,#2554DC)',
-    owner: '钱晓彤', status: 'ok', status_label: '授权正常',
-    sync_note: '最近同步 8 分钟前', today_spend: 4320,
-    last_sync: '今天 09:04', expire_at: '2026-08-28（88 天后）',
-  },
-]
+
+/** 按状态生成附属说明（sync_note / last_sync / expire_at）；同步/失效细节仅展示用 */
+function deriveStatusFields(status: AccountAuthStatus): Pick<AccountEntity, 'sync_note' | 'last_sync' | 'expire_at'> {
+  switch (status) {
+    case 'expiring':
+      return { sync_note: '授权 7 天后过期', last_sync: '今天 09:05', expire_at: '2026-06-11（7 天后）' }
+    case 'expired':
+      return { sync_note: '授权已失效，数据已停止同步', last_sync: '5 天前', expire_at: '已过期' }
+    case 'syncing':
+      return { sync_note: '首次接入 · 正在同步近 30 天数据…', last_sync: '同步中', expire_at: '2026-09-01（90 天后）' }
+    case 'ok':
+    default:
+      return { sync_note: '最近同步 2 分钟前', last_sync: '今天 09:12', expire_at: '2026-09-01（90 天后）' }
+  }
+}
+
+const ACCOUNT_ENTITIES: AccountEntity[] = ACCOUNTS_MASTER.map((m) => ({
+  account_id: m.id,
+  platform: m.platform,
+  name: m.name,
+  masked_id: m.masked_id,
+  avatar: m.avatar,
+  avatar_grad: PLATFORM_META[m.platform].grad,
+  owner: m.owner,
+  status: m.status,
+  status_label: m.status_label,
+  today_spend: m.today_spend,
+  ...deriveStatusFields(m.status),
+}))
 
 /** 当前会话内的可变副本（解除授权会移除条目，刷新复原） */
 let accountsState: AccountEntity[] = ACCOUNT_ENTITIES.map((a) => ({ ...a }))

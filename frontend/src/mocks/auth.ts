@@ -17,10 +17,10 @@ import { allowedModules } from '@/config/navigation'
 
 /** 各角色对应的 Mock 用户基础信息（与 team.html 成员示例呼应） */
 const MOCK_USERS: Record<RoleKey, AuthUser> = {
-  admin: { user_id: 'u_001', name: '[Mock] 钱晓彤', role: 'admin', locked_platform: 'all' },
-  toushou: { user_id: 'u_002', name: '[Mock] 李响', role: 'toushou', locked_platform: 'juliang' },
-  audit: { user_id: 'u_003', name: '[Mock] 刘洋', role: 'audit', locked_platform: 'juliang' },
-  ops: { user_id: 'u_004', name: '[Mock] 陈静', role: 'ops', locked_platform: 'all' },
+  admin: { user_id: 'u_001', name: '钱晓彤', role: 'admin', locked_platform: 'all' },
+  toushou: { user_id: 'u_002', name: '李响', role: 'toushou', locked_platform: 'juliang' },
+  audit: { user_id: 'u_003', name: '刘洋', role: 'audit', locked_platform: 'juliang' },
+  ops: { user_id: 'u_004', name: '陈静', role: 'ops', locked_platform: 'all' },
 }
 
 /** 取某角色的 Mock 用户（默认投手） */

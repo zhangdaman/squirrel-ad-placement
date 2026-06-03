@@ -20,7 +20,7 @@ import type {
 } from '@/types/review'
 
 /** [Mock] 标识前缀（展示型 Mock 数据可见标识；接真实接口后移除） */
-const M = '[Mock] '
+const M = ''
 
 /* ============================================================
  * 态①：复盘收件箱 GET /api/review/inbox

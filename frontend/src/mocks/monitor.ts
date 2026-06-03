@@ -29,7 +29,7 @@ import type {
 } from '@/types/monitor'
 
 /** [Mock] 标识前缀（展示型 Mock 数据可见标识；接真实接口后移除） */
-const M = '[Mock] '
+const M = ''
 
 /* ============================================================
  * 账户明细表（GET /api/monitor/accounts）—— 按平台分组，纯数据无判断列
@@ -52,36 +52,36 @@ const juliangGroup: AccountPlatformGroup = {
   rows: [
     {
       account: 'A001',
-      name: `${M}现言短剧旗舰户`,
-      agent: '王磊',
+      name: '现言短剧旗舰户',
+      agent: '林磊',
       platform: 'juliang',
       metrics: { spend: '¥86,200', fan_cost: '91.77', ctr: '3.10%', conv: '36', conv_cost: '2,394', cvr: '0.26%', completion: '26%' },
     },
     {
       account: 'A002',
-      name: `${M}主力 IP 大盘户`,
-      agent: '张涛',
+      name: '主力 IP 大盘户',
+      agent: '林磊',
       platform: 'juliang',
       metrics: { spend: '¥124,800', fan_cost: '78.30', ctr: '5.20%', conv: '48', conv_cost: '620.40', cvr: '0.85%', completion: '88%' },
     },
     {
       account: 'A005',
-      name: `${M}古言短剧扩量户`,
-      agent: '李婉',
+      name: '古言短剧扩量户',
+      agent: '王芳',
       platform: 'juliang',
       metrics: { spend: '¥42,800', fan_cost: '105.20', ctr: '2.40%', conv: '6', conv_cost: '1,108', cvr: '0.18%', completion: '42%' },
     },
     {
       account: 'A006',
-      name: `${M}男频爽文主户`,
-      agent: '钱晓彤',
+      name: '男频爽文主户',
+      agent: '王芳',
       platform: 'juliang',
       metrics: { spend: '¥68,400', fan_cost: '82.10', ctr: '4.30%', conv: '32', conv_cost: '710.20', cvr: '0.62%', completion: '71%' },
     },
     {
       account: 'A008',
-      name: `${M}都市悬疑户`,
-      agent: '李响',
+      name: '都市悬疑户',
+      agent: '钱晓彤',
       platform: 'juliang',
       metrics: { spend: '¥51,200', fan_cost: '89.50', ctr: '3.80%', conv: '24', conv_cost: '805.40', cvr: '0.48%', completion: '65%' },
     },
@@ -102,15 +102,15 @@ const kuaishouGroup: AccountPlatformGroup = {
   rows: [
     {
       account: 'K001',
-      name: `${M}快手短剧主户`,
-      agent: '王宇',
+      name: '快手短剧主户',
+      agent: '张伟',
       platform: 'kuaishou',
       metrics: { spend: '¥56,000', fan_cost: '88.40', ctr: '4.10%', conv_num: '320', conv_cost: '175', roi: '1.46' },
     },
     {
       account: 'K002',
-      name: `${M}快手测试户`,
-      agent: '李响',
+      name: '快手测试户',
+      agent: '张伟',
       platform: 'kuaishou',
       metrics: { spend: '¥18,200', fan_cost: '95.10', ctr: '3.50%', conv_num: '98', conv_cost: '186', roi: '1.12' },
     },
@@ -131,8 +131,8 @@ const tencentGroup: AccountPlatformGroup = {
   rows: [
     {
       account: 'T001',
-      name: `${M}腾讯系短剧户`,
-      agent: '钱晓彤',
+      name: '腾讯系短剧户',
+      agent: '赵敏',
       platform: 'tencent',
       metrics: { spend: '¥32,400', follow_cost: '3.49', order_rate: '3.22%', order_cost: '942.76', aov: '9.87', recoup: '11.07%' },
     },

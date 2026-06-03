@@ -5,7 +5,7 @@
  * - 刷新后从 localStorage 角色 / 平台恢复全局态（平台 / 视角持久）
  * - dashboard / alert 路由保留，但导航隐藏（V2）
  */
-import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
 import { getToken, getStoredRole } from '@/utils/storage'
 import { useAuthStore } from '@/stores/auth'
 import { usePlatformStore } from '@/stores/platform'
@@ -87,7 +87,7 @@ const routes: RouteRecordRaw[] = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes,
 })
 

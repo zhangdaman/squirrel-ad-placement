@@ -280,7 +280,7 @@ export interface SourceRef {
 
 /** 来源详情标签 */
 export interface SourceTag {
-  /** 视觉类：pub 公域 / prv-up 私域上传 / prv-ai AI沉淀 / rt 实时 / gray 中性 / confidence 命中度 */
+  /** 视觉类：pub 公域 / prv-up 私域上传 / prv-ai AI沉淀 / rt 实时 / gray 中性 / confidence 命中率 */
   cls: 'pub' | 'prv-up' | 'prv-ai' | 'rt' | 'gray' | 'confidence'
   text: string
 }

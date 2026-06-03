@@ -101,7 +101,7 @@ const helpItems = [
   { label: '常见问题', desc: '出价 / 审核 / 数据 FAQ' },
   { label: '联系支持', desc: '提工单或在线客服' },
 ]
-function onHelp(label: string) { helpOpen.value = false; toast(`打开「${label}」`) }
+function onHelp(item: { label: string; desc: string }) { helpOpen.value = false; toast(`${item.label} —— ${item.desc}`) }
 
 /* ---------- 用户菜单（退出在设置内，此处仅设置入口） ---------- */
 function gotoSettings() { userOpen.value = false; router.push('/settings') }
@@ -249,7 +249,7 @@ onBeforeUnmount(() => document.removeEventListener('click', onDocClick))
       </button>
       <div v-show="helpOpen" class="dd-panel help-panel" :style="helpMenuStyle" @click.stop>
         <div class="dd-head"><span>帮助中心</span></div>
-        <div v-for="h in helpItems" :key="h.label" class="help-item" @click="onHelp(h.label)">
+        <div v-for="h in helpItems" :key="h.label" class="help-item" @click="onHelp(h)">
           <div class="help-label">{{ h.label }}</div>
           <div class="help-desc">{{ h.desc }}</div>
         </div>

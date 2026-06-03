@@ -10,9 +10,10 @@ import { useRouter } from 'vue-router'
 const authStore = useAuthStore()
 const router = useRouter()
 
-const activeTab = ref<'profile' | 'notify' | 'prefer' | 'security'>('profile')
+const activeTab = ref<'enterprise' | 'profile' | 'notify' | 'prefer' | 'security'>('enterprise')
 const tabs = [
-  { key:'profile',  label:'个人信息' },
+  { key:'enterprise', label:'企业信息' },
+  { key:'profile',  label:'账户信息' },
   { key:'notify',   label:'通知设置' },
   { key:'prefer',   label:'偏好设置' },
   { key:'security', label:'安全中心' },
@@ -34,8 +35,26 @@ function onSaveProfile() { showToast('个人信息已保存') }
 // ── 通知设置 ─────────────────────────────────────
 const notify = ref({ system:true, alert:true, weekly:false, email:false })
 
+// ── 企业信息 ─────────────────────────────────────
+const enterprise = ref({
+  name: '悦动短剧科技',
+  tenantId: 'T-2024-0118',
+  region: '杭州',
+  plan: '专业版 Pro',
+  seatUsed: 7,
+  seatTotal: 10,
+  apiUsed: 8432,
+  apiTotal: 20000,
+  expireAt: '2026-12-31',
+})
+const apiPct = () => Math.round((enterprise.value.apiUsed / enterprise.value.apiTotal) * 100)
+function onUpgrade() { showToast('续费 / 升级请联系您的客户成功经理') }
+
 // ── 偏好设置 ─────────────────────────────────────
-const prefer = ref({ defaultPlatform: 'juliang' })
+const prefer = ref({
+  defaultPlatform: 'juliang',
+  defaultRole: 'toushou',
+})
 
 // ── 安全中心 ─────────────────────────────────────
 const devices = ref([
@@ -65,7 +84,7 @@ function onLogout() {
     <div class="page-header">
       <div>
         <div class="page-title">系统设置</div>
-        <div class="page-subtitle">个人信息 / 通知 / 偏好 / 安全中心</div>
+        <div class="page-subtitle">企业信息 / 账户 / 通知 / 偏好 / 安全中心</div>
       </div>
     </div>
 
@@ -82,9 +101,38 @@ function onLogout() {
       <!-- 右侧内容 -->
       <div class="settings-body">
 
-        <!-- 个人信息 -->
+        <!-- 企业信息 -->
+        <div v-if="activeTab === 'enterprise'" class="s-card">
+          <div class="s-card-title">企业信息</div>
+          <div class="ent-head">
+            <div class="ent-logo">悦</div>
+            <div class="ent-id">
+              <div class="ent-name">{{ enterprise.name }}</div>
+              <div class="ent-sub">租户 ID：{{ enterprise.tenantId }} · {{ enterprise.region }}</div>
+            </div>
+            <span class="ent-plan">{{ enterprise.plan }}</span>
+          </div>
+          <div class="field-row">
+            <label>席位占用</label>
+            <span class="field-val">已启用 <b>{{ enterprise.seatUsed }}</b> / {{ enterprise.seatTotal }} 席</span>
+          </div>
+          <div class="field-row" style="align-items:flex-start">
+            <label>本月调用</label>
+            <div style="flex:1">
+              <div class="usage-bar"><i :style="{ width: apiPct() + '%' }"></i></div>
+              <div class="usage-txt">{{ enterprise.apiUsed.toLocaleString() }} / {{ enterprise.apiTotal.toLocaleString() }} 次 · 已用 {{ apiPct() }}%</div>
+            </div>
+          </div>
+          <div class="field-row" style="border-bottom:none">
+            <label>合同到期</label>
+            <span class="field-val">{{ enterprise.expireAt }}</span>
+            <button class="btn btn-ghost btn-sm" @click="onUpgrade">升级套餐</button>
+          </div>
+        </div>
+
+        <!-- 账户信息 -->
         <div v-if="activeTab === 'profile'" class="s-card">
-          <div class="s-card-title">个人信息</div>
+          <div class="s-card-title">账户信息</div>
           <div class="av-row">
             <div class="av-circle">Q</div>
             <button class="btn btn-outline btn-sm" @click="onAvatar">更换头像</button>
@@ -131,12 +179,21 @@ function onLogout() {
         <!-- 偏好设置 -->
         <div v-if="activeTab === 'prefer'" class="s-card">
           <div class="s-card-title">偏好设置</div>
-          <div class="toggle-row" style="border-bottom:none">
-            <span class="toggle-label">默认平台</span>
+          <div class="field-row">
+            <label>默认平台</label>
             <select v-model="prefer.defaultPlatform" class="s-select">
               <option value="juliang">巨量引擎</option>
               <option value="kuaishou">磁力引擎</option>
               <option value="tencent">腾讯广告</option>
+            </select>
+          </div>
+          <div class="field-row" style="border-bottom:none">
+            <label>默认视角</label>
+            <select v-model="prefer.defaultRole" class="s-select">
+              <option value="toushou">投手</option>
+              <option value="admin">管理员</option>
+              <option value="audit">审核</option>
+              <option value="ops">运营</option>
             </select>
           </div>
         </div>
@@ -208,7 +265,7 @@ function onLogout() {
 .text-gray { color:var(--gray-500) !important; }
 .s-input { flex:1; height:32px; border:1px solid var(--border-base); border-radius:7px; padding:0 10px; font-size:13px; color:var(--gray-800); outline:none; }
 .s-input:focus { border-color:var(--brand-300); }
-.s-select { height:32px; border:1px solid var(--border-base); border-radius:7px; padding:0 8px; font-size:13px; color:var(--gray-800); outline:none; }
+.s-select { height:32px; min-width:180px; border:1px solid var(--border-base); border-radius:7px; padding:0 8px; font-size:13px; color:var(--gray-800); outline:none; }
 .toggle-row { display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--border-light); }
 .toggle-label { font-size:13px; color:var(--gray-700); }
 .s-toggle { position:relative; display:inline-block; width:36px; height:20px; }
@@ -225,5 +282,14 @@ function onLogout() {
 .logout-section { margin-top:20px; padding-top:16px; border-top:1px solid var(--border-light); }
 .rev-cfm { display:flex; align-items:center; gap:8px; }
 .btn-xs { padding:2px 8px; font-size:11px; border-radius:5px; cursor:pointer; border:none; }
+.ent-head { display:flex; align-items:center; gap:14px; padding-bottom:16px; margin-bottom:6px; border-bottom:1px solid var(--border-light); }
+.ent-logo { width:48px; height:48px; border-radius:12px; background:linear-gradient(135deg,#5E89F6,#2554DC); display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:700; color:#fff; flex-shrink:0; }
+.ent-id { flex:1; min-width:0; }
+.ent-name { font-size:15px; font-weight:700; color:var(--gray-900); }
+.ent-sub { font-size:12px; color:var(--gray-500); margin-top:2px; }
+.ent-plan { font-size:12px; font-weight:600; color:var(--brand-700); background:var(--brand-50); border:1px solid var(--brand-300); padding:4px 12px; border-radius:999px; flex-shrink:0; }
+.usage-bar { height:8px; background:var(--gray-200); border-radius:4px; overflow:hidden; }
+.usage-bar i { display:block; height:100%; background:var(--brand-600); border-radius:4px; }
+.usage-txt { font-size:12px; color:var(--gray-500); margin-top:5px; }
 .g-toast { position:fixed; top:72px; left:50%; transform:translateX(-50%); background:#0F172A; color:#fff; padding:10px 18px; border-radius:999px; font-size:13px; z-index:9999; pointer-events:none; }
 </style>

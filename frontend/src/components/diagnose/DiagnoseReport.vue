@@ -14,11 +14,17 @@
  * 顶栏「← 返回批量结果」仅当来自批量时显示。
  */
 import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useDiagnoseStore } from '@/stores/diagnose'
+import { useKnowledgeStore } from '@/stores/knowledge'
+import { useAuthStore } from '@/stores/auth'
 import type { DiagnoseReport, Severity, ViolationPos } from '@/types/diagnose'
 
 const props = defineProps<{ report: DiagnoseReport }>()
 const store = useDiagnoseStore()
+const knowledge = useKnowledgeStore()
+const auth = useAuthStore()
+const router = useRouter()
 
 /** 轻反馈 toast（底部操作 / 历史参考的本地反馈，自包含不依赖父） */
 const toastMsg = ref('')
@@ -31,14 +37,129 @@ function toast(msg: string) {
 function onFeedback(ok: boolean) {
   toast(ok ? '感谢反馈，已记录：诊断准确' : '感谢反馈，AI 将持续优化诊断准确度')
 }
+/** 导出：把诊断报告渲染成自包含 HTML 文件并触发下载（浏览器可直接打开 / 另存为 PDF） */
 function onExport() {
-  toast('诊断报告生成中，完成后将下载 PDF')
+  const blob = new Blob([buildReportHtml(props.report)], { type: 'text/html;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `素材诊断报告_${props.report.name}.html`
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  setTimeout(() => URL.revokeObjectURL(url), 1000)
+  toast('诊断报告已导出（HTML，可用浏览器打开或另存为 PDF）')
 }
-function onSediment() {
-  toast('已沉淀到团队知识库 · 私域 L2，后续可被 AI 召回')
+
+/** 沉淀中（防重复点击） */
+const sedimenting = ref(false)
+/** 沉淀：把本次诊断结论写入 L3 私域知识库（已向量化、可被 AI 召回），形成「诊断 → 沉淀 → 召回」闭环 */
+async function onSediment() {
+  if (sedimenting.value) return
+  sedimenting.value = true
+  const r = props.report
+  const viol = r.violations.map((v) => v.type).filter(Boolean)
+  const title =
+    r.variant === 'rejected'
+      ? `${r.preview_title || r.name} · 拒审归因复盘`
+      : `${r.preview_title || r.name} · 过审预检结论`
+  const summary =
+    r.variant === 'rejected'
+      ? `素材「${r.name}」拒审主因：${viol.join('、') || '多项违规'}。已沉淀改造方案与过审预测，供同类素材召回参考。`
+      : `素材「${r.name}」过审预检结论与优化建议，预测过审率 ${Math.round(r.predict.after * 100)}%，已沉淀供同类素材召回参考。`
+  try {
+    await knowledge.sediment({
+      title,
+      summary,
+      chunkText: buildSedimentChunk(r),
+      uploader: auth.user?.name ?? '当前投手',
+    })
+    toast('已沉淀到知识库 · 私域 L3（已向量化，可在知识库召回）')
+  } finally {
+    sedimenting.value = false
+  }
+}
+
+/** 拼接沉淀正文：违规要点 + 改造建议 + 过审预测，作为知识切片内容 */
+function buildSedimentChunk(r: DiagnoseReport): string {
+  const lines: string[] = [`【素材】${r.name}（${r.platform.name}）`]
+  if (r.violations.length) {
+    lines.push('【违规要点】')
+    r.violations.forEach((v, i) =>
+      lines.push(`${i + 1}. ${v.type}：${v.desc}${v.rule ? `（命中 ${v.rule}）` : ''}`)
+    )
+  }
+  if (r.fixes.length) {
+    lines.push('【改造建议】')
+    r.fixes.forEach((f, i) =>
+      lines.push(`${i + 1}. ${f.title}：${f.detail}${f.before && f.after ? `（${f.before} → ${f.after}）` : ''}`)
+    )
+  }
+  lines.push(`【过审预测】改造前 ${Math.round(r.predict.before * 100)}% → 改造后 ${Math.round(r.predict.after * 100)}%`)
+  return lines.join('\n')
+}
+
+/** 把诊断报告渲染成自包含 HTML（内联品牌蓝样式，可独立打开 / 另存 PDF） */
+function buildReportHtml(r: DiagnoseReport): string {
+  const esc = (s: string) =>
+    String(s ?? '').replace(/[&<>]/g, (c) => (c === '&' ? '&amp;' : c === '<' ? '&lt;' : '&gt;'))
+  const sev = SEV[r.severity]
+  const p = (v: number) => `${Math.round(v * 100)}%`
+  const violRows = r.violations.length
+    ? r.violations
+        .map((v) => `<tr><td>${esc(v.type)}</td><td>${esc(v.desc)}</td><td>${esc(v.rule || '—')}</td></tr>`)
+        .join('')
+    : '<tr><td colspan="3" class="muted">无违规项</td></tr>'
+  const fixItems = r.fixes.length
+    ? r.fixes
+        .map(
+          (f) =>
+            `<li><b>${esc(f.title)}</b>${f.hard ? ' <span class="t-hard">必改</span>' : ' <span class="t-soft">建议</span>'}<br><span class="muted">${esc(f.detail)}</span>${f.before && f.after ? `<br><span class="cmp">${esc(f.before)} → ${esc(f.after)}</span>` : ''}</li>`
+        )
+        .join('')
+    : '<li class="muted">无改造建议</li>'
+  return `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>素材诊断报告 · ${esc(r.name)}</title>
+<style>
+:root{--b:#2563EB}
+*{box-sizing:border-box}body{margin:0;font:14px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:#1e293b;background:#f8fafc;padding:32px}
+.wrap{max-width:760px;margin:0 auto;background:#fff;border:1px solid #e2e8f0;border-radius:14px;overflow:hidden}
+.hd{background:var(--b);color:#fff;padding:22px 28px}.hd h1{margin:0;font-size:19px}.hd .sub{opacity:.85;font-size:13px;margin-top:4px}
+.bd{padding:24px 28px}
+.row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.kpi{flex:1;min-width:130px;background:#f1f5f9;border-radius:10px;padding:12px 14px}
+.kpi .k{font-size:12px;color:#64748b}.kpi .v{font-size:20px;font-weight:700;margin-top:2px}
+.badge{display:inline-block;padding:3px 11px;border-radius:999px;font-weight:600;font-size:13px}
+.sev-high{background:#fef2f2;color:#dc2626}.sev-mid{background:#fffbeb;color:#d97706}.sev-low-ok{background:#f0fdf4;color:#16a34a}
+h2{font-size:15px;margin:24px 0 10px;padding-left:10px;border-left:3px solid var(--b)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid #eef2f7;vertical-align:top}
+th{color:#64748b;font-weight:600;background:#f8fafc}
+ul{margin:0;padding-left:18px}li{margin-bottom:10px}
+.muted{color:#94a3b8}.cmp{color:var(--b);font-size:12px}
+.t-hard{background:#fef2f2;color:#dc2626;border-radius:4px;padding:1px 6px;font-size:11px}
+.t-soft{background:#eff6ff;color:var(--b);border-radius:4px;padding:1px 6px;font-size:11px}
+.ft{padding:16px 28px;border-top:1px solid #eef2f7;color:#94a3b8;font-size:12px}
+</style></head><body><div class="wrap">
+<div class="hd"><h1>素材诊断报告</h1><div class="sub">${esc(r.name)} · ${esc(r.platform.name)} · ${r.variant === 'rejected' ? '拒审归因' : '过审预检'}</div></div>
+<div class="bd">
+<div class="row">
+<div class="kpi"><div class="k">风险总判</div><div class="v"><span class="badge ${sev.cls}">${esc(sev.text.replace('● ', ''))}</span></div></div>
+<div class="kpi"><div class="k">综合过审率</div><div class="v">${p(r.pass_rate)}</div></div>
+<div class="kpi"><div class="k">改造后预测</div><div class="v" style="color:var(--b)">${p(r.predict.after)}</div></div>
+</div>
+<h2>违规清单</h2>
+<table><thead><tr><th>类型</th><th>描述</th><th>命中规则</th></tr></thead><tbody>${violRows}</tbody></table>
+<h2>改造建议</h2>
+<ul>${fixItems}</ul>
+<h2>过审预测</h2>
+<p>改造前 <b>${p(r.predict.before)}</b> → 改造后 <b style="color:var(--b)">${p(r.predict.after)}</b>${r.predict.basis ? `<br><span class="muted">${esc(r.predict.basis)}</span>` : ''}</p>
+</div>
+<div class="ft">松鼠投放 · 素材诊断 AI 助手　|　本报告由 AI 自动生成，仅供投放参考</div>
+</div></body></html>`
 }
 function onViewRef(title: string) {
-  toast(`打开参考案例：${title}`)
+  router.push('/knowledge')
+  toast(`已打开知识库，可查阅「${title}」类案例`)
 }
 
 /** 百分比 */

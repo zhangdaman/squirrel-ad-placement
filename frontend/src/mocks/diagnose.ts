@@ -231,11 +231,11 @@ function warnReport(
  * ============================================================ */
 
 const REPORT_MAP: Record<string, (p: PlatformLite) => DiagnoseReport> = {
-  d_rejected_01: (p) => rejectedReport('d_rejected_01', '[Mock] 现言_信息流图_03.jpg', p),
-  d_precheck_01: (p) => precheckReport('d_precheck_01', '[Mock] 现言_竖版海报.jpg', p),
-  d_warn_01: (p) => warnReport('d_warn_01', '[Mock] 古言_九宫格图.png', p),
+  d_rejected_01: (p) => rejectedReport('d_rejected_01', '现言_信息流图_03.jpg', p),
+  d_precheck_01: (p) => precheckReport('d_precheck_01', '现言_竖版海报.jpg', p),
+  d_warn_01: (p) => warnReport('d_warn_01', '古言_九宫格图.png', p),
   d_rejected_02: (p) => {
-    const r = rejectedReport('d_rejected_02', '[Mock] 都市_悬疑_01.jpg', p)
+    const r = rejectedReport('d_rejected_02', '都市_悬疑_01.jpg', p)
     return {
       ...r,
       pass_rate: 0.22,
@@ -268,7 +268,7 @@ const REPORT_MAP: Record<string, (p: PlatformLite) => DiagnoseReport> = {
     }
   },
   d_precheck_02: (p) => {
-    const r = precheckReport('d_precheck_02', '[Mock] 霸总_首图_v3.jpg', p)
+    const r = precheckReport('d_precheck_02', '霸总_首图_v3.jpg', p)
     return {
       ...r,
       pass_rate: 0.95,
@@ -283,7 +283,7 @@ const REPORT_MAP: Record<string, (p: PlatformLite) => DiagnoseReport> = {
 export function getReport(taskId: string, platform: PlatformLite): DiagnoseReport {
   const factory = REPORT_MAP[taskId]
   if (factory) return factory(platform)
-  return rejectedReport(taskId, '[Mock] 未命名素材.jpg', platform)
+  return rejectedReport(taskId, '未命名素材.jpg', platform)
 }
 
 /* ============================================================
@@ -294,7 +294,7 @@ function buildBatchItems(): BatchItem[] {
   return [
     {
       task_id: 'd_rejected_01',
-      name: '[Mock] 现言_信息流图_03.jpg',
+      name: '现言_信息流图_03.jpg',
       gradient: GRAD.orange,
       issue: '检出香烟特写 + 诱导点击文案「点击领取」',
       pass_rate: 0.18,
@@ -303,7 +303,7 @@ function buildBatchItems(): BatchItem[] {
     },
     {
       task_id: 'd_precheck_01',
-      name: '[Mock] 现言_竖版海报.jpg',
+      name: '现言_竖版海报.jpg',
       gradient: GRAD.blue,
       issue: '5 维合规扫描全部通过，无违规元素',
       pass_rate: 0.95,
@@ -312,7 +312,7 @@ function buildBatchItems(): BatchItem[] {
     },
     {
       task_id: 'd_warn_01',
-      name: '[Mock] 古言_九宫格图.png',
+      name: '古言_九宫格图.png',
       gradient: GRAD.teal,
       issue: '主标题字号偏小，建议放大（建议项，非硬违规）',
       pass_rate: 0.76,
@@ -321,7 +321,7 @@ function buildBatchItems(): BatchItem[] {
     },
     {
       task_id: 'd_precheck_02',
-      name: '[Mock] 霸总_首图_v3.jpg',
+      name: '霸总_首图_v3.jpg',
       gradient: GRAD.pink,
       issue: '5 维合规扫描全部通过，文字位置合规',
       pass_rate: 0.92,
@@ -330,7 +330,7 @@ function buildBatchItems(): BatchItem[] {
     },
     {
       task_id: 'd_rejected_02',
-      name: '[Mock] 都市_悬疑_01.jpg',
+      name: '都市_悬疑_01.jpg',
       gradient: GRAD.green,
       issue: '检出暴力暗示词「追凶」「血」',
       pass_rate: 0.22,
@@ -399,7 +399,7 @@ export function mockUploadReject(message: string): ApiResponse<null> {
 const MOCK_HISTORY: DiagnoseHistoryItem[] = [
   {
     id: 'h1',
-    name: '[Mock] 现言_信息流图_03.jpg',
+    name: '现言_信息流图_03.jpg',
     gradient: GRAD.orange,
     platform: PLATFORMS.juliang,
     statusText: '已拒',
@@ -410,7 +410,7 @@ const MOCK_HISTORY: DiagnoseHistoryItem[] = [
   },
   {
     id: 'h2',
-    name: '[Mock] 现言_竖版海报.jpg',
+    name: '现言_竖版海报.jpg',
     gradient: GRAD.blue,
     platform: PLATFORMS.tencent,
     statusText: '预检通过',
@@ -421,7 +421,7 @@ const MOCK_HISTORY: DiagnoseHistoryItem[] = [
   },
   {
     id: 'h3',
-    name: '[Mock] 古言_九宫格图.png',
+    name: '古言_九宫格图.png',
     gradient: GRAD.teal,
     platform: PLATFORMS.kuaishou,
     statusText: '需改',
@@ -432,7 +432,7 @@ const MOCK_HISTORY: DiagnoseHistoryItem[] = [
   },
   {
     id: 'h4',
-    name: '[Mock] 霸总_首图_v3.jpg',
+    name: '霸总_首图_v3.jpg',
     gradient: GRAD.pink,
     platform: PLATFORMS.juliang,
     statusText: '预检通过',
@@ -443,7 +443,7 @@ const MOCK_HISTORY: DiagnoseHistoryItem[] = [
   },
   {
     id: 'h5',
-    name: '[Mock] 都市_悬疑_01.jpg',
+    name: '都市_悬疑_01.jpg',
     gradient: GRAD.green,
     platform: PLATFORMS.juliang,
     statusText: '已拒',

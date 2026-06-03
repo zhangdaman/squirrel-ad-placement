@@ -15,8 +15,8 @@ interface Member {
 const members = ref<Member[]>([
   { id:'m1', name:'钱晓彤', avatar:'Q', role:'admin',   accounts:'全部 8 户',  status:'active' },
   { id:'m2', name:'林 磊',  avatar:'L', role:'toushou', accounts:'A001 / A002', status:'active' },
-  { id:'m3', name:'王 芳',  avatar:'W', role:'toushou', accounts:'A003 / A004', status:'active' },
-  { id:'m4', name:'张 伟',  avatar:'Z', role:'toushou', accounts:'K007 / K008', status:'active' },
+  { id:'m3', name:'王 芳',  avatar:'W', role:'toushou', accounts:'A005 / A006', status:'active' },
+  { id:'m4', name:'张 伟',  avatar:'Z', role:'toushou', accounts:'K001 / K002', status:'active' },
   { id:'m5', name:'陈 静',  avatar:'C', role:'audit',   accounts:'全部只读',    status:'active' },
   { id:'m6', name:'刘 阳',  avatar:'X', role:'ops',     accounts:'全部只读',    status:'active' },
   { id:'m7', name:'赵 敏',  avatar:'B', role:'toushou', accounts:'T001',        status:'pending' },

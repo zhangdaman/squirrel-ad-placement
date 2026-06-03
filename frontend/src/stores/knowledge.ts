@@ -18,6 +18,7 @@ import type {
   KnowledgeListItem,
   KnowledgeNavCounts,
   KnowledgeUploadPayload,
+  SedimentPayload,
   FeedbackVote,
 } from '@/types/knowledge'
 import {
@@ -26,6 +27,7 @@ import {
   sendFeedback,
   fetchNavCounts,
   uploadKnowledge,
+  sedimentKnowledge,
   stepUpload,
 } from '@/services/knowledge'
 import { mockKpis, mockFilters, defaultFilterState, filterDefMap, chipLabel } from '@/mocks/knowledge'
@@ -179,6 +181,13 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
     runPipeline(id)
   }
 
+  /** 诊断 / 复盘结论一键沉淀进 L3 私域（直接完成向量化，刷新后即可在知识库召回）。返回新建 id */
+  async function sediment(payload: SedimentPayload): Promise<string> {
+    const id = await sedimentKnowledge(payload, Date.now())
+    await refreshAll()
+    return id
+  }
+
   /** 逐步推进上传处理流水线，每步刷新进度，完成后回填计数 / KPI */
   function runPipeline(id: string) {
     let step = 1
@@ -233,5 +242,6 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
     setCat,
     clearAll,
     upload,
+    sediment,
   }
 })

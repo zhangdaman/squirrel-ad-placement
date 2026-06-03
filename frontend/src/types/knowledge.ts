@@ -260,6 +260,21 @@ export interface KnowledgeUploadPayload {
   sourceType: 'doc' | 'chat'
 }
 
+/**
+ * POST /api/knowledge/sediment 请求（诊断 / 复盘结论「一键沉淀」）。
+ * 与 upload 不同：内容由 Agent 当场产出、已结构化，直接落 L3 私域并完成向量化，无需走分块流水线。
+ */
+export interface SedimentPayload {
+  /** 知识标题 */
+  title: string
+  /** 摘要描述（卡片 snippet） */
+  summary: string
+  /** 沉淀正文（诊断要点，作为首个切片内容） */
+  chunkText: string
+  /** 沉淀人展示名 */
+  uploader: string
+}
+
 /* ============================================================
  * KPI 头部（顶部 4 卡，纯展示）
  * ============================================================ */

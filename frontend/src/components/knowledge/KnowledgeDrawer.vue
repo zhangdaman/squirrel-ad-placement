@@ -48,7 +48,7 @@ watch(
 /* ---------- 头部来源徽章（与 KnowledgeCard 同口径） ---------- */
 const SOURCE_META: Record<string, { cls: string; text: string }> = {
   pub: { cls: 'pub', text: '🌐 公域 · API' },
-  platform: { cls: 'pub', text: '🌐 公域 · 平台规则' },
+  platform: { cls: 'pub', text: '🛡️ 平台 · 官方规则' },
   'prv-up': { cls: 'prv-up', text: '🔒 私域 · 上传' },
   history: { cls: 'prv-ai', text: '🤖 私域 · AI 沉淀' },
 }

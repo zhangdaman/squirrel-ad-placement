@@ -20,6 +20,7 @@ import { computed, inject, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useReviewStore } from '@/stores/review'
 import type {
+  AttributionReportData,
   AttributionStep,
   AttributionPhase,
   CauseLevel,
@@ -101,7 +102,7 @@ function onSecondary(s: ReviewSuggestion) {
   if (s.secondaryKind === 'nav' && s.navTo) {
     router.push(s.navTo)
   } else {
-    toast(`${s.secondaryLabel}面板将在此打开`)
+    toast(`已生成「${s.secondaryLabel}」配置建议，可下发至投放系统应用`)
   }
 }
 /** 执行状态条里「数据监控」点击 → 跳 track_url 追踪 ROI 回升 */
@@ -110,9 +111,97 @@ function gotoTrack(suggestionId: string) {
   if (url) router.push(url)
 }
 
-/* ---------- 导出 PDF（toast 反馈） ---------- */
+/* ---------- 导出复盘报告（自包含 HTML，可浏览器打开 / 另存 PDF） ---------- */
 function exportPdf() {
-  toast('已导出复盘报告 PDF')
+  const blob = new Blob([buildReviewHtml(props.report)], { type: 'text/html;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `投放复盘报告_${props.report.account}.html`
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  setTimeout(() => URL.revokeObjectURL(url), 1000)
+  toast('复盘报告已导出（HTML，可用浏览器打开或另存为 PDF）')
+}
+
+/** 把归因报告渲染成自包含 HTML（内联品牌蓝样式，可独立打开 / 另存 PDF） */
+function buildReviewHtml(r: AttributionReportData): string {
+  const esc = (s: string) =>
+    String(s ?? '').replace(/[&<>]/g, (c) => (c === '&' ? '&amp;' : c === '<' ? '&lt;' : '&gt;'))
+  const statCards = r.stats
+    .map((s) => `<div class="kpi"><div class="k">${esc(s.label)}</div><div class="v">${esc(s.value)}</div></div>`)
+    .join('')
+  const causeRows = r.causes
+    .map((c) => `<tr><td><span class="lv lv-${c.level}">${esc(c.levelLabel)}</span></td><td><b>${esc(c.name)}</b></td><td>${esc(c.impact)}</td></tr>`)
+    .join('')
+  const factorRows = r.factors
+    .map((f) => `<div class="factor"><span class="fn">${esc(f.name)}</span><span class="fb"><i class="b-${f.tone}" style="width:${f.percent}%"></i></span><span class="fp">${f.percent}%</span></div>`)
+    .join('')
+  const sugItems = r.suggestions
+    .map((s) => `<li><span class="pri pri-${s.priority}">${esc(s.priorityLabel)}</span> <b>${esc(s.action)}</b>${s.stopLoss ? ` <span class="stop">止损 ${esc(s.stopLoss)}</span>` : ''}<br><span class="muted">${esc(s.desc)}</span></li>`)
+    .join('')
+  const cmpRows = r.compare
+    .map((c) => `<tr><td>${esc(c.label)}</td><td class="${c.down ? 'down' : ''}">${esc(c.value)}</td><td class="muted">${esc(c.note)}</td></tr>`)
+    .join('')
+  const tlItems = r.timeline
+    .map((t) => `<li${t.danger ? ' class="down"' : ''}><b>${esc(t.time)}</b> ${esc(t.text)}${t.meta ? `<br><span class="muted">${esc(t.meta)}</span>` : ''}</li>`)
+    .join('')
+  const refItems = r.references
+    .map((rf) => `<li><b>${esc(rf.title)}</b><br><span class="muted">${esc(rf.result)}</span></li>`)
+    .join('')
+  return `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>投放复盘报告 · ${esc(r.account)}</title>
+<style>
+:root{--b:#2563EB}
+*{box-sizing:border-box}body{margin:0;font:14px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:#1e293b;background:#f8fafc;padding:32px}
+.wrap{max-width:820px;margin:0 auto;background:#fff;border:1px solid #e2e8f0;border-radius:14px;overflow:hidden}
+.hd{background:linear-gradient(135deg,#2563EB,#1d4ed8);color:#fff;padding:24px 30px}
+.hd h1{margin:0;font-size:20px}.hd .sub{opacity:.88;font-size:13px;margin-top:5px}
+.bd{padding:24px 30px}
+.row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.kpi{flex:1;min-width:120px;background:#f1f5f9;border-radius:10px;padding:12px 14px}
+.kpi .k{font-size:12px;color:#64748b}.kpi .v{font-size:18px;font-weight:700;margin-top:3px}
+h2{font-size:15px;margin:26px 0 10px;padding-left:10px;border-left:3px solid var(--b)}
+.concl{background:#f8fafc;border:1px solid #eef2f7;border-radius:10px;padding:14px 16px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid #eef2f7;vertical-align:top}
+th{color:#64748b;font-weight:600;background:#f8fafc}
+.lv{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:600}
+.lv-main{background:#fef2f2;color:#dc2626}.lv-sub{background:#fffbeb;color:#d97706}.lv-excluded{background:#f1f5f9;color:#64748b}
+.factor{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:13px}
+.fn{width:150px;flex-shrink:0}.fb{flex:1;height:8px;background:#eef2f7;border-radius:4px;overflow:hidden}
+.fb i{display:block;height:100%}.b-danger{background:#dc2626}.b-warning{background:#d97706}.b-gray{background:#94a3b8}
+.fp{width:44px;text-align:right;color:#64748b}
+ul{margin:0;padding-left:18px}li{margin-bottom:10px}
+.pri{display:inline-block;padding:1px 7px;border-radius:4px;font-size:11px;font-weight:600;color:#fff}
+.pri-P0{background:#dc2626}.pri-P1{background:#d97706}.pri-P2{background:#64748b}
+.stop{background:#eff6ff;color:var(--b);border-radius:4px;padding:1px 7px;font-size:12px}
+.muted{color:#94a3b8}.down{color:#dc2626;font-weight:600}
+.risk{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:12px 16px;color:#92400e;font-size:13px}
+.ft{padding:16px 30px;border-top:1px solid #eef2f7;color:#94a3b8;font-size:12px}
+</style></head><body><div class="wrap">
+<div class="hd"><h1>${esc(r.title)}</h1><div class="sub">${esc(r.subtitle)}　·　分析耗时 ${r.duration_sec}s　·　综合置信度 ${Math.round(r.confidence * 100)}%</div></div>
+<div class="bd">
+<div class="row">${statCards}</div>
+<h2>归因结论</h2>
+<div class="concl">${r.conclusionHtml}</div>
+<h2>归因因子</h2>
+<table><thead><tr><th>级别</th><th>因子</th><th>影响</th></tr></thead><tbody>${causeRows}</tbody></table>
+<h2>因子拆分</h2>
+${factorRows}
+<h2>修改建议</h2>
+<ul>${sugItems}</ul>
+<h2>关键指标对比 <span class="muted" style="font-weight:400;font-size:12px">（${esc(r.compareWindow)}）</span></h2>
+<table><thead><tr><th>指标</th><th>当前</th><th>对比</th></tr></thead><tbody>${cmpRows}</tbody></table>
+<h2>关键节点</h2>
+<ul>${tlItems}</ul>
+<h2>私域参考案例 <span class="muted" style="font-weight:400;font-size:12px">（${esc(r.referenceSummary)}）</span></h2>
+<ul>${refItems}</ul>
+<h2>风险提示</h2>
+<div class="risk">${esc(r.riskNote)}</div>
+</div>
+<div class="ft">松鼠投放 · 投放复盘 Agent　|　本报告由 AI Agent 多步归因生成，含止损建议，仅供投放决策参考</div>
+</div></body></html>`
 }
 
 /** 末步结论：步骤里带 reflection 的（通常第 5 步） */
