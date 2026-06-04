@@ -78,10 +78,29 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
     return out
   })
 
-  /** 列表区统计副标题：命中率 >80% / 偏低 计数 */
+  /* ---------- 「需关注」筛选（零引用 / 待处理 / 待优化）---------- */
+  const attention = ref(false)
+  /** 当前展示列表：需关注态下只留零引用 / 待处理(processing) / 待优化(warn) */
+  const displayList = computed(() =>
+    attention.value
+      ? items.value.filter(
+          (i) => i.cited === 0 || i.status.kind === 'warn' || i.status.kind === 'processing',
+        )
+      : items.value,
+  )
+  const displayTotal = computed(() => (attention.value ? displayList.value.length : total.value))
+  function toggleAttention() {
+    attention.value = !attention.value
+    if (attention.value) activeCat.value = null // 进需关注视图时清当前分类
+  }
+  function exitAttention() {
+    attention.value = false
+  }
+
+  /** 列表区统计副标题：命中率 >80% / 偏低 计数（按当前展示列表） */
   const listMeta = computed(() => {
-    const high = items.value.filter((i) => i.hit_rate >= 0.8).length
-    const low = items.value.filter((i) => i.hit_rate > 0 && i.hit_rate < 0.5).length
+    const high = displayList.value.filter((i) => i.hit_rate >= 0.8).length
+    const low = displayList.value.filter((i) => i.hit_rate > 0 && i.hit_rate < 0.5).length
     return { high, low }
   })
 
@@ -243,5 +262,11 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
     clearAll,
     upload,
     sediment,
+    // 需关注筛选
+    attention,
+    displayList,
+    displayTotal,
+    toggleAttention,
+    exitAttention,
   }
 })

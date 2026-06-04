@@ -22,8 +22,9 @@ const {
   filterDefs,
   filters,
   chipLabels,
-  items,
-  total,
+  displayList,
+  displayTotal,
+  attention,
   loading,
   listMeta,
   selectedId,
@@ -146,7 +147,13 @@ function onNavAll() {
       </div>
 
       <div class="kb-kpi-row">
-        <div v-for="k in kpis" :key="k.label" class="kb-kpi">
+        <div
+          v-for="k in kpis"
+          :key="k.label"
+          :class="['kb-kpi', { 'kb-kpi-act': k.trend === '需关注', active: k.trend === '需关注' && attention }]"
+          :title="k.trend === '需关注' ? '点击筛选出零引用 / 待处理的知识' : ''"
+          @click="k.trend === '需关注' && kb.toggleAttention()"
+        >
           <div :class="['kb-kpi-icon', k.tone]" v-html="KPI_ICONS[k.tone]" />
           <div>
             <div class="label">{{ k.label }}</div>
@@ -227,19 +234,21 @@ function onNavAll() {
         <!-- 列表 -->
         <div class="kb-list-wrap">
           <div class="kb-list-meta">
-            <span>共 <span class="selected">{{ total }} 条</span></span>
-            <template v-if="items.length">
+            <span v-if="attention" class="kb-att-tag">⚠ 需关注 · 零引用 / 待处理</span>
+            <span>共 <span class="selected">{{ displayTotal }} 条</span></span>
+            <template v-if="displayList.length">
               <span class="dot">·</span>
               <span>{{ listMeta.high }} 条命中率 &gt;80% · {{ listMeta.low }} 条命中率偏低</span>
             </template>
+            <span v-if="attention" class="kb-att-clear" @click="kb.exitAttention()">退出筛选 ✕</span>
           </div>
 
-          <div v-if="loading && !items.length" class="kb-empty">检索中…</div>
-          <div v-else-if="!items.length" class="kb-empty">没有符合条件的知识，试试调整筛选条件</div>
+          <div v-if="loading && !displayList.length" class="kb-empty">检索中…</div>
+          <div v-else-if="!displayList.length" class="kb-empty">{{ attention ? '当前没有需关注的知识 🎉' : '没有符合条件的知识，试试调整筛选条件' }}</div>
 
           <div v-else class="kb-list">
             <KnowledgeCard
-              v-for="it in items"
+              v-for="it in displayList"
               :key="it.id"
               :item="it"
               :selected="selectedId === it.id"
@@ -314,6 +323,12 @@ function onNavAll() {
 .kb-kpi .val { font-size: 20px; font-weight: 700; color: var(--gray-900); line-height: 1.2; }
 .kb-kpi .trend { font-size: 11px; color: var(--success); margin-left: 6px; }
 .kb-kpi .trend.warn { color: var(--warning); }
+.kb-kpi-act { cursor: pointer; transition: background .15s, box-shadow .15s; }
+.kb-kpi-act:hover { background: #f1f5f9; }
+.kb-kpi.active { background: var(--danger-bg); box-shadow: inset 0 0 0 1px var(--danger); }
+.kb-att-tag { color: var(--warning); font-weight: 600; }
+.kb-att-clear { margin-left: 10px; color: var(--brand-600); cursor: pointer; font-size: 12px; }
+.kb-att-clear:hover { text-decoration: underline; }
 /* —— 主体双栏 —— */
 .kb-body { flex: 1; display: grid; grid-template-columns: 240px 1fr; gap: 0; overflow: hidden; }
 /* —— 左侧分类导航 —— */
