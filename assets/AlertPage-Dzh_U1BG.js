@@ -1,1 +1,0 @@
-import{N as e,O as t,S as n}from"./index-z1LpjMiz.js";import{t as r}from"./PagePlaceholder-BXJzmpfQ.js";var i=t({__name:`AlertPage`,setup(t){return(t,i)=>(e(),n(r,{code:`P11`,title:`智能预警`,subtitle:`V2 已并入监控异常焦点条（导航不展示，路由保留）`}))}});export{i as default};
