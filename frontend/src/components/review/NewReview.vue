@@ -32,7 +32,15 @@ watch(
 )
 
 function start() {
-  store.startReview(accountVal.value)
+  // 把表单选择（对象 / 时间 / 重点）连同账户一起传给 store，
+  // 让产出报告的标题反映用户选择，证明表单生效（非只用 account）。
+  // 仅传原始 value，文案解析交给 store（据 newOptions 映射 label）。
+  store.startReview({
+    object: objectVal.value,
+    account: accountVal.value,
+    time: timeVal.value,
+    focus: focusVal.value,
+  })
 }
 </script>
 

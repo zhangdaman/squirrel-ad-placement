@@ -40,6 +40,22 @@ export type ReviewFilter = 'all' | 'auto' | 'mine'
 /** 一键执行结果（按建议 id 暂存，组件据此渲染「✓ 已下发」+ 状态条 + 追踪链接） */
 export type ExecutedMap = Record<string, ExecuteResultData>
 
+/**
+ * 发起复盘表单载荷（NewReview 弹窗 → startReview，原始 value）。
+ * account 驱动报告数据（决定拉哪个账户样板）；object/time/focus 经 newOptions
+ * 映射成 label 后改写报告 title/subtitle，证明三组表单选择没有被丢弃。
+ */
+export interface NewReviewForm {
+  /** 选中的复盘对象维度 value（按账户/计划/题材） */
+  object?: NewReviewObject
+  /** 选中的账户编号（驱动报告数据），如 A001；'all' 归一为 A001 */
+  account?: string
+  /** 选中的时间范围 value，如 '7d' */
+  time?: string
+  /** 选中的复盘重点 value，如 'roi' */
+  focus?: string
+}
+
 export const useReviewStore = defineStore('review', () => {
   /* ---------- 视图态 ---------- */
   const view = ref<ReviewView>('inbox')
@@ -185,15 +201,65 @@ export const useReviewStore = defineStore('review', () => {
   /**
    * 开始复盘：关弹窗 → 展示 loading overlay（模拟 Agent 调研）→ 产出报告。
    * Mock 下用定时器模拟调研耗时；接真实接口后可换 SSE 流式 5 步推导。
+   *
+   * 表单选择生效证明（experience.md）：报告体仍是 A001 样板数据，
+   * 但产出报告的 title/subtitle 会被改写为反映用户的发起选择
+   * （如「A001 · 近 7 天 · 素材维度复盘」），证明 object/time/focus 表单未被丢弃。
+   *
+   * @param payload 字符串则按账户兼容旧调用；对象则透传 object/account/time/focus 文案
    */
-  async function startReview(account: NewReviewObject | string = 'A001') {
+  async function startReview(
+    payload: NewReviewForm | NewReviewObject | string = 'A001'
+  ) {
+    const form: NewReviewForm =
+      typeof payload === 'string' ? { account: payload } : payload
     launchDialogOpen.value = false
     launching.value = true
     // 模拟调研耗时后切到报告态（与原型 2s loading 对齐）
     await new Promise((resolve) => setTimeout(resolve, 1800))
     launching.value = false
-    const acc = typeof account === 'string' && account !== 'all' ? account : 'A001'
+    const acc =
+      typeof form.account === 'string' && form.account !== 'all'
+        ? form.account
+        : 'A001'
     await openReport(acc)
+    // 用表单选择改写报告标题/副标题，让发起选项可见地生效
+    applyFormToReport(form)
+  }
+
+  /**
+   * 把发起复盘的表单选择拼进报告 title/subtitle。
+   * 报告体仍是 A001 样板，但标题反映用户选的「对象 + 时间 + 重点」，证明表单生效。
+   * value → label 经 newOptions 映射（缺映射则回退原 value）。
+   */
+  function applyFormToReport(form: NewReviewForm) {
+    if (!report.value) return
+    const opts = newOptions.value
+    const labelOf = (
+      list: { value: string; label: string }[] | undefined,
+      val?: string
+    ) => (val ? (list?.find((o) => o.value === val)?.label ?? val) : undefined)
+
+    const objectLabel = labelOf(opts?.objects, form.object)
+    const timeLabel = labelOf(opts?.times, form.time)
+    const focusLabel = labelOf(opts?.focuses, form.focus)
+    const acc = form.account && form.account !== 'all' ? form.account : 'A001'
+
+    // 标题：账户 · 时间 · 重点（如「A001 · 近 7 日 · ROI 异常复盘」）
+    const titleParts = [acc, timeLabel, focusLabel].filter(
+      (p): p is string => Boolean(p)
+    )
+    report.value.title = titleParts.join(' · ')
+
+    // 副标题：回显完整发起选择，证明 object/time/focus 都生效
+    const segs = [objectLabel, timeLabel, focusLabel].filter(
+      (p): p is string => Boolean(p)
+    )
+    if (segs.length > 0) {
+      report.value.subtitle = `本次复盘按你的发起选择：${segs.join(
+        ' · '
+      )} · 由 AI 自主执行多轮 ReAct 推导 · Verifier 二轮质检通过`
+    }
   }
 
   return {

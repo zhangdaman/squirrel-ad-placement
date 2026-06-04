@@ -14,12 +14,12 @@ interface Member {
 }
 const members = ref<Member[]>([
   { id:'m1', name:'钱晓彤', avatar:'Q', role:'admin',   accounts:'全部 8 户',  status:'active' },
-  { id:'m2', name:'林 磊',  avatar:'L', role:'toushou', accounts:'A001 / A002', status:'active' },
+  { id:'m2', name:'林 磊',  avatar:'L', role:'toushou', accounts:'A001 / A002 / A008', status:'active' },
   { id:'m3', name:'王 芳',  avatar:'W', role:'toushou', accounts:'A005 / A006', status:'active' },
   { id:'m4', name:'张 伟',  avatar:'Z', role:'toushou', accounts:'K001 / K002', status:'active' },
   { id:'m5', name:'陈 静',  avatar:'C', role:'audit',   accounts:'全部只读',    status:'active' },
   { id:'m6', name:'刘 阳',  avatar:'X', role:'ops',     accounts:'全部只读',    status:'active' },
-  { id:'m7', name:'赵 敏',  avatar:'B', role:'toushou', accounts:'T001',        status:'pending' },
+  { id:'m7', name:'赵 敏',  avatar:'B', role:'toushou', accounts:'T001',        status:'active' },
 ])
 
 const toast = ref('')
@@ -37,6 +37,11 @@ const chipDefs = [
   { key:'audit_ops',label:'审核 + 运营' },
   { key:'pending',  label:'待接受' },
 ]
+const hasPending = computed(() => members.value.some(m => m.status === 'pending'))
+// 没有「邀请中」成员时，隐藏空的「待接受」筛选 chip，避免点进去只剩空块
+const visibleChips = computed(() =>
+  chipDefs.filter(c => c.key !== 'pending' || hasPending.value),
+)
 const filteredMembers = computed(() => {
   const f = activeFilter.value
   if (f === 'all')       return members.value
@@ -105,7 +110,7 @@ onMounted(async () => {
     <div class="t-card">
       <div class="t-card-hd">团队成员</div>
       <div class="filter-row">
-        <span v-for="c in chipDefs" :key="c.key"
+        <span v-for="c in visibleChips" :key="c.key"
           class="f-chip" :class="{ active: activeFilter === c.key }"
           @click="activeFilter = c.key">{{ c.label }}</span>
       </div>

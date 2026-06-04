@@ -44,7 +44,7 @@ export const ACCOUNTS_MASTER: AccountMaster[] = [
   { id: 'A002', name: '主力 IP 大盘户', platform: 'juliang', owner: '林磊', today_spend: 124800, status: 'ok', status_label: '授权正常', masked_id: '1834****9911', avatar: '主' },
   { id: 'A005', name: '古言短剧扩量户', platform: 'juliang', owner: '王芳', today_spend: 42800, status: 'expiring', status_label: '7 天后过期', masked_id: '1815****0098', avatar: '古' },
   { id: 'A006', name: '男频爽文主户', platform: 'juliang', owner: '王芳', today_spend: 68400, status: 'ok', status_label: '授权正常', masked_id: '1820****3344', avatar: '男' },
-  { id: 'A008', name: '都市悬疑户', platform: 'juliang', owner: '钱晓彤', today_spend: 51200, status: 'ok', status_label: '授权正常', masked_id: '1802****7733', avatar: '都' },
+  { id: 'A008', name: '都市悬疑户', platform: 'juliang', owner: '林磊', today_spend: 51200, status: 'ok', status_label: '授权正常', masked_id: '1802****7733', avatar: '都' },
   // ---- 快手（磁力金牛） ----
   { id: 'K001', name: '快手短剧主户', platform: 'kuaishou', owner: '张伟', today_spend: 56000, status: 'ok', status_label: '授权正常', masked_id: 'KS-88****21', avatar: '快' },
   { id: 'K002', name: '快手测试户', platform: 'kuaishou', owner: '张伟', today_spend: 18200, status: 'expired', status_label: '已失效', masked_id: 'KS-90****07', avatar: '测' },

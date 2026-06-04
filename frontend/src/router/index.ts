@@ -9,6 +9,7 @@ import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-rou
 import { getToken, getStoredRole } from '@/utils/storage'
 import { useAuthStore } from '@/stores/auth'
 import { usePlatformStore } from '@/stores/platform'
+import { allowedModules } from '@/config/navigation'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -115,6 +116,12 @@ router.beforeEach(async (to) => {
       } catch {
         // Mock 不会失败；真实接口失败时放行到目标页由页面自处理
       }
+    }
+
+    // 角色权限校验：导航虽隐藏，但 URL 仍可达 —— 越权访问无权限模块则回首页
+    const feature = to.path.replace(/^\//, '')
+    if (allowedModules('admin').includes(feature) && !allowedModules(getStoredRole()).includes(feature)) {
+      return { path: '/qa' }
     }
   }
 

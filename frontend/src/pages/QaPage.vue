@@ -149,9 +149,15 @@ function onNewChat() {
 
 /* ---------- 视频 / 图片拦截 ---------- */
 function onGuard(kind: 'video' | 'image') {
-  // 不调后端：在对话流里直接给「兜底」AI 回复（ASK-15 视频 / 图片转文字·人工）
-  qa.askFlow('video', kind === 'video' ? '这条短剧视频帮我看下能不能过审' : '这张素材图帮我看下能不能过审')
-  showToast(kind === 'video' ? '暂不支持视频，已转文字 / 人工引导' : '暂不支持图片，已转文字 / 人工引导')
+  if (kind === 'image') {
+    // 图片是产品能力（素材诊断）→ 引导过去，而非当作「不支持」
+    showToast('图片合规诊断请用「素材诊断」，正在为你跳转…')
+    router.push('/diagnose')
+    return
+  }
+  // 视频不支持：在对话流里给「转文字 / 人工」兜底回复（ASK-15）
+  qa.askFlow('video', '这条短剧视频帮我看下能不能过审')
+  showToast('问答暂不支持视频，可转文字描述或人工接入')
 }
 </script>
 

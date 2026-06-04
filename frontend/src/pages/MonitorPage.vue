@@ -14,6 +14,7 @@
  *   ROI 不标红、无 danger 色，无 AI 解读 / 状态标签 / 涨跌判断箭头。判断收口到 /review。
  */
 import { onMounted, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { useMonitorStore } from '@/stores/monitor'
 import { usePlatformStore } from '@/stores/platform'
 import TrendChart from '@/components/monitor/TrendChart.vue'
@@ -23,9 +24,18 @@ import type { AccountRow } from '@/types/monitor'
 
 const store = useMonitorStore()
 const platformStore = usePlatformStore()
+const route = useRoute()
 
-onMounted(() => {
-  store.loadList()
+onMounted(async () => {
+  await store.loadList()
+  // 复盘「一键执行」深链承接：/monitor?account=A001 → 加载后直接下钻该账户详情
+  const account = route.query.account
+  if (typeof account === 'string' && account) {
+    const row = store.groups
+      .flatMap((g) => g.rows)
+      .find((r) => r.account === account)
+    if (row) store.openDetail(row)
+  }
 })
 
 // 顶栏切换全局平台 → 回列表并按新平台重载

@@ -34,8 +34,9 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       clearToken()
-      if (window.location.pathname !== '/login') {
-        window.location.href = '/login'
+      // 本项目为 hash 路由：pathname 恒为 '/'（或 Pages 子路径），需按 hash 口径判断与跳转
+      if (window.location.hash !== '#/login') {
+        window.location.hash = '#/login'
       }
     }
     return Promise.reject(error)

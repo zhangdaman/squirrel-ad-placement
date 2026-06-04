@@ -89,13 +89,16 @@ export function validateFiles(
 export async function uploadDiagnose(
   params: DiagnoseUploadParams
 ): Promise<DiagnoseUploadData> {
-  const valid = validateFiles(params.files) // 前端拦截视频 / 非图 → 不调后端
   const platform = resolvePlatform(params.platform)
+  // 文字描述违规（带 note）→ 走文字诊断，跳过图片校验；图片上传仍前端拦截视频 / 非图
+  const textMode = !!params.note
+  const valid = textMode ? [] : validateFiles(params.files)
 
   if (USE_MOCK) {
-    // 单图时按文件名简单选择报告：含「预检 / 海报 / 首图」走 precheck，否则 rejected
-    const singleId = pickSingleReportId(valid[0]?.name)
-    const res = await delay(mockUpload(valid.length, platform, singleId), 220)
+    // 文字诊断 → 拒审归因报告；图片按文件名挑变体（预检 / 海报 / 首图 → precheck）
+    const singleId = textMode ? 'd_rejected_01' : pickSingleReportId(valid[0]?.name)
+    const count = textMode ? 1 : valid.length
+    const res = await delay(mockUpload(count, platform, singleId), 220)
     return res.data
   }
 

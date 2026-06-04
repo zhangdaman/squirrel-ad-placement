@@ -30,7 +30,7 @@ const SEND_SVG =
 
 /** @账户菜单 */
 const accountMenuOpen = ref(false)
-const ACCOUNTS = ['A001 现言旗舰户', 'A002 现言次旗舰', 'A003 都市悬疑', 'A005 女频虐恋', 'K007 磁力星图户']
+const ACCOUNTS = ['A001 现言短剧旗舰户', 'A002 主力 IP 大盘户', 'A005 古言短剧扩量户', 'A006 男频爽文主户', 'K001 快手短剧主户']
 
 const canSend = computed(() => text.value.trim().length > 0 && !props.disabled)
 
@@ -125,7 +125,7 @@ onBeforeUnmount(() => document.removeEventListener('click', onDocClick))
     </div>
 
     <div class="input-hint">
-      <span>💡 问答会基于顶栏所选平台的规则与数据；输入 <code>@</code> 可指定具体账户。暂不支持视频 / 图片，转文字描述或人工接入</span>
+      <span>💡 问答会基于顶栏所选平台的规则与数据；输入 <code>@</code> 可指定具体账户。诊断图片素材请用「素材诊断」；视频暂不支持，可转文字描述 / 人工接入</span>
     </div>
 
     <!-- 隐藏 file input：即便触发也只在前端拦截，不上传后端 -->

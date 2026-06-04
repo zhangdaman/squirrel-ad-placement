@@ -7,7 +7,6 @@
  *       · 视频 / 非素材图 → 422（DiagnoseRejectError，转文字 / 人工）
  * 数值对齐原型：批量 5 张（2 可过审 / 1 建议优化 / 2 高风险）；
  *   rejected 报告 过审率 18% → 改造后 94%；precheck 预检 92%。
- * 所有展示型 Mock 数据带 [Mock] 标识（见报告标题 / 历史项），接真实接口后移除。
  */
 import type { ApiResponse } from '@/types/auth'
 import type {
@@ -200,6 +199,25 @@ function warnReport(
     preview_title: '一朝穿越成废材',
     preview_sub: '古言短剧 · 九宫格',
     preview_gradient: GRAD.teal,
+    meta: [
+      { key: '素材类型', value: '九宫格图片' },
+      { key: '图片尺寸', value: '1080×1920 · PNG' },
+      { key: '投放平台', value: platform.name },
+      { key: '投放计划', value: '1738661204517' },
+      { key: '投手', value: '王芳' },
+    ],
+    history_refs: [
+      {
+        title: '古言短剧 · 主标题放大优化 · 2024-11-15',
+        result: '主标题字号放大 20% · 点击率提升约 8%',
+        layer: 'L3',
+      },
+      {
+        title: '九宫格图 · 标题可读性优化 · 2024-12-22',
+        result: '增大首图标题字号 · 信息识别更清晰',
+        layer: 'L3',
+      },
+    ],
     violations: [
       {
         id: 1,
@@ -275,6 +293,11 @@ const REPORT_MAP: Record<string, (p: PlatformLite) => DiagnoseReport> = {
       preview_title: '隐婚总裁的小娇妻',
       preview_sub: '现言短剧 · 首图',
       preview_gradient: GRAD.pink,
+      predict: {
+        before: 0.95,
+        after: 0.95,
+        basis: '基于近 6 个月私域 240 条相似图片素材的实际过审率统计',
+      },
     }
   },
 }
@@ -306,7 +329,7 @@ function buildBatchItems(): BatchItem[] {
       name: '现言_竖版海报.jpg',
       gradient: GRAD.blue,
       issue: '5 维合规扫描全部通过，无违规元素',
-      pass_rate: 0.95,
+      pass_rate: 0.92,
       tag: 'ok',
       variant: 'precheck',
     },
@@ -324,7 +347,7 @@ function buildBatchItems(): BatchItem[] {
       name: '霸总_首图_v3.jpg',
       gradient: GRAD.pink,
       issue: '5 维合规扫描全部通过，文字位置合规',
-      pass_rate: 0.92,
+      pass_rate: 0.95,
       tag: 'ok',
       variant: 'precheck',
     },

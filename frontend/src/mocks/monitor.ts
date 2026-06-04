@@ -9,8 +9,6 @@
  *   只返事实数据，不返任何判断字段 —— 无 status / severity / 状态标签 / ROI 异常标记 / 焦点条。
  *   原型里的「状态」列（异常/优异/拒审激增/正常）、判断性 KPI 涨跌、归因/诊断引导，
  *   均属判断层（收口到 /review），在此刻意剔除，仅保留纯数值列与「查看详情」下钻。
- *
- * 所有展示型 Mock 数据带 [Mock] 标识（账户名前缀），接真实接口后移除。
  */
 import type { ApiResponse } from '@/types/auth'
 import type {
@@ -27,9 +25,6 @@ import type {
   RetentionMode,
   TrendPoint,
 } from '@/types/monitor'
-
-/** [Mock] 标识前缀（展示型 Mock 数据可见标识；接真实接口后移除） */
-const M = ''
 
 /* ============================================================
  * 账户明细表（GET /api/monitor/accounts）—— 按平台分组，纯数据无判断列
@@ -81,7 +76,7 @@ const juliangGroup: AccountPlatformGroup = {
     {
       account: 'A008',
       name: '都市悬疑户',
-      agent: '钱晓彤',
+      agent: '林磊',
       platform: 'juliang',
       metrics: { spend: '¥51,200', fan_cost: '89.50', ctr: '3.80%', conv: '24', conv_cost: '805.40', cvr: '0.48%', completion: '65%' },
     },
@@ -383,15 +378,15 @@ export function mockDetail(range = '14d'): ApiResponse<MonitorDetailData> {
 /** 广告组明细（原型 mdd-table 3 行） */
 const GROUP_ROWS: DetailRow[] = [
   {
-    date: `${M}现言-5秒钩子-A组 · 1738657931934739`,
+    date: '现言-5秒钩子-A组 · 1738657931934739',
     metrics: { spend: '38,420', fan_cost: '545.81', completion: '22.70%', imp: '149,893', click: '4,221', ctr: '2.82%', conv: '11', conv_cost: '942.76', cvr: '0.26%', order_cost: '942.76', aov: '20.21' },
   },
   {
-    date: `${M}现言-反转开场-B组 · 1738657931920012`,
+    date: '现言-反转开场-B组 · 1738657931920012',
     metrics: { spend: '26,100', fan_cost: '418.30', completion: '34.10%', imp: '98,420', click: '3,180', ctr: '3.23%', conv: '18', conv_cost: '876.40', cvr: '0.57%', order_cost: '790.20', aov: '22.80' },
   },
   {
-    date: `${M}现言-情绪痛点-C组 · 1738657931900388`,
+    date: '现言-情绪痛点-C组 · 1738657931900388',
     metrics: { spend: '21,680', fan_cost: '602.15', completion: '18.40%', imp: '72,310', click: '1,980', ctr: '2.74%', conv: '7', conv_cost: '1,120.50', cvr: '0.35%', order_cost: '1,008.30', aov: '18.40' },
   },
 ]
@@ -413,29 +408,44 @@ const GROUP_COLUMNS = [
 
 /** 投放计划维度（演示行，纯数据） */
 const PLAN_ROWS: DetailRow[] = [
-  { date: `${M}计划-现言旗舰-01`, metrics: { spend: '31,500', fan_cost: '520.40', completion: '28.10%', imp: '128,400', click: '3,690', ctr: '2.87%', conv: '14', conv_cost: '912.30', cvr: '0.38%', order_cost: '912.30', aov: '21.10' } },
-  { date: `${M}计划-现言旗舰-02`, metrics: { spend: '28,900', fan_cost: '486.20', completion: '31.40%', imp: '112,600', click: '3,420', ctr: '3.04%', conv: '16', conv_cost: '845.60', cvr: '0.47%', order_cost: '845.60', aov: '22.40' } },
-  { date: `${M}计划-现言旗舰-03`, metrics: { spend: '25,800', fan_cost: '598.30', completion: '19.80%', imp: '79,200', click: '2,180', ctr: '2.75%', conv: '6', conv_cost: '1,098.40', cvr: '0.30%', order_cost: '1,098.40', aov: '19.20' } },
+  { date: '计划-现言旗舰-01', metrics: { spend: '31,500', fan_cost: '520.40', completion: '28.10%', imp: '128,400', click: '3,690', ctr: '2.87%', conv: '14', conv_cost: '912.30', cvr: '0.38%', order_cost: '912.30', aov: '21.10' } },
+  { date: '计划-现言旗舰-02', metrics: { spend: '28,900', fan_cost: '486.20', completion: '31.40%', imp: '112,600', click: '3,420', ctr: '3.04%', conv: '16', conv_cost: '845.60', cvr: '0.47%', order_cost: '845.60', aov: '22.40' } },
+  { date: '计划-现言旗舰-03', metrics: { spend: '25,800', fan_cost: '598.30', completion: '19.80%', imp: '79,200', click: '2,180', ctr: '2.75%', conv: '6', conv_cost: '1,098.40', cvr: '0.30%', order_cost: '1,098.40', aov: '19.20' } },
 ]
 
 /** 创意维度（演示行，纯数据） */
 const CREATIVE_ROWS: DetailRow[] = [
-  { date: `${M}创意-反转开场-竖版15s`, metrics: { spend: '22,400', fan_cost: '432.10', completion: '33.60%', imp: '96,800', click: '3,050', ctr: '3.15%', conv: '17', conv_cost: '812.40', cvr: '0.56%', order_cost: '780.10', aov: '23.10' } },
-  { date: `${M}创意-情绪痛点-竖版20s`, metrics: { spend: '19,600', fan_cost: '588.40', completion: '18.90%', imp: '68,900', click: '1,860', ctr: '2.70%', conv: '6', conv_cost: '1,140.20', cvr: '0.32%', order_cost: '1,020.50', aov: '18.60' } },
+  { date: '创意-反转开场-竖版15s', metrics: { spend: '22,400', fan_cost: '432.10', completion: '33.60%', imp: '96,800', click: '3,050', ctr: '3.15%', conv: '17', conv_cost: '812.40', cvr: '0.56%', order_cost: '780.10', aov: '23.10' } },
+  { date: '创意-情绪痛点-竖版20s', metrics: { spend: '19,600', fan_cost: '588.40', completion: '18.90%', imp: '68,900', click: '1,860', ctr: '2.70%', conv: '6', conv_cost: '1,140.20', cvr: '0.32%', order_cost: '1,020.50', aov: '18.60' } },
 ]
+
+/** 账户 → 详情页头部基本信息（name / platform / platformShort）。
+ *  下钻概览的 header 三字段须随账户正确（KPI/漏斗/子表等仍复用 A001 样板）。
+ *  platformShort：juliang→「巨量」、kuaishou→「磁力」、tencent→「腾讯」。 */
+const OVERVIEW_HEADER: Record<string, { name: string; platform: MonitorPlatformKey; platformShort: string }> = {
+  A001: { name: '现言短剧旗舰户', platform: 'juliang', platformShort: '巨量' },
+  A002: { name: '主力 IP 大盘户', platform: 'juliang', platformShort: '巨量' },
+  A005: { name: '古言短剧扩量户', platform: 'juliang', platformShort: '巨量' },
+  A006: { name: '男频爽文主户', platform: 'juliang', platformShort: '巨量' },
+  A008: { name: '都市悬疑户', platform: 'juliang', platformShort: '巨量' },
+  K001: { name: '快手短剧主户', platform: 'kuaishou', platformShort: '磁力' },
+  K002: { name: '快手测试户', platform: 'kuaishou', platformShort: '磁力' },
+  T001: { name: '腾讯系短剧户', platform: 'tencent', platformShort: '腾讯' },
+}
 
 /**
  * 账户详情·概览聚合（下钻 detail tab=overview）。
- * @param account 账户编号（Mock 以 A001 golden-data 为样板；其余账户复用同形态）
+ * @param account 账户编号（header 三字段按账户取；KPI/漏斗/子表等以 A001 golden-data 为样板复用）
  * 全部纯事实，无判断字段。
  */
 export function mockOverview(account = 'A001'): ApiResponse<AccountOverview> {
+  const info = OVERVIEW_HEADER[account] ?? OVERVIEW_HEADER.A001
   const data: AccountOverview = {
     header: {
       account,
-      name: `${M}现言短剧旗舰户`,
-      platform: 'juliang',
-      platformShort: '巨量',
+      name: info.name,
+      platform: info.platform,
+      platformShort: info.platformShort,
       dateRange: '2026-05-28 至 2026-05-28',
     },
     kpis: [

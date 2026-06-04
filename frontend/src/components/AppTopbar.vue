@@ -12,6 +12,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { usePlatformStore } from '@/stores/platform'
 import { useRoleStore } from '@/stores/role'
 import { useAuthStore } from '@/stores/auth'
+import { allowedModules } from '@/config/navigation'
 import type { PlatformKey } from '@/types/platform'
 import type { RoleKey } from '@/types/role'
 
@@ -26,6 +27,8 @@ const roleOpen = ref(false)
 const notifyOpen = ref(false)
 const helpOpen = ref(false)
 const userOpen = ref(false)
+const searchText = ref('')
+const searchRef = ref<HTMLInputElement | null>(null)
 const platRef = ref<HTMLElement | null>(null)
 const roleRef = ref<HTMLElement | null>(null)
 const notifyRef = ref<HTMLElement | null>(null)
@@ -78,6 +81,13 @@ async function onSelectRole(key: RoleKey) {
   // 等价于原型「切视角 → reload → 按角色恢复」，但在 SPA 内响应式完成、无需整页刷新。
   await authStore.loadMe(key)
   await platformStore.loadPlatforms()
+  // 切角色后，当前页若超出新角色权限 → 回首页（与路由守卫同口径，防越权停留）
+  const feature = route.path.replace(/^\//, '')
+  if (allowedModules('admin').includes(feature) && !allowedModules(key).includes(feature)) {
+    router.push('/qa')
+    toast(`已切换至「${roleStore.currentOption.name}」视角，当前页无权限已返回智能问答`)
+    return
+  }
   toast(`已切换视角：${roleStore.currentOption.name}`)
 }
 
@@ -97,11 +107,28 @@ const noticeIcon: Record<Notice['type'], string> = { reject: '🛡', alert: '�
 /* ---------- 帮助菜单 ---------- */
 const helpItems = [
   { label: '新手指南', desc: '5 分钟上手松鼠投放' },
-  { label: '快捷键', desc: '⌘K 唤起搜索 · / 聚焦输入' },
+  { label: '快捷键', desc: '⌘K / Ctrl+K 唤起搜索' },
   { label: '常见问题', desc: '出价 / 审核 / 数据 FAQ' },
   { label: '联系支持', desc: '提工单或在线客服' },
 ]
 function onHelp(item: { label: string; desc: string }) { helpOpen.value = false; toast(`${item.label} —— ${item.desc}`) }
+
+/* ---------- 顶栏搜索（⌘K / Ctrl+K 聚焦，回车带词去智能问答） ---------- */
+function onSearchEnter() {
+  const q = searchText.value.trim()
+  if (!q) return
+  router.push({ path: '/qa', query: { q } })
+  searchText.value = ''
+  searchRef.value?.blur()
+}
+/** 全局快捷键：⌘K / Ctrl+K 聚焦搜索框 */
+function onGlobalKeydown(e: KeyboardEvent) {
+  if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
+    e.preventDefault()
+    searchRef.value?.focus()
+    searchRef.value?.select()
+  }
+}
 
 /* ---------- 用户菜单（退出在设置内，此处仅设置入口） ---------- */
 function gotoSettings() { userOpen.value = false; router.push('/settings') }
@@ -157,8 +184,14 @@ function onDocClick(e: MouseEvent) {
   if (helpRef.value && !helpRef.value.contains(t)) helpOpen.value = false
   if (userRef.value && !userRef.value.contains(t)) userOpen.value = false
 }
-onMounted(() => document.addEventListener('click', onDocClick))
-onBeforeUnmount(() => document.removeEventListener('click', onDocClick))
+onMounted(() => {
+  document.addEventListener('click', onDocClick)
+  window.addEventListener('keydown', onGlobalKeydown)
+})
+onBeforeUnmount(() => {
+  document.removeEventListener('click', onDocClick)
+  window.removeEventListener('keydown', onGlobalKeydown)
+})
 </script>
 
 <template>
@@ -209,7 +242,12 @@ onBeforeUnmount(() => document.removeEventListener('click', onDocClick))
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" />
       </svg>
-      <input placeholder="问问松鼠：例如 '巨量短剧 ROI 怎么提升'" />
+      <input
+        ref="searchRef"
+        v-model="searchText"
+        placeholder="问问松鼠：例如 '巨量短剧 ROI 怎么提升'"
+        @keyup.enter="onSearchEnter"
+      />
       <span class="kbd">⌘K</span>
     </div>
 
